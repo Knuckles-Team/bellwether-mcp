@@ -33,16 +33,16 @@ test = ["pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest
 [project.scripts]
 market-data-mcp = "market_data_mcp.mcp_server:mcp_server"
 
-[project.entry-points."agent_utilities.skill_providers"]
+[project.entry-points."agent_connector_sdk.skill_providers"]
 market-data-mcp = "market_data_mcp.skills"
 
-[project.entry-points."agent_utilities.ontology_providers"]
+[project.entry-points."agent_connector_sdk.ontology_providers"]
 market-data-mcp = "market_data_mcp.ontology"
 
-[project.entry-points."agent_utilities.prompt_providers"]
+[project.entry-points."agent_connector_sdk.prompt_providers"]
 market-data-mcp = "market_data_mcp.prompts"
 
-[project.entry-points."agent_utilities.source_connector_providers"]
+[project.entry-points."agent_connector_sdk.source_connector_providers"]
 market-data-mcp = "market_data_mcp.connectors"
 
 [tool.uv.workspace]
