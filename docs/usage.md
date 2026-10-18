@@ -1,6 +1,6 @@
 # Usage — MCP tools and source adapters
 
-`market-data-mcp` exposes its data two ways: as **MCP tools** an agent calls
+`bellwether-mcp` exposes its data two ways: as **MCP tools** an agent calls
 directly, and as **declarative `agent-connector-sdk` source adapters** a
 deployment's runner drives on a schedule for continuous knowledge-graph
 ingestion. The architecture is covered in [Overview](overview.md).
@@ -27,12 +27,12 @@ Example agent prompts that map onto these tools:
 - *"What did the FOMC do at its last three meetings?"* → `fomc_calendar_list` with `limit=3`
 
 Every tool other than `fomc_calendar_list` resolves its API key server-side
-(`MARKET_DATA_CMC_API_KEY` / `MARKET_DATA_FRED_API_KEY`) — never accept or pass
+(`BELLWETHER_CMC_API_KEY` / `BELLWETHER_FRED_API_KEY`) — never accept or pass
 a credential as a tool argument.
 
 ## As declarative source adapters
 
-`market_data_mcp.connectors.adapters.build_source_adapters()` returns one
+`bellwether_mcp.connectors.adapters.build_source_adapters()` returns one
 `McpToolSourceAdapter` per stream declared in `connectors/mcp_source_presets.json`
 (ten streams: three CoinMarketCap, seven FRED macro-series aliases, plus
 `fomc_calendar`). Each preset pins:
@@ -57,9 +57,9 @@ environment directly:
 
 ```python
 import asyncio
-from market_data_mcp.api import coinmarketcap
-from market_data_mcp.credentials import resolve_cmc_api_key
-from market_data_mcp.mcp.clients import Clients
+from bellwether_mcp.api import coinmarketcap
+from bellwether_mcp.credentials import resolve_cmc_api_key
+from bellwether_mcp.mcp.clients import Clients
 
 async def main():
     clients = Clients()
@@ -73,5 +73,5 @@ async def main():
 asyncio.run(main())
 ```
 
-`market_data_mcp.api.fomc_calendar.list_meetings()` needs no client or
+`bellwether_mcp.api.fomc_calendar.list_meetings()` needs no client or
 credential at all — it reads the packaged, curated dataset synchronously.

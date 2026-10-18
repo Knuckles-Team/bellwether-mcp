@@ -1,4 +1,4 @@
-# Concept Registry — market-data-mcp
+# Concept Registry — bellwether-mcp
 
 > **Prefix**: none allocated — this package carries no local `CONCEPT:*` tags.
 > **Bridge**: the design doc `plans/refactor/proposals/FINANCE-INTEGRATION-20260924.md`
@@ -27,7 +27,7 @@ others are finance-v1 proposals, not yet landed.
 
 ## This connector's own ontology
 
-`market_data_mcp/ontology/market_data.ttl` declares exactly one class,
+`bellwether_mcp/ontology/market_data.ttl` declares exactly one class,
 `MarketDataSyncRun` — this connector's own sync-lifecycle bookkeeping record
 (federated into the agent-utilities knowledge-graph hub). It does **not**
 redeclare the finance-v1 domain classes above.

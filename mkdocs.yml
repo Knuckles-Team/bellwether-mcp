@@ -1,8 +1,8 @@
-site_name: "market-data-mcp"
+site_name: "bellwether-mcp"
 site_description: "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP Server for the agent-utilities ecosystem — a typed, deterministic tool surface plus agent-connector-sdk source adapters."
-site_url: "https://knuckles-team.github.io/market-data-mcp/"
-repo_name: "Knuckles-Team/market-data-mcp"
-repo_url: "https://github.com/Knuckles-Team/market-data-mcp"
+site_url: "https://knuckles-team.github.io/bellwether-mcp/"
+repo_name: "Knuckles-Team/bellwether-mcp"
+repo_url: "https://github.com/Knuckles-Team/bellwether-mcp"
 edit_uri: "edit/main/docs/"
 copyright: "Copyright &copy; Knuckles-Team — MIT licensed"
 
@@ -80,9 +80,9 @@ markdown_extensions:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/Knuckles-Team/market-data-mcp
+      link: https://github.com/Knuckles-Team/bellwether-mcp
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/market-data-mcp/
+      link: https://pypi.org/project/bellwether-mcp/
 
 nav:
   - Home: index.md

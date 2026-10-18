@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-18
+
+### Changed
+- Renamed from market-data-mcp to bellwether-mcp (PyPI distribution, import package
+  `bellwether_mcp`, CLI `bellwether-mcp`, Docker image `knucklessg1/bellwether-mcp`,
+  GitHub repository). Settings move from `MARKET_DATA_*` to `BELLWETHER_*`; the old
+  prefix is still read, with a DeprecationWarning, for this release. Tool names and
+  spec IDs (`CONN-MARKET-DATA-MCP`) are unchanged. agent-connector-sdk 0.3.6 floor.
+
+
 ### Added
 -
 

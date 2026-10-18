@@ -57,7 +57,7 @@ def extract_concepts_from_codebase(directory):
 
 def test_concept_parity():
     """
-    Enforces that all concepts documented or used in market-data-mcp
+    Enforces that all concepts documented or used in bellwether-mcp
     exist in the master agent-utilities registry.
     """
     master_concepts = extract_concepts_from_overview(MASTER_OVERVIEW_PATH)
@@ -81,7 +81,7 @@ def test_concept_parity():
     unregistered_concepts = local_codebase_concepts - master_concepts
 
     assert not unregistered_concepts, (
-        f"The following concepts are used in market-data-mcp but are NOT registered "
+        f"The following concepts are used in bellwether-mcp but are NOT registered "
         f"in the master agent-utilities/docs/overview.md registry: {unregistered_concepts}. "
         f"Please register them first."
     )

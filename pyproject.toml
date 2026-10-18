@@ -3,8 +3,8 @@ requires = ["setuptools>=80.9.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "market-data-mcp"
-version = "1.2.0"
+name = "bellwether-mcp"
+version = "1.3.0"
 description = "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP server and agent-connector-sdk source adapters"
 readme = "README.md"
 classifiers = [
@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "agent-connector-sdk[mcp]>=0.3.0,<1.0.0",
+    "agent-connector-sdk[mcp]>=0.3.6,<1.0.0",
     "httpx>=0.28.1",
 ]
 
@@ -31,19 +31,19 @@ text = "MIT"
 test = ["pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0"]
 
 [project.scripts]
-market-data-mcp = "market_data_mcp.mcp_server:mcp_server"
+bellwether-mcp = "bellwether_mcp.mcp_server:mcp_server"
 
 [project.entry-points."agent_connector_sdk.skill_providers"]
-market-data-mcp = "market_data_mcp.skills"
+bellwether-mcp = "bellwether_mcp.skills"
 
 [project.entry-points."agent_connector_sdk.ontology_providers"]
-market-data-mcp = "market_data_mcp.ontology"
+bellwether-mcp = "bellwether_mcp.ontology"
 
 [project.entry-points."agent_connector_sdk.prompt_providers"]
-market-data-mcp = "market_data_mcp.prompts"
+bellwether-mcp = "bellwether_mcp.prompts"
 
 [project.entry-points."agent_connector_sdk.source_connector_providers"]
-market-data-mcp = "market_data_mcp.connectors"
+bellwether-mcp = "bellwether_mcp.connectors"
 
 [tool.uv.workspace]
 members = ["."]
@@ -64,7 +64,7 @@ check_untyped_defs = true
 dev = ["pytest-timeout>=2.4.0", "mypy>=1.20.2", "ruff>=0.16.0"]
 
 [tool.setuptools.package-data]
-market_data_mcp = ["mcp_config.json", "prompts/**", "skills/**", "ontology/**", "connectors/**"]
+bellwether_mcp = ["mcp_config.json", "prompts/**", "skills/**", "ontology/**", "connectors/**"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
@@ -74,10 +74,10 @@ ignore = ["E402", "E501", "B008"]
 where = ["."]
 
 [tool.pipelines_hooks]
-packages = ["market_data_mcp"]
+packages = ["bellwether_mcp"]
 
 [tool.pipelines_hooks.stdout_writes]
-served_paths = ["market_data_mcp"]
+served_paths = ["bellwether_mcp"]
 
 [tool.pipelines_hooks.ste]
 exempt = ["specs/*", "specs/**/*"]

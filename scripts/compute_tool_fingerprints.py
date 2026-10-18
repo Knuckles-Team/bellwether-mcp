@@ -24,18 +24,18 @@ from pathlib import Path
 from agent_connector_sdk.certify.fingerprints import tool_fingerprint
 from fastmcp import Client, FastMCP
 
-from market_data_mcp.mcp.clients import Clients
-from market_data_mcp.mcp.tools_crypto_reference import register_crypto_reference_tools
-from market_data_mcp.mcp.tools_fomc_calendar import register_fomc_calendar_tools
-from market_data_mcp.mcp.tools_macro_series import register_macro_series_tools
+from bellwether_mcp.mcp.clients import Clients
+from bellwether_mcp.mcp.tools_crypto_reference import register_crypto_reference_tools
+from bellwether_mcp.mcp.tools_fomc_calendar import register_fomc_calendar_tools
+from bellwether_mcp.mcp.tools_macro_series import register_macro_series_tools
 
 _OUTPUT = Path(__file__).resolve().parent.parent / (
-    "market_data_mcp/connectors/tool_schema_fingerprints.json"
+    "bellwether_mcp/connectors/tool_schema_fingerprints.json"
 )
 
 
 def _bare_server() -> FastMCP:
-    mcp: FastMCP = FastMCP("market-data-mcp")
+    mcp: FastMCP = FastMCP("bellwether-mcp")
     clients = Clients()
     register_crypto_reference_tools(mcp, clients)
     register_macro_series_tools(mcp, clients)

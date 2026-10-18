@@ -11,14 +11,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from market_data_mcp.connectors.adapters import (
+from bellwether_mcp.connectors.adapters import (
     build_schema_mappings,
     build_source_adapters,
 )
 
 _PRESETS_PATH = (
     Path(__file__).resolve().parent.parent
-    / "market_data_mcp/connectors/mcp_source_presets.json"
+    / "bellwether_mcp/connectors/mcp_source_presets.json"
 )
 
 #: stream name -> the exact (provisional) finance-v1 class this lane's design assigns it.

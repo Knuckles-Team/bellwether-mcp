@@ -1,4 +1,4 @@
-# market-data-mcp — Concept Overview
+# bellwether-mcp — Concept Overview
 
 > **Category**: Finance | **Ecosystem Role**: MCP Server + `agent-connector-sdk` source adapters
 > Built directly on [`agent-connector-sdk`](https://github.com/Knuckles-Team/agent-connector-sdk) — **not**
@@ -13,7 +13,7 @@ Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vinta
 ## Why `agent-connector-sdk`, not `agent-utilities`
 
 Most fleet packages depend on `agent-utilities` directly and ship an
-`agent_server.py` A2A agent alongside their MCP server. `market-data-mcp` is
+`agent_server.py` A2A agent alongside their MCP server. `bellwether-mcp` is
 modeled on `agents/world-reference-mcp` — the first package built on this
 newer, lighter architecture per RF-ADR-009 §2.2.1 ("a new API source is a
 preset, not code"):
@@ -34,8 +34,8 @@ preset, not code"):
 This project follows the fleet's connector pattern, minus the agent layer:
 
 ```
-market-data-mcp/
-├── market_data_mcp/          # Source code
+bellwether-mcp/
+├── bellwether_mcp/          # Source code
 │   ├── api/                      # Thin async vendor clients (CMC, FRED, FOMC)
 │   ├── mcp/                      # The eight-tool FastMCP surface + composition root
 │   ├── connectors/                # Declarative mcp_tool presets + the SourceAdapter factory
@@ -56,9 +56,9 @@ market-data-mcp/
 ```json
 {
   "mcpServers": {
-    "market-data-mcp": {
+    "bellwether-mcp": {
       "command": "uv",
-      "args": ["run", "--with", "market-data-mcp", "market-data-mcp"],
+      "args": ["run", "--with", "bellwether-mcp", "bellwether-mcp"],
       "env": {}
     }
   }
@@ -67,5 +67,5 @@ market-data-mcp/
 
 ### Streamable HTTP Mode
 ```bash
-market-data-mcp --transport streamable-http --port 8000
+bellwether-mcp --transport streamable-http --port 8000
 ```

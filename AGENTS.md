@@ -1,20 +1,20 @@
-# market-data-mcp - AGENTS
+# bellwether-mcp - AGENTS
 
 > Claude Code loads this file via `CLAUDE.md` (`@AGENTS.md` import) — the two stay
 > in sync. Edit **this** file, not `CLAUDE.md`.
 
 ## Project structure
-- `market_data_mcp/api/`: thin async vendor API clients (CoinMarketCap, FRED) plus
+- `bellwether_mcp/api/`: thin async vendor API clients (CoinMarketCap, FRED) plus
   `fomc_calendar.py` (a pure reader over a curated dataset, no network) — pure
   functions, no MCP/adapter concerns.
-- `market_data_mcp/mcp/`: the eight-tool FastMCP surface + `clients.py` (shared,
+- `bellwether_mcp/mcp/`: the eight-tool FastMCP surface + `clients.py` (shared,
   rate-limited governed HTTP clients for the two keyed sources) + `server.py`
   (composition root).
-- `market_data_mcp/connectors/`: `mcp_source_presets.json` (10 declarative
+- `bellwether_mcp/connectors/`: `mcp_source_presets.json` (10 declarative
   `agent-connector-sdk` `mcp_tool` presets), `fomc_meetings.json` (the curated,
   sourced FOMC dataset), `tool_schema_fingerprints.json` (generated — see below),
   and `adapters.py` (the runtime `SourceAdapter` factory).
-- `market_data_mcp/ontology/`: this connector's OWN admin-lifecycle ontology
+- `bellwether_mcp/ontology/`: this connector's OWN admin-lifecycle ontology
   (`market_data.ttl`, `MarketDataSyncRun`) plus `mappings/source.yaml` (the
   PROVISIONAL stream-to-finance-v1-class mapping — read before touching presets).
 - `tests/`: API-layer tests against recorded/synthetic fixtures, a FOMC-dataset
@@ -31,9 +31,9 @@
   (this package has no resolvable standalone `uv sync` yet — see "Known environment
   gap" below; borrow the SDK's own venv, which already carries `agent_connector_sdk`,
   `epistemic_graph` and `fastmcp`).
-- `... -m mypy market_data_mcp --ignore-missing-imports --check-untyped-defs`
-- `uvx ruff@0.16.0 check market_data_mcp tests scripts` /
-  `uvx ruff@0.16.0 format market_data_mcp tests scripts`
+- `... -m mypy bellwether_mcp --ignore-missing-imports --check-untyped-defs`
+- `uvx ruff@0.16.0 check bellwether_mcp tests scripts` /
+  `uvx ruff@0.16.0 format bellwether_mcp tests scripts`
 - `pre-commit run kiss-staged|complexity-staged|dupehound-changed --files <paths>`
 
 ## Why agent-connector-sdk, not the legacy AU client-reflection pattern
@@ -117,22 +117,22 @@ not a live scrape.
 ## Credentials
 Two of eight tools need a credential, resolved server-side through
 `agent_connector_sdk.credentials` — never accepted as a tool argument:
-- `cmc_listings`, `cmc_quotes`, `cmc_global_metrics`: `MARKET_DATA_CMC_API_KEY`
+- `cmc_listings`, `cmc_quotes`, `cmc_global_metrics`: `BELLWETHER_CMC_API_KEY`
   (`env://` by default) — CoinMarketCap has **no keyless endpoint**, including its
   free "Basic" plan.
 - `fred_series_observations`, `fred_series_observations_asof`,
-  `fred_series_vintage_dates`: `MARKET_DATA_FRED_API_KEY` (`env://` by default).
+  `fred_series_vintage_dates`: `BELLWETHER_FRED_API_KEY` (`env://` by default).
 
-Both accept an `openbao://apps/market-data-mcp#<FIELD>` reference in the same
+Both accept an `openbao://apps/bellwether-mcp#<FIELD>` reference in the same
 environment variable instead, resolved through
 `agent_connector_sdk.credentials.resolver.CompositeCredentialResolver` at the
-deployment composition root (`market_data_mcp.credentials.default_resolver` wires
+deployment composition root (`bellwether_mcp.credentials.default_resolver` wires
 only the `env://` scheme; a deployment adds an OpenBao resolver).
 
 `fomc_calendar_list` is keyless and needs no network — it reads packaged data.
 
 ## Rate limits
-CoinMarketCap and FRED are each called through `market_data_mcp.mcp.clients.Clients`,
+CoinMarketCap and FRED are each called through `bellwether_mcp.mcp.clients.Clients`,
 one governed `httpx.AsyncClient` (TLS, bounded timeout, retry/backoff —
 `agent_connector_sdk.http`) plus one `RateLimiter` (a cooperative minimum-interval
 sleeper) per host, sized to each API's documented budget in `config.py`'s per-source
@@ -184,7 +184,7 @@ above instead borrow `agent-connector-sdk`'s own canonical `.venv`
   discovery/caps only per the design doc; venue OHLCV stays with emerald-exchange.
 - `connector_manifest.yml` cannot be generated yet: `generate_connector_manifests.py`
   fail-closes with `FleetRegistryError: provider is not registered in the MCP fleet
-  registry` — `market-data-mcp` (like `world-reference-mcp`) is not one of the 72
+  registry` — `bellwether-mcp` (like `world-reference-mcp`) is not one of the 72
   entries in `mcp-fleet.registry.yml`. This is the same deferred fleet-registration
   pass named above, not a bug in the generator; do not hand-write the manifest to
   route around it.

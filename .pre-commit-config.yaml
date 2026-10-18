@@ -1,4 +1,4 @@
-# Combined pre-commit and pre-push scan suite for market-data-mcp.
+# Combined pre-commit and pre-push scan suite for bellwether-mcp.
 #
 # Repository-agnostic complexity, clone, security, privacy, supply-chain,
 # hygiene and code-shape gates come from the shared Knuckles-Team/pipelines
@@ -75,10 +75,10 @@ repos:
   hooks:
   - id: mypy
     name: mypy (project package)
-    entry: bash -c 'PYTHONPATH="$PWD" .uv-workspace-siblings/agent-connector-sdk/.venv/bin/python3 -m mypy market_data_mcp --ignore-missing-imports --check-untyped-defs'
+    entry: bash -c 'PYTHONPATH="$PWD" .uv-workspace-siblings/agent-connector-sdk/.venv/bin/python3 -m mypy bellwether_mcp --ignore-missing-imports --check-untyped-defs'
     language: system
     pass_filenames: false
-    files: ^(market_data_mcp/.*\.py|pyproject\.toml)$
+    files: ^(bellwether_mcp/.*\.py|pyproject\.toml)$
   - id: pytest
     name: pytest (full suite)
     entry: bash -c 'PYTHONPATH="$PWD" .uv-workspace-siblings/agent-connector-sdk/.venv/bin/python3 -m pytest -q'

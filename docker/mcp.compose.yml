@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  market-data-mcp-mcp:
+  bellwether-mcp-mcp:
     init: true
     user: "10001:10001"
     read_only: true
@@ -14,9 +14,9 @@ services:
     cpus: ${MCP_CONTAINER_CPU_LIMIT:-1.0}
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m
-    image: ${MARKET_DATA_MCP_MCP_IMAGE:?set-MARKET_DATA_MCP_MCP_IMAGE-to-image@sha256-digest}
-    container_name: market-data-mcp-mcp
-    hostname: market-data-mcp-mcp
+    image: ${BELLWETHER_MCP_MCP_IMAGE:?set-BELLWETHER_MCP_MCP_IMAGE-to-image@sha256-digest}
+    container_name: bellwether-mcp-mcp
+    hostname: bellwether-mcp-mcp
     restart: always
     env_file:
       - ../.env

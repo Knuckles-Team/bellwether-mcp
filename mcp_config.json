@@ -1,15 +1,15 @@
 {
   "mcpServers": {
-    "market-data-mcp": {
+    "bellwether-mcp": {
       "command": "uv",
       "args": [
         "run",
-        "market-data-mcp"
+        "bellwether-mcp"
       ],
       "env": {
         "MCP_TOOL_MODE": "condensed",
-        "MARKET_DATA_CMC_API_KEY": "env://MARKET_DATA_CMC_API_KEY",
-        "MARKET_DATA_FRED_API_KEY": "env://MARKET_DATA_FRED_API_KEY"
+        "BELLWETHER_CMC_API_KEY": "env://BELLWETHER_CMC_API_KEY",
+        "BELLWETHER_FRED_API_KEY": "env://BELLWETHER_FRED_API_KEY"
       }
     }
   }
