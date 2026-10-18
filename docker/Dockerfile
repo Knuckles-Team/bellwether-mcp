@@ -19,7 +19,7 @@ RUN apt-get update \
 # MCP-server dependency closure (agent-connector-sdk + httpx only).
 FROM builder-base AS builder-mcp
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system --break-system-packages market-data-mcp==0.1.0
+    uv pip install --system --break-system-packages market-data-mcp==1.1.0
 
 FROM python:3.14-slim@sha256:cea0e6040540fb2b965b6e7fb5ffa00871e632eef63719f0ea54bca189ce14a6 AS runtime-base
 ARG HOST=127.0.0.1

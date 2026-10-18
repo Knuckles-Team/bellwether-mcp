@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "market-data-mcp"
-version = "0.1.0"
+version = "1.1.0"
 description = "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP server and agent-connector-sdk source adapters"
 readme = "README.md"
 classifiers = [
@@ -14,9 +14,9 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
 ]
-requires-python = ">=3.12, <3.15"
+requires-python = ">=3.12"
 dependencies = [
-    "agent-connector-sdk>=0.1.0,<1.0.0",
+    "agent-connector-sdk[mcp]>=0.2.1,<1.0.0",
     "httpx>=0.28.1",
 ]
 
@@ -33,16 +33,16 @@ test = ["pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest
 [project.scripts]
 market-data-mcp = "market_data_mcp.mcp_server:mcp_server"
 
-[project.entry-points."agent_utilities.skill_providers"]
+[project.entry-points."agent_connector_sdk.skill_providers"]
 market-data-mcp = "market_data_mcp.skills"
 
-[project.entry-points."agent_utilities.ontology_providers"]
+[project.entry-points."agent_connector_sdk.ontology_providers"]
 market-data-mcp = "market_data_mcp.ontology"
 
-[project.entry-points."agent_utilities.prompt_providers"]
+[project.entry-points."agent_connector_sdk.prompt_providers"]
 market-data-mcp = "market_data_mcp.prompts"
 
-[project.entry-points."agent_utilities.source_connector_providers"]
+[project.entry-points."agent_connector_sdk.source_connector_providers"]
 market-data-mcp = "market_data_mcp.connectors"
 
 [tool.uv.workspace]
@@ -72,9 +72,6 @@ ignore = ["E402", "E501", "B008"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-
-[tool.uv.sources]
-agent-connector-sdk = { path = ".uv-workspace-siblings/agent-connector-sdk", editable = true }
 
 [tool.pipelines_hooks]
 packages = ["market_data_mcp"]
