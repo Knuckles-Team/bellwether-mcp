@@ -17,7 +17,15 @@ from market_data_mcp.api import fomc_calendar
 def register_fomc_calendar_tools(mcp: FastMCP, _clients: object) -> None:
     """Register the FOMC calendar tool. Takes ``clients`` for a uniform signature."""
 
-    @mcp.tool(tags={"fomc-calendar"})
+    @mcp.tool(
+        tags={"fomc-calendar"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     def fomc_calendar_list(
         since: str = "",
         until: str = "",

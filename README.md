@@ -1,6 +1,6 @@
 # market-data-mcp
 
-*Version: 1.1.1*
+*Version: 1.2.0*
 
 > **Documentation** — Installation, deployment, and tool usage are maintained in the
 > [official documentation](https://knuckles-team.github.io/market-data-mcp/).

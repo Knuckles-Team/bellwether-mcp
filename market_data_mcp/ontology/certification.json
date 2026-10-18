@@ -1,9 +1,9 @@
 {
   "api_version": "arbora.io/v1",
   "artifacts": {
-    "connector_manifest.yml": "e7d9a4e1f23a5d981575e8ff661cfd495a4d522fb45e6031308b6773b522d175",
+    "connector_manifest.yml": "8bf06a78b0dd1bb0489d8818198c71e66dd8b374bac7dfc9c13773d4c0f16ccc",
     "market_data_mcp/connectors/mcp_source_presets.json": "8c81431cdfa7c5200f30b07a90b7b564eed3ed76943410a47e9ac4ec57a8bd30",
-    "market_data_mcp/connectors/tool_schema_fingerprints.json": "04cbf8ce82830ab865a035905fa1c1f807ade28877a696b0825b1701188275e7",
+    "market_data_mcp/connectors/tool_schema_fingerprints.json": "519e74a700b3bfe5a750f2c0402a4e06c0fd2ec24612c80ccbc4f38ac60005dd",
     "market_data_mcp/ontology/fixtures/records.json": "cd05f7e94f956bf7525e3d5ce355217b7e5bf3ae9d6abfdfc496bf83f7ac6eb9",
     "market_data_mcp/ontology/mappings/source.yaml": "aea58ea761454a493c9059b108edc69e7fdaf3993faa54cfb7f09b20d501beb2",
     "market_data_mcp/ontology/market_data.ttl": "697a135ab84b68689f4595c64256e14889a6ae65aa6241883187ca9c59420163",
