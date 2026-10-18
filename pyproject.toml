@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "market-data-mcp"
-version = "1.1.1"
+version = "1.2.0"
 description = "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP server and agent-connector-sdk source adapters"
 readme = "README.md"
 classifiers = [
@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "agent-connector-sdk[mcp]>=0.2.1,<1.0.0",
+    "agent-connector-sdk[mcp]>=0.3.0,<1.0.0",
     "httpx>=0.28.1",
 ]
 

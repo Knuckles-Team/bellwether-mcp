@@ -30,12 +30,28 @@ def _resolve_alias_or_series_id(series_id: str, alias: str) -> str:
 def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
     """Register the FRED/ALFRED series-observation and vintage tools."""
 
-    @mcp.tool(tags={"macro-series"})
+    @mcp.tool(
+        tags={"macro-series"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     async def fred_macro_series_aliases() -> dict[str, Any]:
         """The named macro/liquidity series aliases this package ships (EH-422)."""
         return {"aliases": dict(FRED_MACRO_SERIES)}
 
-    @mcp.tool(tags={"macro-series"})
+    @mcp.tool(
+        tags={"macro-series"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     async def fred_series_observations(
         series_id: str = "",
         alias: str = "",
@@ -62,7 +78,15 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
             realtime_end=realtime_end or None,
         )
 
-    @mcp.tool(tags={"macro-series"})
+    @mcp.tool(
+        tags={"macro-series"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     async def fred_series_observations_asof(
         vintage_date: str,
         series_id: str = "",
@@ -86,7 +110,15 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
             limit=limit,
         )
 
-    @mcp.tool(tags={"macro-series"})
+    @mcp.tool(
+        tags={"macro-series"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     async def fred_series_vintage_dates(
         series_id: str = "", alias: str = "", offset: int = 0, limit: int = 1000
     ) -> dict[str, Any]:

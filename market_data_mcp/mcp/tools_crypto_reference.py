@@ -14,7 +14,15 @@ from market_data_mcp.mcp.clients import Clients
 def register_crypto_reference_tools(mcp: FastMCP, clients: Clients) -> None:
     """Register the CoinMarketCap listings/quotes/global-metrics tools."""
 
-    @mcp.tool(tags={"crypto-reference"})
+    @mcp.tool(
+        tags={"crypto-reference"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     async def cmc_listings(start: int = 1, limit: int = 100) -> dict[str, Any]:
         """Latest cryptocurrency listings ranked by market cap (discovery/caps).
 
@@ -27,7 +35,15 @@ def register_crypto_reference_tools(mcp: FastMCP, clients: Clients) -> None:
             client, api_key=resolve_cmc_api_key(), start=start, limit=limit
         )
 
-    @mcp.tool(tags={"crypto-reference"})
+    @mcp.tool(
+        tags={"crypto-reference"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     async def cmc_quotes(symbols: str) -> dict[str, Any]:
         """Latest quote(s) for comma-separated symbols, e.g. ``"BTC,ETH"``."""
         client = await clients.coinmarketcap.paced_client()
@@ -35,7 +51,15 @@ def register_crypto_reference_tools(mcp: FastMCP, clients: Clients) -> None:
             client, api_key=resolve_cmc_api_key(), symbols=symbols
         )
 
-    @mcp.tool(tags={"crypto-reference"})
+    @mcp.tool(
+        tags={"crypto-reference"},
+        annotations={
+            "readOnlyHint": True,
+            "destructiveHint": False,
+            "idempotentHint": True,
+            "openWorldHint": True,
+        },
+    )
     async def cmc_global_metrics() -> dict[str, Any]:
         """Aggregate crypto market metrics: total cap, dominance, 24h volume.
 
