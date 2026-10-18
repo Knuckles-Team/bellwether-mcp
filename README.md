@@ -1,9 +1,9 @@
-# market-data-mcp
+# bellwether-mcp
 
-*Version: 1.2.0*
+*Version: 1.3.0*
 
 > **Documentation** — Installation, deployment, and tool usage are maintained in the
-> [official documentation](https://knuckles-team.github.io/market-data-mcp/).
+> [official documentation](https://knuckles-team.github.io/bellwether-mcp/).
 
 Crypto discovery/rankings/market caps (CoinMarketCap), Fed macro and liquidity
 series with point-in-time vintages (FRED/ALFRED), and the FOMC decision
@@ -35,14 +35,14 @@ before trusting these as final.
 
 ## Tools
 
-Eight MCP tools, one FastMCP server (`market-data-mcp` console script):
+Eight MCP tools, one FastMCP server (`bellwether-mcp` console script):
 `cmc_listings`, `cmc_quotes`, `cmc_global_metrics`, `fred_macro_series_aliases`,
 `fred_series_observations`, `fred_series_observations_asof`,
 `fred_series_vintage_dates`, `fomc_calendar_list`.
 
 Every tool is keyless except `cmc_*` and `fred_*`, whose credentials are
 resolved server-side through `agent_connector_sdk.credentials`
-(`MARKET_DATA_CMC_API_KEY`, `MARKET_DATA_FRED_API_KEY`) — never accepted as a
+(`BELLWETHER_CMC_API_KEY`, `BELLWETHER_FRED_API_KEY`) — never accepted as a
 tool argument. `fomc_calendar_list` reads a packaged, curated, sourced dataset
 and needs no credential and no network.
 

@@ -39,4 +39,4 @@ ENV HOME=/tmp \
     XDG_CACHE_HOME=/tmp/.cache
 USER 10001:10001
 
-CMD ["market-data-mcp"]
+CMD ["bellwether-mcp"]

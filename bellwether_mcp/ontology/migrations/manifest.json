@@ -1,0 +1,6 @@
+{
+  "connector": "bellwether-mcp",
+  "current_ontology_source": "bellwether-mcp",
+  "migrations": [],
+  "schema_version": "1"
+}

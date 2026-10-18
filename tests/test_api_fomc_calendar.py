@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from market_data_mcp.api import fomc_calendar
-from market_data_mcp.errors import UnknownFomcOutcomeFilterError
+from bellwether_mcp.api import fomc_calendar
+from bellwether_mcp.errors import UnknownFomcOutcomeFilterError
 
 
 def test_every_record_is_sourced_with_a_federal_reserve_url():

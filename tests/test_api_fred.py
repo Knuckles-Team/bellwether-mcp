@@ -5,7 +5,7 @@ from __future__ import annotations
 import httpx
 import pytest
 
-from market_data_mcp.api import fred
+from bellwether_mcp.api import fred
 from tests.conftest import json_response, mock_client
 
 

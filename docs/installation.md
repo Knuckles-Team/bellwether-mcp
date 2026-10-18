@@ -1,6 +1,6 @@
 # Installation
 
-`market-data-mcp` is a standard Python package and a prebuilt container image.
+`bellwether-mcp` is a standard Python package and a prebuilt container image.
 
 ## Requirements
 
@@ -12,11 +12,11 @@
 ## From PyPI (recommended)
 
 ```bash
-pip install market-data-mcp
+pip install bellwether-mcp
 ```
 
 The install already includes the MCP-server runtime (`agent-connector-sdk` +
-`httpx`), so the `market-data-mcp` console script is ready immediately — there
+`httpx`), so the `bellwether-mcp` console script is ready immediately — there
 is no separate "agent" extra to install (this package ships no A2A agent; see
 [Overview](overview.md)).
 
@@ -24,14 +24,14 @@ is no separate "agent" extra to install (this package ships no A2A agent; see
 
 | Extra | Install | Pulls in |
 |---|---|---|
-| _(base)_ | `pip install market-data-mcp` | `agent-connector-sdk`, `httpx` |
-| `test` | `pip install "market-data-mcp[test]"` | `pytest`, `pytest-asyncio`, `pytest-cov`, `pytest-xdist` |
+| _(base)_ | `pip install bellwether-mcp` | `agent-connector-sdk`, `httpx` |
+| `test` | `pip install "bellwether-mcp[test]"` | `pytest`, `pytest-asyncio`, `pytest-cov`, `pytest-xdist` |
 
 ## From source
 
 ```bash
-git clone https://github.com/Knuckles-Team/market-data-mcp.git
-cd market-data-mcp
+git clone https://github.com/Knuckles-Team/bellwether-mcp.git
+cd bellwether-mcp
 pip install -e ".[test]"
 ```
 
@@ -39,21 +39,21 @@ With [`uv`](https://docs.astral.sh/uv/):
 
 ```bash
 uv pip install -e ".[test]"
-uv run market-data-mcp
+uv run bellwether-mcp
 ```
 
 ## Prebuilt Docker image
 
 A single-target runtime image is published on every release (entrypoint
-`market-data-mcp`):
+`bellwether-mcp`):
 
 ```bash
-docker pull example/market-data-mcp@sha256:<digest>
+docker pull example/bellwether-mcp@sha256:<digest>
 
 docker run --rm -i \
-  -e MARKET_DATA_CMC_API_KEY=your_coinmarketcap_key \
-  -e MARKET_DATA_FRED_API_KEY=your_fred_key \
-  example/market-data-mcp@sha256:<digest>        # stdio transport (default)
+  -e BELLWETHER_CMC_API_KEY=your_coinmarketcap_key \
+  -e BELLWETHER_FRED_API_KEY=your_fred_key \
+  example/bellwether-mcp@sha256:<digest>        # stdio transport (default)
 ```
 
 For an HTTP server with a published port, see [Deployment](deployment.md).
@@ -61,7 +61,7 @@ For an HTTP server with a published port, see [Deployment](deployment.md).
 ## Verify the install
 
 ```bash
-market-data-mcp --help
+bellwether-mcp --help
 ```
 
 ## Next steps

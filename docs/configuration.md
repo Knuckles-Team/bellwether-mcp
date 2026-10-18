@@ -1,6 +1,6 @@
 # Configuration, trust, and privacy
 
-This page is the operator contract for `market-data-mcp`. Package-specific
+This page is the operator contract for `bellwether-mcp`. Package-specific
 endpoint, authentication, tool-toggle, and rate-limit settings remain
 documented in the repository README, `AGENTS.md`, and the installed command's
 `--help` output. Runtime values must be injected by the launcher; they do not
@@ -46,8 +46,8 @@ around an incomplete server chain.
 
 The default observability posture is metadata-only. Do not persist API
 credentials, raw HTTP request/response bodies, local paths, hostnames, or
-personal identity in logs or reports. `market_data_mcp.config.USER_AGENT`
-advertises only a contact email (`MARKET_DATA_CONTACT_EMAIL`), never a
+personal identity in logs or reports. `bellwether_mcp.config.USER_AGENT`
+advertises only a contact email (`BELLWETHER_CONTACT_EMAIL`), never a
 hostname or personal identifier.
 
 When the declarative source adapters are wired to a live sink (deployment
@@ -61,7 +61,7 @@ a tenant scope.
 
 1. Validate `connector_manifest.yml` and the tool-schema fingerprints against
    the installed package's live `tools/list` schema.
-2. Confirm `MARKET_DATA_CMC_API_KEY` / `MARKET_DATA_FRED_API_KEY` are present
+2. Confirm `BELLWETHER_CMC_API_KEY` / `BELLWETHER_FRED_API_KEY` are present
    without printing their values.
 3. Check the complete TLS chain with certificate verification enabled.
 4. Exercise the `/health` endpoint (HTTP transports) and one keyless read
