@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-BELLWETHER-MCP-HTTP",
+  "owner_repo": "bellwether-mcp",
+  "delivery_state": "VERIFIED",
+  "requirement_ids": [
+    "CONN-BELLWETHER-MCP-HTTP-R001"
+  ],
+  "requirements": [
+    {
+      "id": "CONN-BELLWETHER-MCP-HTTP-R001",
+      "title": "SDK request pacing",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "d3ed86c9ac01"
+      ],
+      "verified_by": [
+        "tests/test_sdk_rate_limiter.py:11"
+      ]
+    }
+  ]
+}
