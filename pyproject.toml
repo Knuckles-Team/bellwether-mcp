@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bellwether-mcp"
-version = "1.3.2"
+version = "1.3.3"
 description = "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP server and agent-connector-sdk source adapters"
 readme = "README.md"
 classifiers = [
