@@ -13,7 +13,7 @@
 # has not yet published any class/property names (see
 # ontology/mappings/source.yaml's provenance note). This connector maps each
 # of its four declared streams onto that class list through
-# `connectors/mcp_source_presets.json`'s `ontology_class` hint, resolved at
+# `connectors/bellwether_mcp.connector_sources`'s `ontology_class` hint, resolved at
 # runtime by `bellwether_mcp.connectors.adapters.build_schema_mappings` —
 # never by duplicating the class here. See AGENTS.md "Ontology mapping".
 
@@ -37,5 +37,4 @@
     federated into the agent-utilities knowledge-graph hub. The finance-v1
     domain classes each stream lands on are epistemic-graph-owned (once
     feat/finance-core publishes them); this ontology models only this
-    connector's own admin state, not a second copy of that domain.""" ;
-    owl:imports <http://knuckles.team/kg> .
+    connector's own admin state, not a second copy of that domain.""" .
