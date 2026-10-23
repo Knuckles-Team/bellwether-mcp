@@ -1,0 +1,22 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-BELLWETHER-MCP-CONNECTOR-CONTENT",
+  "owner_repo": "bellwether-mcp",
+  "delivery_state": "VERIFIED",
+  "requirement_ids": [
+    "CONN-BELLWETHER-MCP-CONNECTOR-CONTENT-R001"
+  ],
+  "requirements": [
+    {
+      "id": "CONN-BELLWETHER-MCP-CONNECTOR-CONTENT-R001",
+      "title": "Default content",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "c7ac207d3125"
+      ],
+      "verified_by": [
+        "tests/test_default_content_surfaces.py:15"
+      ]
+    }
+  ]
+}

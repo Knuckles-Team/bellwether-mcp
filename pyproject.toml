@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bellwether-mcp"
-version = "1.3.2"
+version = "1.3.3"
 description = "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP server and agent-connector-sdk source adapters"
 readme = "README.md"
 classifiers = [
@@ -44,6 +44,10 @@ bellwether-mcp = "bellwether_mcp.prompts"
 
 [project.entry-points."agent_connector_sdk.source_connector_providers"]
 bellwether-mcp = "bellwether_mcp.connectors"
+
+# The one declared connector identity: the fleet name (SDK-CONNECTOR-CONTROL-R071).
+[project.entry-points."agent_connector_sdk.connector"]
+bellwether-mcp = "bellwether_mcp"
 
 [tool.uv.workspace]
 members = ["."]
