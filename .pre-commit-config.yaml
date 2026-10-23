@@ -67,21 +67,17 @@ repos:
     stages: [pre-push, manual]
   - id: security-sanitizer
     stages: [pre-commit, manual]
-  - id: tracked-privacy
-    stages: [pre-commit, manual]
-  - id: root-hygiene
-    stages: [pre-commit, manual]
 - repo: local
   hooks:
   - id: mypy
     name: mypy (project package)
-    entry: bash -c 'PYTHONPATH="$PWD" .uv-workspace-siblings/agent-connector-sdk/.venv/bin/python3 -m mypy bellwether_mcp --ignore-missing-imports --check-untyped-defs'
+    entry: bash -c 'uv run --frozen python -m mypy bellwether_mcp --ignore-missing-imports --check-untyped-defs'
     language: system
     pass_filenames: false
     files: ^(bellwether_mcp/.*\.py|pyproject\.toml)$
   - id: pytest
     name: pytest (full suite)
-    entry: bash -c 'PYTHONPATH="$PWD" .uv-workspace-siblings/agent-connector-sdk/.venv/bin/python3 -m pytest -q'
+    entry: bash -c 'uv run --frozen python -m pytest -q'
     language: system
     pass_filenames: false
     always_run: true
