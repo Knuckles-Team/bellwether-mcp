@@ -1,0 +1,8 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-BELLWETHER-MCP-HTTP",
+  "owner_repo": "bellwether-mcp",
+  "delivery_state": "SPECIFIED",
+  "requirement_ids": [],
+  "requirements": []
+}

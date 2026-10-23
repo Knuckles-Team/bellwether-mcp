@@ -10,9 +10,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import httpx
+from agent_connector_sdk.httpsupport import RateLimiter
 
 from bellwether_mcp import config
-from bellwether_mcp.http_clients import RateLimiter, build_async_client
+from bellwether_mcp.http_clients import build_async_client
 
 
 @dataclass

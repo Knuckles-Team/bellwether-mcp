@@ -1,6 +1,6 @@
 # bellwether-mcp
 
-*Version: 1.3.0*
+*Version: 1.3.1*
 
 > **Documentation** — Installation, deployment, and tool usage are maintained in the
 > [official documentation](https://knuckles-team.github.io/bellwether-mcp/).
