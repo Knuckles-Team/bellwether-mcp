@@ -4,8 +4,6 @@
   "type": "prompt",
   "source": "bellwether-mcp",
   "description": "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar MCP Server",
-  "extends": "agent-utilities:base",
-  "compose": "append",
   "identity": {
     "role": "Market Data Agent",
     "goal": "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar MCP Server"

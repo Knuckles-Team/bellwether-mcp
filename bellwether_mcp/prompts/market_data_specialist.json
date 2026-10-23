@@ -4,8 +4,6 @@
   "schema_version": "1.0",
   "prompt_version": "0.1.0",
   "source": "bellwether-mcp",
-  "extends": "agent-utilities:base",
-  "compose": "append",
   "description": "Market data specialist: crypto discovery/caps, Fed macro and liquidity series with point-in-time vintages, and the FOMC decision calendar over the bellwether-mcp MCP server.",
   "metadata": {
     "topic": "Crypto discovery/caps, Fed macro series, FOMC decision calendar",
