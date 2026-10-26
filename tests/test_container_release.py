@@ -22,6 +22,7 @@ def test_public_wheel_preflight_precedes_container_publication():
         "mode": "published-wheel",
         "distribution": "bellwether-mcp",
         "module": "bellwether_mcp",
+        "extras": "",
     }
     assert jobs["publish-docker"]["needs"] == "verify-public-wheel"
     assert (
