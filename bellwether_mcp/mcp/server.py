@@ -8,14 +8,16 @@ construction, auth, network-exposure checks, fleet registration lease).
 
 from __future__ import annotations
 
-from typing import Any
+from pathlib import Path
+from typing import Any, NamedTuple
 
+from agent_connector_sdk.connector_identity import connector_version
+from agent_connector_sdk.mcp.content import ConnectorContent
 from agent_connector_sdk.mcp.server import create_mcp_server
 from fastmcp import FastMCP
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from bellwether_mcp._version import __version__
 from bellwether_mcp.mcp.clients import Clients
 from bellwether_mcp.mcp.tools_crypto_reference import register_crypto_reference_tools
 from bellwether_mcp.mcp.tools_fomc_calendar import register_fomc_calendar_tools
@@ -33,15 +35,29 @@ _INSTRUCTIONS = (
 )
 
 
+class ServerComponents(NamedTuple):
+    """The server and its existing startup/lifetime collaborators."""
+
+    mcp: FastMCP[Any]
+    args: Any
+    middlewares: list[Any]
+    clients: Clients
+
+
 def build_server(
     command_args: list[str] | None = None,
-) -> tuple[FastMCP[Any], Any, list[Any], Clients]:
+) -> ServerComponents:
     """Return ``(mcp, args, middlewares, clients)``; the caller runs ``mcp``."""
     args, mcp, middlewares = create_mcp_server(
         name="bellwether-mcp",
-        version=__version__,
+        version=connector_version("bellwether_mcp"),
         instructions=_INSTRUCTIONS,
         command_args=command_args,
+        content=ConnectorContent.for_package(
+            "bellwether_mcp",
+            Path(__file__).resolve().parents[1],
+            connector_version("bellwether_mcp"),
+        ),
     )
     clients = Clients()
     register_crypto_reference_tools(mcp, clients)
@@ -54,4 +70,4 @@ def build_server(
 
     for middleware in middlewares:
         mcp.add_middleware(middleware)
-    return mcp, args, middlewares, clients
+    return ServerComponents(mcp, args, middlewares, clients)

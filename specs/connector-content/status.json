@@ -15,6 +15,7 @@
         "c7ac207d3125"
       ],
       "verified_by": [
+        "tests/test_connector_tool_parity.py:11",
         "tests/test_default_content_surfaces.py:15"
       ]
     }

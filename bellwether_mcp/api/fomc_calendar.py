@@ -58,6 +58,17 @@ def _record(meeting: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _matches_filters(
+    meeting: dict[str, Any], *, since: str, until: str, outcome: str
+) -> bool:
+    """Apply the existing inclusive date and exact outcome filters."""
+    return (
+        (not since or meeting["decision_date"] >= since)
+        and (not until or meeting["decision_date"] <= until)
+        and (not outcome or meeting["outcome"] == outcome)
+    )
+
+
 def list_meetings(
     *,
     since: str = "",
@@ -84,9 +95,7 @@ def list_meetings(
     matches = [
         m
         for m in load_meetings()
-        if (not since or m["decision_date"] >= since)
-        and (not until or m["decision_date"] <= until)
-        and (not outcome or m["outcome"] == outcome)
+        if _matches_filters(m, since=since, until=until, outcome=outcome)
     ]
     page = matches[offset : offset + limit]
     return {

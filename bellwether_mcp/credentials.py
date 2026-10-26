@@ -8,14 +8,14 @@ disk, never embedded in a fixture, and never accepted as an MCP tool argument.
 from __future__ import annotations
 
 from agent_connector_sdk.credentials.references import parse_secret_reference
-
-from bellwether_mcp.config import ENV_PREFIX, env_name
 from agent_connector_sdk.credentials.resolver import (
     CompositeCredentialResolver,
     CredentialResolver,
     CredentialUnavailableError,
     EnvironmentCredentialResolver,
 )
+
+from bellwether_mcp.config import ENV_PREFIX, env_name
 
 __all__ = [
     "CredentialUnavailableError",
