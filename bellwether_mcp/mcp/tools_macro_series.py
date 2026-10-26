@@ -53,6 +53,7 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
         },
     )
     async def fred_series_observations(
+        *,
         series_id: str = "",
         alias: str = "",
         offset: int = 0,
@@ -88,6 +89,7 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
         },
     )
     async def fred_series_observations_asof(
+        *,
         vintage_date: str,
         series_id: str = "",
         alias: str = "",
@@ -120,7 +122,7 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
         },
     )
     async def fred_series_vintage_dates(
-        series_id: str = "", alias: str = "", offset: int = 0, limit: int = 1000
+        *, series_id: str = "", alias: str = "", offset: int = 0, limit: int = 1000
     ) -> dict[str, Any]:
         """Every date this series was revised/published — feed one into `*_asof`."""
         resolved = _resolve_alias_or_series_id(series_id, alias)

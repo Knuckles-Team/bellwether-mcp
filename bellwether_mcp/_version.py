@@ -1,5 +1,5 @@
-"""Single-source package version."""
+"""Installed distribution version used by every Bellwether entry point."""
 
-from __future__ import annotations
+from agent_connector_sdk.connector_identity import connector_version
 
-__version__ = "1.3.4"
+__version__ = connector_version("bellwether_mcp")

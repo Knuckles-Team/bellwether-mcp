@@ -1,0 +1,10 @@
+# Independent endpoint/schema review: 2026-10-26. Digests require re-review on changes.
+[[pair]]
+left_file = "bellwether_mcp/mcp/tools_macro_series.py"
+left_name = "fred_series_observations_asof"
+left_digest = "sha256:ddc6f24790da630d3249d622708bfc0c5978c4dbab86fe6eb90ce1c2dc11622d"
+right_file = "bellwether_mcp/mcp/tools_macro_series.py"
+right_name = "fred_series_vintage_dates"
+right_digest = "sha256:174c96ca45e2ee1019a9045713aaeae2ce189893e71840b22c1a50e54e4a1920"
+reviewed_on = "2026-10-26"
+reason = "Independent review confirmed distinct FRED wire contracts: observations_asof requires vintage_date and returns observations pinned to a realtime window; vintage_dates calls series/vintagedates and returns revision dates. Alias resolution is already shared; merging these wrappers would obscure distinct required MCP schemas and vendor endpoints."

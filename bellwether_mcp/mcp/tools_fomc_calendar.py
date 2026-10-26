@@ -27,6 +27,7 @@ def register_fomc_calendar_tools(mcp: FastMCP, _clients: object) -> None:
         },
     )
     def fomc_calendar_list(
+        *,
         since: str = "",
         until: str = "",
         outcome: str = "",

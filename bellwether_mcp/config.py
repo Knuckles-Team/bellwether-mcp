@@ -8,10 +8,9 @@ I/O.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 import os
 import warnings
+from dataclasses import dataclass
 from typing import Any
 
 from agent_connector_sdk.config import setting
@@ -38,9 +37,11 @@ def env_name(suffix: str) -> str:
 def _setting(suffix: str, default: Any, **kwargs: Any) -> Any:
     return setting(env_name(suffix), default, **kwargs)
 
+
 #: Contact identity every governed client advertises.
 CONTACT_EMAIL = _setting("CONTACT_EMAIL", "connectors@knuckles.team")
-USER_AGENT = _setting("USER_AGENT",
+USER_AGENT = _setting(
+    "USER_AGENT",
     f"bellwether-mcp/0.1 (+mailto:{CONTACT_EMAIL})",
 )
 
@@ -85,7 +86,8 @@ FRED = SourceEndpoint(
 #: instead of scraping HTML at call time — see
 #: ``bellwether_mcp/connectors/fomc_meetings.json`` and
 #: ``bellwether_mcp/api/fomc_calendar.py`` for the sourcing/verification note.
-FOMC_CALENDAR_SOURCE_URL = _setting("FOMC_SOURCE_URL",
+FOMC_CALENDAR_SOURCE_URL = _setting(
+    "FOMC_SOURCE_URL",
     "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
 )
 
