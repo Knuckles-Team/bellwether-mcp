@@ -2,9 +2,10 @@
   "schema_version": 2,
   "spec_id": "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS",
   "owner_repo": "bellwether-mcp",
-  "delivery_state": "LANDED",
+  "delivery_state": "SPECIFIED",
   "requirement_ids": [
-    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R001"
+    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R001",
+    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002"
   ],
   "requirements": [
     {
@@ -15,6 +16,15 @@
         "643f0005b8c9"
       ],
       "verified_by": []
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002",
+      "title": "Declared SDK source",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [
+        "tests/test_api_fomc_calendar.py:97"
+      ]
     }
   ]
 }

@@ -92,3 +92,26 @@ def test_returned_announcement_times_match_sourced_release_dates():
     assert by_date["2023-02-01"]["announcement_time_utc"] == "2023-02-01T19:00:00Z"
     assert by_date["2023-03-22"]["announcement_time_utc"] == "2023-03-22T18:00:00Z"
     assert by_date["2026-01-28"]["source_url"].endswith("monetary20260128a.htm")
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002")
+@pytest.mark.asyncio
+async def test_declared_fomc_source_retains_announcement_through_sdk():
+    from fastmcp import FastMCP
+
+    from bellwether_mcp.mcp.tools_fomc_calendar import register_fomc_calendar_tools
+    from tests.conftest import sdk_source_pages
+
+    server = FastMCP("fomc-test")
+    register_fomc_calendar_tools(server, None)
+    first, second = await sdk_source_pages(
+        server, "fomc_calendar", "MacroEvent", second_page=False
+    )
+    assert second is None
+    curated = fomc_calendar.list_meetings()["items"][0]
+    record = first.records[0]
+    assert record.record_id == curated["id"]
+    assert record.payload["announcement_time_utc"] == curated["announcement_time_utc"]
+    assert record.payload["source_url"] == curated["source_url"]
+    assert record.provenance.connector == "bellwether-mcp"
+    assert record.provenance.tool == "fomc_calendar_list"

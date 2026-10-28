@@ -34,7 +34,11 @@ def fixture() -> Callable[[str], dict]:
     return load_fixture
 
 
-async def sdk_source_pages(server, source_id, mapping):
+async def _next_sdk_page(adapter, session, first, second_page):
+    return await adapter.extract(session, first.checkpoint) if second_page else None
+
+
+async def sdk_source_pages(server, source_id, mapping, *, second_page=True):
     """Extract two pages via the declared source and SDK MCP transport."""
     from agent_connector_sdk.adapters.mcp_tool import McpToolSourceAdapter
     from agent_connector_sdk.ingest.live_declaration import build_declaration
@@ -63,5 +67,5 @@ async def sdk_source_pages(server, source_id, mapping):
         )
         await adapter.discover(session)
         first = await adapter.extract(session, None)
-        second = await adapter.extract(session, first.checkpoint)
+        second = await _next_sdk_page(adapter, session, first, second_page)
         return first, second
