@@ -11,3 +11,5 @@ Governing spec: [spec.md](spec.md). Rows: [requirements.md](requirements.md).
 - `CONN-BELLWETHER-MCP-FRED-VINTAGE-R004`: `tests/test_api_fred.py` checks served refusal of missing or invalid observation identity fields.
 
 - `CONN-BELLWETHER-MCP-FRED-VINTAGE-R005`: `tests/test_api_fred.py` covers malformed vintage-date pages through the served tool and an empty valid page.
+
+- `CONN-BELLWETHER-MCP-FRED-VINTAGE-R006`: `tests/test_api_fred.py` extracts two FRED pages through the SDK transport and declared source adapter.

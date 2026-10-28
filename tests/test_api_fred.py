@@ -272,3 +272,68 @@ async def test_empty_vintage_date_page_is_valid():
         result = await fred.get_vintage_dates(client, api_key="k", series_id="WALCL")
     assert result["items"] == []
     assert result["total"] == 0
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R006")
+@pytest.mark.asyncio
+async def test_declared_fred_source_retains_vintages_through_sdk(fixture, monkeypatch):
+    from datetime import date, timedelta
+
+    from agent_connector_sdk.adapters.mcp_tool import McpToolSourceAdapter
+    from agent_connector_sdk.ingest.live_declaration import build_declaration
+    from agent_connector_sdk.manifest.declaration import contract_from_declaration
+    from agent_connector_sdk.ports.session import TransportEndpoint
+    from agent_connector_sdk.transports.mcp import McpTransport
+
+    from bellwether_mcp import connector_sources
+
+    offsets = []
+    template = fixture("fred_observations.json")["observations"][0]
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        offset = int(request.url.params["offset"])
+        offsets.append(offset)
+        count = min(1000, max(0, 1001 - offset))
+        observations = [
+            {
+                **template,
+                "date": (date(2020, 1, 1) + timedelta(days=n)).isoformat(),
+                "realtime_start": "2026-12-31",
+                "realtime_end": "2026-12-31",
+            }
+            for n in range(offset, offset + count)
+        ]
+        return json_response({"observations": observations, "count": 1001})
+
+    async with mock_client("https://api.stlouisfed.org/fred", handler) as http:
+        server = _served_fred(http, monkeypatch)
+        async with McpTransport().session(
+            TransportEndpoint(in_process=server)
+        ) as session:
+            tools = await session.list_tools()
+            sources = [
+                entry
+                for entry in connector_sources.SOURCES
+                if entry["connector_sources"][0]["source_id"]
+                == "macro_series_treasury_general_account"
+            ]
+            declaration = build_declaration(
+                "bellwether-mcp", tools, declared={"SOURCES": sources}
+            )
+            contract = contract_from_declaration(declaration)
+            assert contract is not None
+            adapter = McpToolSourceAdapter.from_sync_spec(
+                contract.sync[0],
+                connector=contract.connector,
+                mapping_reference="connector:bellwether-mcp#mappings/EconomicIndicator",
+            )
+            await adapter.discover(session)
+            first = await adapter.extract(session, None)
+            second = await adapter.extract(session, first.checkpoint)
+            assert len(first.records) == 1000 and len(second.records) == 1
+            record = first.records[0]
+            assert record.record_id == "WDTGAL:2020-01-01:2026-12-31"
+            assert record.payload["realtime_start"] == "2026-12-31"
+            assert record.provenance.connector == "bellwether-mcp"
+            assert record.provenance.tool == "fred_series_observations"
+            assert offsets == [0, 1000]

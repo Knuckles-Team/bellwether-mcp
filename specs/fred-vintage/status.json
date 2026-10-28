@@ -2,13 +2,14 @@
   "schema_version": 2,
   "spec_id": "CONN-BELLWETHER-MCP-FRED-VINTAGE",
   "owner_repo": "bellwether-mcp",
-  "delivery_state": "VERIFIED",
+  "delivery_state": "SPECIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001",
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002",
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R003",
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R004",
-    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R005"
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R005",
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R006"
   ],
   "requirements": [
     {
@@ -70,6 +71,15 @@
       "verified_by": [
         "tests/test_api_fred.py:246",
         "tests/test_api_fred.py:265"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-FRED-VINTAGE-R006",
+      "title": "Declared SDK source",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [
+        "tests/test_api_fred.py:277"
       ]
     }
   ]

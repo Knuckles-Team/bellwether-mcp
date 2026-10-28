@@ -19,3 +19,5 @@ A page must carry an observations list of objects. The client accepts an empty l
 Observation identity requires a canonical period and vintage date plus an explicit value. A missing value is distinct from the provider’s explicit missing-value marker.
 
 Vintage-date pages require a list of canonical calendar dates. The client accepts an empty list but does not turn a missing list into a successful empty page.
+
+A cross-package test builds the SDK source contract from the connector declaration and drives the served tool through the SDK MCP transport. Two synthetic provider pages exercise offset handoff and vintage provenance. It does not prove every finance provider.
