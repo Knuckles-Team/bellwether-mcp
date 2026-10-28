@@ -2,7 +2,7 @@
   "schema_version": 2,
   "spec_id": "CONN-BELLWETHER-MCP-FRED-VINTAGE",
   "owner_repo": "bellwether-mcp",
-  "delivery_state": "SPECIFIED",
+  "delivery_state": "VERIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001"
   ],
@@ -10,8 +10,10 @@
     {
       "id": "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001",
       "title": "Validate point-in-time windows",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "f37b6812355f"
+      ],
       "verified_by": [
         "tests/test_api_fred.py:100",
         "tests/test_api_fred.py:124",
