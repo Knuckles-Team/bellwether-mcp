@@ -101,7 +101,7 @@ not a live scrape.
 
 - **Coverage:** every regularly scheduled FOMC meeting from 2023-01 (the first meeting
   after the design doc's `plans/finance/recommended_plan.md` reference period) through
-  2026-03, 18 records.
+  2026-03, 26 records.
 - **How it was checked:** cross-checked via web search against federalreserve.gov
   press releases, FOMC minutes, and independent recaps (CNBC, Chase/J.P. Morgan) on
   2026-09-24 — dates, hike/cut/hold direction, basis-point size and resulting target
@@ -109,14 +109,7 @@ not a live scrape.
   source before being written. This is NOT a substitute for reading the Fed's own
   page; it is a best-effort curation pass, and every record carries the Fed's own
   `source_url` so a caller can check independently.
-- **Known limitation of the `source_url` convention:** the URL is constructed from
-  the standard `monetary<YYYYMMDD>a.htm` pattern using each meeting's second
-  (decision) day — one record (2026-01-28) was independently observed on
-  federalreserve.gov to actually use a `monetary20260128a1.htm` variant (an
-  extra `1` suffix); if any other record's real URL differs from the constructed
-  pattern, the pattern is documented here as a best-effort convention, not a
-  guarantee — confirm the exact URL against `fomccalendars.htm` before publishing a
-  claim sourced to it.
+- **Release times:** on 2026-10-28, each linked Federal Reserve statement was checked for its published release time and time zone. The stored UTC time reflects that statement. The 2026-01-28 decision statement uses `monetary20260128a.htm`; the previously stored `a1` page is a different release.
 - **How to extend:** add a new object to the `meetings` array in
   `connectors/fomc_meetings.json` (oldest-first; `test_dataset_is_chronologically_ordered_with_no_duplicate_decision_dates`
   enforces ordering) with a real `source_url`, then re-run the test suite —

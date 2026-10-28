@@ -1,0 +1,8 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS",
+  "owner_repo": "bellwether-mcp",
+  "delivery_state": "PLANNED",
+  "requirement_ids": ["CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R001"],
+  "requirements": []
+}
