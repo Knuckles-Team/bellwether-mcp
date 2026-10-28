@@ -7,3 +7,5 @@ Validate numeric fields as they are normalized for listings, quotes and global m
 Each endpoint requires its expected data container. Global metrics also require a nonempty USD quote, so a missing payload cannot become a fabricated snapshot. Empty listing and quote collections remain valid.
 
 Listing and quote records require a positive integer provider ID before it is rendered as the stable record identity.
+
+Listings and quote pages refuse duplicate asset identities, including duplicates with different values. Cross-page uniqueness is a separate concern.

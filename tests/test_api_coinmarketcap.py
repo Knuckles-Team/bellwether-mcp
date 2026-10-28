@@ -303,3 +303,24 @@ async def test_served_cmc_refuses_missing_provider_identity(fixture, monkeypatch
     payload = fixture("cmc_listings.json")
     del payload["data"][0]["id"]
     await _assert_cmc_refuses(payload, "cmc_listings", monkeypatch)
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R004")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("tool", ["cmc_listings", "cmc_quotes"])
+@pytest.mark.parametrize("conflicting", [False, True])
+async def test_served_cmc_refuses_duplicate_asset_ids(
+    tool, conflicting, fixture, monkeypatch
+):
+    payload = fixture(
+        "cmc_listings.json" if tool == "cmc_listings" else "cmc_quotes.json"
+    )
+    items = (
+        payload["data"] if tool == "cmc_listings" else list(payload["data"].values())
+    )
+    items[1]["id"] = items[0]["id"]
+    if not conflicting:
+        items[1] = items[0].copy()
+        if tool == "cmc_quotes":
+            payload["data"]["ETH"] = items[1]
+    await _assert_cmc_refuses(payload, tool, monkeypatch)
