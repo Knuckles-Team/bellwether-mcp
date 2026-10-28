@@ -2,11 +2,12 @@
   "schema_version": 2,
   "spec_id": "CONN-BELLWETHER-MCP-CMC-VALUES",
   "owner_repo": "bellwether-mcp",
-  "delivery_state": "VERIFIED",
+  "delivery_state": "SPECIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-CMC-VALUES-R001",
     "CONN-BELLWETHER-MCP-CMC-VALUES-R002",
-    "CONN-BELLWETHER-MCP-CMC-VALUES-R003"
+    "CONN-BELLWETHER-MCP-CMC-VALUES-R003",
+    "CONN-BELLWETHER-MCP-CMC-VALUES-R004"
   ],
   "requirements": [
     {
@@ -43,6 +44,15 @@
       "verified_by": [
         "tests/test_api_coinmarketcap.py:285",
         "tests/test_api_coinmarketcap.py:300"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-CMC-VALUES-R004",
+      "title": "Unique page identities",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [
+        "tests/test_api_coinmarketcap.py:308"
       ]
     }
   ]

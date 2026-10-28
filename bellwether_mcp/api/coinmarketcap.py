@@ -82,6 +82,12 @@ def _listing_record(item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _require_unique_records(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if len({item["cmc_id"] for item in items}) != len(items):
+        raise ValueError("CMC page contains duplicate asset identifiers")
+    return items
+
+
 async def list_listings(
     client: httpx.AsyncClient, *, api_key: str, start: int, limit: int
 ) -> dict[str, Any]:
@@ -104,7 +110,9 @@ async def list_listings(
     )
     response.raise_for_status()
     payload = response.json()
-    items = [_listing_record(item) for item in _required_data(payload, list)]
+    items = _require_unique_records(
+        [_listing_record(item) for item in _required_data(payload, list)]
+    )
     return {"items": items, "offset": start, "limit": limit, "total": None}
 
 
@@ -127,6 +135,7 @@ async def get_quotes(
         # several listed assets (rare ticker collisions).
         for item in entries if isinstance(entries, list) else [entries]:
             items.append({"symbol": symbol, **_listing_record(item)})
+    items = _require_unique_records(items)
     return {"items": items, "offset": 0, "limit": len(items), "total": len(items)}
 
 
