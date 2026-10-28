@@ -76,18 +76,25 @@ async def test_get_vintage_dates_lists_every_revision(fixture):
     assert result["items"][0]["vintage_id"] == "WALCL:2026-07-01"
 
 
+@pytest.fixture
+def no_vendor_requests():
+    calls = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(request)
+        return json_response({"observations": [], "count": 0})
+
+    return calls, handler
+
+
 @pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R001")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "value",
     ["", " ", "20260801", "2026-2-01", "2026-02-30", "2026-01-01T00:00:00", None],
 )
-async def test_asof_refuses_invalid_vintage_before_request(value):
-    calls = []
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        calls.append(request)
-        return json_response({"observations": []})
+async def test_asof_refuses_invalid_vintage_before_request(value, no_vendor_requests):
+    calls, handler = no_vendor_requests
 
     async with mock_client("https://api.stlouisfed.org/fred", handler) as client:
         with pytest.raises(ValueError, match="YYYY-MM-DD"):
@@ -102,12 +109,10 @@ async def test_asof_refuses_invalid_vintage_before_request(value):
 @pytest.mark.parametrize(
     "start,end", [("", None), (None, ""), ("2026-08-02", "2026-08-01")]
 )
-async def test_invalid_explicit_realtime_windows_never_request(start, end):
-    calls = []
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        calls.append(request)
-        return json_response({"observations": []})
+async def test_invalid_explicit_realtime_windows_never_request(
+    start, end, no_vendor_requests
+):
+    calls, handler = no_vendor_requests
 
     async with mock_client("https://api.stlouisfed.org/fred", handler) as client:
         with pytest.raises(ValueError):
@@ -123,18 +128,16 @@ async def test_invalid_explicit_realtime_windows_never_request(start, end):
 
 @pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R001")
 @pytest.mark.asyncio
-async def test_served_asof_refuses_missing_vintage_without_upstream_call(monkeypatch):
+async def test_served_asof_refuses_missing_vintage_without_upstream_call(
+    monkeypatch, no_vendor_requests
+):
     from types import SimpleNamespace
 
     from fastmcp import Client, FastMCP
 
     from bellwether_mcp.mcp import tools_macro_series
 
-    calls = []
-
-    def handler(request: httpx.Request) -> httpx.Response:
-        calls.append(request)
-        return json_response({"observations": [], "count": 0})
+    calls, handler = no_vendor_requests
 
     async with mock_client("https://api.stlouisfed.org/fred", handler) as http:
 
