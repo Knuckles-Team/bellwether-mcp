@@ -201,6 +201,22 @@ async def test_sdk_source_adapter_pages_served_cmc(fixture, monkeypatch):
             assert seen == [1, 101]
 
 
+async def _assert_cmc_refuses(payload, tool, monkeypatch):
+    import json
+
+    from fastmcp import Client
+
+    async with mock_client(
+        "https://pro-api.coinmarketcap.com",
+        lambda r: httpx.Response(200, content=json.dumps(payload)),
+    ) as http:
+        server = _served_cmc(http, monkeypatch)
+        async with Client(server) as client:
+            args = {"symbols": "BTC"} if tool == "cmc_quotes" else {}
+            result = await client.call_tool(tool, args, raise_on_error=False)
+            assert result.is_error
+
+
 @pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R001")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
@@ -210,10 +226,6 @@ async def test_sdk_source_adapter_pages_served_cmc(fixture, monkeypatch):
 async def test_served_cmc_refuses_invalid_numeric_values(
     value, tool, fixture, monkeypatch
 ):
-    import json
-
-    from fastmcp import Client
-
     names = {
         "cmc_listings": "cmc_listings.json",
         "cmc_quotes": "cmc_quotes.json",
@@ -226,15 +238,7 @@ async def test_served_cmc_refuses_invalid_numeric_values(
         payload["data"]["BTC"]["quote"]["USD"]["price"] = value
     else:
         payload["data"]["quote"]["USD"]["total_market_cap"] = value
-    async with mock_client(
-        "https://pro-api.coinmarketcap.com",
-        lambda r: httpx.Response(200, content=json.dumps(payload)),
-    ) as http:
-        server = _served_cmc(http, monkeypatch)
-        async with Client(server) as client:
-            args = {"symbols": "BTC"} if tool == "cmc_quotes" else {}
-            result = await client.call_tool(tool, args, raise_on_error=False)
-            assert result.is_error
+    await _assert_cmc_refuses(payload, tool, monkeypatch)
 
 
 @pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R001")
@@ -248,3 +252,31 @@ def test_cmc_listing_refuses_nonfinite_supply_fields(field, fixture):
         coinmarketcap._listing_record(item)
     item[field] = None
     assert coinmarketcap._listing_record(item)[field] is None
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R002")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("tool", ["cmc_listings", "cmc_quotes", "cmc_global_metrics"])
+@pytest.mark.parametrize("payload", [{}, {"data": None}, {"data": "invalid"}])
+async def test_served_cmc_refuses_missing_or_invalid_data(payload, tool, monkeypatch):
+    await _assert_cmc_refuses(payload, tool, monkeypatch)
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R002")
+@pytest.mark.asyncio
+async def test_empty_global_snapshot_refuses_and_empty_collections_are_valid(
+    monkeypatch,
+):
+    for payload in ({"data": {}}, {"data": {"quote": {"USD": {}}}}):
+        await _assert_cmc_refuses(payload, "cmc_global_metrics", monkeypatch)
+    async with mock_client(
+        "https://pro-api.coinmarketcap.com", lambda r: json_response({"data": []})
+    ) as client:
+        listings = await coinmarketcap.list_listings(
+            client, api_key="k", start=0, limit=100
+        )
+    async with mock_client(
+        "https://pro-api.coinmarketcap.com", lambda r: json_response({"data": {}})
+    ) as client:
+        quotes = await coinmarketcap.get_quotes(client, api_key="k", symbols="BTC")
+    assert listings["items"] == quotes["items"] == []

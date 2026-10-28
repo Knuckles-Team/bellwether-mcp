@@ -4,7 +4,8 @@
   "owner_repo": "bellwether-mcp",
   "delivery_state": "VERIFIED",
   "requirement_ids": [
-    "CONN-BELLWETHER-MCP-CMC-VALUES-R001"
+    "CONN-BELLWETHER-MCP-CMC-VALUES-R001",
+    "CONN-BELLWETHER-MCP-CMC-VALUES-R002"
   ],
   "requirements": [
     {
@@ -15,8 +16,20 @@
         "b3fb82de7e69"
       ],
       "verified_by": [
-        "tests/test_api_coinmarketcap.py:204",
-        "tests/test_api_coinmarketcap.py:240"
+        "tests/test_api_coinmarketcap.py:220",
+        "tests/test_api_coinmarketcap.py:244"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-CMC-VALUES-R002",
+      "title": "Response data shape",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "39d1a2e541ef"
+      ],
+      "verified_by": [
+        "tests/test_api_coinmarketcap.py:257",
+        "tests/test_api_coinmarketcap.py:265"
       ]
     }
   ]

@@ -33,6 +33,23 @@ def _finite_number(value: Any) -> int | float | None:
     return value
 
 
+def _required_data(payload: Any, expected: type[Any]) -> Any:
+    if not isinstance(payload, dict) or not isinstance(payload.get("data"), expected):
+        raise ValueError("CMC response data is malformed")
+    return payload["data"]
+
+
+def _global_usd(data: dict[str, Any]) -> dict[str, Any]:
+    quote = data.get("quote")
+    if (
+        not isinstance(quote, dict)
+        or not isinstance(quote.get("USD"), dict)
+        or not quote["USD"]
+    ):
+        raise ValueError("CMC global USD quote is malformed")
+    return quote["USD"]
+
+
 def _quote_usd(item: dict[str, Any]) -> dict[str, Any]:
     usd = item.get("quote", {}).get("USD", {})
     return {
@@ -80,7 +97,7 @@ async def list_listings(
     )
     response.raise_for_status()
     payload = response.json()
-    items = [_listing_record(item) for item in payload.get("data", [])]
+    items = [_listing_record(item) for item in _required_data(payload, list)]
     return {"items": items, "offset": start, "limit": limit, "total": None}
 
 
@@ -96,7 +113,7 @@ async def get_quotes(
     )
     response.raise_for_status()
     payload = response.json()
-    data = payload.get("data", {})
+    data = _required_data(payload, dict)
     items = []
     for symbol, entries in data.items():
         # CMC returns either one object or a list when a symbol maps to
@@ -121,8 +138,8 @@ async def get_global_metrics(
         params={"convert": "USD"},
     )
     response.raise_for_status()
-    payload = response.json().get("data", {})
-    usd = payload.get("quote", {}).get("USD", {})
+    payload = _required_data(response.json(), dict)
+    usd = _global_usd(payload)
     return {
         "items": [
             {
