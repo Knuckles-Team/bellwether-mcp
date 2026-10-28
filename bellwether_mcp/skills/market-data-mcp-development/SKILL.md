@@ -10,7 +10,6 @@ license: MIT
 tags: [market-data-mcp, development, connector, test, gates]
 tier: repository
 metadata:
-  author: Genius
   version: '0.1.0'
 ---
 
