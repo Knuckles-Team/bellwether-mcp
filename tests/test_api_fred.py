@@ -309,3 +309,24 @@ async def test_declared_fred_source_retains_vintages_through_sdk(fixture, monkey
         assert record.provenance.connector == "bellwether-mcp"
         assert record.provenance.tool == "fred_series_observations"
         assert offsets == [0, 1000]
+
+
+@pytest.mark.asyncio
+async def test_observation_keeps_exact_value_and_capture_time(fixture):
+    from datetime import UTC, datetime
+
+    payload = fixture("fred_observations.json")
+    before = datetime.now(UTC)
+    async with mock_client(
+        "https://api.stlouisfed.org/fred", lambda _: json_response(payload)
+    ) as client:
+        result = await fred.get_observations(client, api_key="k", series_id="WALCL")
+    after = datetime.now(UTC)
+    assert [item["value_text"] for item in result["items"]] == [
+        "7215432",
+        "7198765",
+        None,
+    ]
+    observed = {item["observed_at"] for item in result["items"]}
+    assert len(observed) == 1
+    assert before <= datetime.fromisoformat(observed.pop()) <= after

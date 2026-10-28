@@ -26,6 +26,8 @@ from tests.conftest import json_response, mock_client
             "EconomicIndicator",
             "realtime_start",
         ),
+        ("macro_series_fed_balance_sheet", "EconomicIndicator", "observed_at"),
+        ("macro_series_reverse_repo_overnight", "EconomicIndicator", "observed_at"),
         ("fomc_calendar", "MacroEvent", "announcement_time_utc"),
     ],
 )
