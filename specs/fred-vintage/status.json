@@ -4,7 +4,8 @@
   "owner_repo": "bellwether-mcp",
   "delivery_state": "VERIFIED",
   "requirement_ids": [
-    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001"
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001",
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002"
   ],
   "requirements": [
     {
@@ -17,8 +18,19 @@
       ],
       "verified_by": [
         "tests/test_api_fred.py:107",
-        "tests/test_api_fred.py:129",
+        "tests/test_api_fred.py:148",
         "tests/test_api_fred.py:90"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002",
+      "title": "Finite observations",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "456332f8f287"
+      ],
+      "verified_by": [
+        "tests/test_api_fred.py:169"
       ]
     }
   ]

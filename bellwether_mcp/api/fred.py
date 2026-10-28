@@ -15,6 +15,7 @@ would actually have seen (no look-ahead into later data revisions).
 from __future__ import annotations
 
 from datetime import date
+from math import isfinite
 from typing import Any
 
 import httpx
@@ -26,7 +27,14 @@ def _parse_observation_value(raw: Any) -> float | None:
     """FRED encodes a missing observation as the literal string ``"."``."""
     if raw is None or raw == ".":
         return None
-    return float(raw)
+    return _finite_value(raw)
+
+
+def _finite_value(raw: Any) -> float:
+    value = float(raw)
+    if not isfinite(value):
+        raise ValueError("FRED observation value must be finite")
+    return value
 
 
 def _observation_record(series_id: str, obs: dict[str, Any]) -> dict[str, Any]:
