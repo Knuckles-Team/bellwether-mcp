@@ -31,7 +31,7 @@
         "456332f8f287"
       ],
       "verified_by": [
-        "tests/test_api_fred.py:169"
+        "tests/test_api_fred.py:183"
       ]
     },
     {
@@ -39,11 +39,12 @@
       "title": "Observation page shape",
       "delivery_state": "VERIFIED",
       "landed_in": [
-        "5cc301c55d1c"
+        "bd847e470918",
+        "d74a0133b57c"
       ],
       "verified_by": [
-        "tests/test_api_fred.py:188",
-        "tests/test_api_fred.py:214"
+        "tests/test_api_fred.py:192",
+        "tests/test_api_fred.py:208"
       ]
     }
   ]

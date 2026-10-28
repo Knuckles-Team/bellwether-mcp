@@ -166,14 +166,9 @@ async def test_served_asof_refuses_missing_vintage_without_upstream_call(
         assert calls == []
 
 
-@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R002")
-@pytest.mark.asyncio
-@pytest.mark.parametrize("value", ["NaN", "inf", "-inf", "1e309"])
-async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkeypatch):
+async def _assert_served_fred_refuses(payload, monkeypatch):
     from fastmcp import Client
 
-    payload = fixture("fred_observations.json")
-    payload["observations"][0]["value"] = value
     async with mock_client(
         "https://api.stlouisfed.org/fred", lambda r: json_response(payload)
     ) as http:
@@ -183,6 +178,15 @@ async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkey
                 "fred_series_observations", {"series_id": "WALCL"}, raise_on_error=False
             )
             assert result.is_error
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R002")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("value", ["NaN", "inf", "-inf", "1e309"])
+async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkeypatch):
+    payload = fixture("fred_observations.json")
+    payload["observations"][0]["value"] = value
+    await _assert_served_fred_refuses(payload, monkeypatch)
 
 
 @pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R003")
@@ -198,17 +202,7 @@ async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkey
     ],
 )
 async def test_served_fred_refuses_malformed_observation_pages(payload, monkeypatch):
-    from fastmcp import Client
-
-    async with mock_client(
-        "https://api.stlouisfed.org/fred", lambda r: json_response(payload)
-    ) as http:
-        server = _served_fred(http, monkeypatch)
-        async with Client(server) as client:
-            result = await client.call_tool(
-                "fred_series_observations", {"series_id": "WALCL"}, raise_on_error=False
-            )
-            assert result.is_error
+    await _assert_served_fred_refuses(payload, monkeypatch)
 
 
 @pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R003")
