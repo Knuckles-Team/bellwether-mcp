@@ -2,7 +2,7 @@
   "schema_version": 2,
   "spec_id": "CONN-BELLWETHER-MCP-FRED-VINTAGE",
   "owner_repo": "bellwether-mcp",
-  "delivery_state": "SPECIFIED",
+  "delivery_state": "VERIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001",
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002",
@@ -63,8 +63,10 @@
     {
       "id": "CONN-BELLWETHER-MCP-FRED-VINTAGE-R005",
       "title": "Vintage-date page shape",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "52d844c8400d"
+      ],
       "verified_by": [
         "tests/test_api_fred.py:246",
         "tests/test_api_fred.py:265"
