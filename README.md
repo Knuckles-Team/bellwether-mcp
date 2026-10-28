@@ -51,5 +51,12 @@ observations and Hyperliquid whale positions. Configure the API key and give
 each source an operator-owned license tag. The source does not establish
 redistribution rights or claim complete history.
 
+For a matched per-fund flow and AUM, configure the `coinglass_etf_fund_flows`
+source with a Bitcoin ETF `ticker` and `license_tag`. It joins CoinGlass's
+[daily flow history](https://docs.coinglass.com/reference/etf-flows-history)
+with its [per-ticker AUM history](https://docs.coinglass.com/reference/etf-aum)
+only when their timestamps match. Missing or conflicting AUM refuses the read.
+Each record retains the capture time of each provider response.
+
 See [`AGENTS.md`](AGENTS.md) for architecture, the ontology-mapping
 authority, the FOMC dataset's provenance, rate limits, and commands.

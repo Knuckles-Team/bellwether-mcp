@@ -86,7 +86,7 @@ def test_sdk_loads_every_preserved_source_mapping_and_resource():
 
     declared = load_declaration(PACKAGE)
     assert declared.connector == "bellwether-mcp"
-    assert len(declared.sources) == 9
+    assert len(declared.sources) == 10
     assert set(declared.schema_mappings) == {
         "MarketDataSyncRun",
         "Instrument",
