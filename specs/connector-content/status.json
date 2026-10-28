@@ -12,7 +12,8 @@
       "title": "Default content",
       "delivery_state": "VERIFIED",
       "landed_in": [
-        "c7ac207d3125"
+        "c7ac207d3125",
+        "e277ca435710"
       ],
       "verified_by": [
         "tests/test_connector_tool_parity.py:11",

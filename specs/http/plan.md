@@ -25,3 +25,10 @@ Run `uv run pytest` and the repository pre-commit hooks.
 ## Risks, alternatives, and decisions
 
 Decision: keep `build_async_client` local. It builds options from this connector's user agent and endpoint type.
+
+
+## CoinMarketCap redirect boundary
+
+Each keyed CoinMarketCap request sets redirect following to false. This holds
+even when a caller injects a client that follows redirects by default. The
+connector refuses the redirect before it sends the key to another host.

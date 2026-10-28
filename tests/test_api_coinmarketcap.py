@@ -73,3 +73,31 @@ async def test_get_global_metrics_returns_one_snapshot_record(fixture):
     snapshot = result["items"][0]
     assert snapshot["btc_dominance"] == 52.31
     assert snapshot["total_market_cap_usd"] == 2510000000000
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-HTTP-R002")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("operation", ["listings", "quotes", "global"])
+async def test_api_key_is_not_forwarded_on_redirect(operation):
+    seen = []
+    key = "synthetic"
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(request.url.host)
+        return httpx.Response(
+            307, headers={"Location": "https://other.example.test/collect"}
+        )
+
+    async with httpx.AsyncClient(
+        base_url="https://pro-api.coinmarketcap.com",
+        transport=httpx.MockTransport(handler),
+        follow_redirects=True,
+    ) as client:
+        with pytest.raises(httpx.HTTPStatusError):
+            if operation == "listings":
+                await coinmarketcap.list_listings(client, api_key=key, start=0, limit=1)
+            elif operation == "quotes":
+                await coinmarketcap.get_quotes(client, api_key=key, symbols="BTC")
+            else:
+                await coinmarketcap.get_global_metrics(client, api_key=key)
+    assert seen == ["pro-api.coinmarketcap.com"]
