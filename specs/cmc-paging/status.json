@@ -16,7 +16,7 @@
         "212698eda4c2"
       ],
       "verified_by": [
-        "tests/test_api_coinmarketcap.py:106"
+        "tests/test_api_coinmarketcap.py:125"
       ]
     },
     {
@@ -27,7 +27,7 @@
         "d1ebf9b41c51"
       ],
       "verified_by": [
-        "tests/test_api_coinmarketcap.py:145"
+        "tests/test_api_coinmarketcap.py:151"
       ]
     }
   ]
