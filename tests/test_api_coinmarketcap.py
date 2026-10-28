@@ -199,3 +199,52 @@ async def test_sdk_source_adapter_pages_served_cmc(fixture, monkeypatch):
             ]
             assert [record.record_id for record in second.records] == ["101"]
             assert seen == [1, 101]
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R001")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "value", [float("nan"), float("inf"), float("-inf"), True, "12"]
+)
+@pytest.mark.parametrize("tool", ["cmc_listings", "cmc_quotes", "cmc_global_metrics"])
+async def test_served_cmc_refuses_invalid_numeric_values(
+    value, tool, fixture, monkeypatch
+):
+    import json
+
+    from fastmcp import Client
+
+    names = {
+        "cmc_listings": "cmc_listings.json",
+        "cmc_quotes": "cmc_quotes.json",
+        "cmc_global_metrics": "cmc_global_metrics.json",
+    }
+    payload = fixture(names[tool])
+    if tool == "cmc_listings":
+        payload["data"][0]["quote"]["USD"]["price"] = value
+    elif tool == "cmc_quotes":
+        payload["data"]["BTC"]["quote"]["USD"]["price"] = value
+    else:
+        payload["data"]["quote"]["USD"]["total_market_cap"] = value
+    async with mock_client(
+        "https://pro-api.coinmarketcap.com",
+        lambda r: httpx.Response(200, content=json.dumps(payload)),
+    ) as http:
+        server = _served_cmc(http, monkeypatch)
+        async with Client(server) as client:
+            args = {"symbols": "BTC"} if tool == "cmc_quotes" else {}
+            result = await client.call_tool(tool, args, raise_on_error=False)
+            assert result.is_error
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R001")
+@pytest.mark.parametrize(
+    "field", ["cmc_rank", "circulating_supply", "total_supply", "max_supply"]
+)
+def test_cmc_listing_refuses_nonfinite_supply_fields(field, fixture):
+    item = fixture("cmc_listings.json")["data"][0]
+    item[field] = float("inf")
+    with pytest.raises(ValueError, match="finite"):
+        coinmarketcap._listing_record(item)
+    item[field] = None
+    assert coinmarketcap._listing_record(item)[field] is None

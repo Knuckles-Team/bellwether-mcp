@@ -13,6 +13,7 @@ endpoint, including the free "Basic" plan.
 
 from __future__ import annotations
 
+from math import isfinite
 from typing import Any
 
 import httpx
@@ -20,14 +21,26 @@ import httpx
 __all__ = ["get_global_metrics", "get_quotes", "list_listings"]
 
 
+def _finite_number(value: Any) -> int | float | None:
+    if value is None:
+        return None
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not isfinite(value)
+    ):
+        raise ValueError("CMC market value must be finite")
+    return value
+
+
 def _quote_usd(item: dict[str, Any]) -> dict[str, Any]:
     usd = item.get("quote", {}).get("USD", {})
     return {
-        "price_usd": usd.get("price"),
-        "market_cap_usd": usd.get("market_cap"),
-        "volume_24h_usd": usd.get("volume_24h"),
-        "percent_change_24h": usd.get("percent_change_24h"),
-        "percent_change_7d": usd.get("percent_change_7d"),
+        "price_usd": _finite_number(usd.get("price")),
+        "market_cap_usd": _finite_number(usd.get("market_cap")),
+        "volume_24h_usd": _finite_number(usd.get("volume_24h")),
+        "percent_change_24h": _finite_number(usd.get("percent_change_24h")),
+        "percent_change_7d": _finite_number(usd.get("percent_change_7d")),
         "last_updated": usd.get("last_updated"),
     }
 
@@ -37,10 +50,10 @@ def _listing_record(item: dict[str, Any]) -> dict[str, Any]:
         "cmc_id": str(item["id"]),
         "name": item.get("name", ""),
         "symbol": item.get("symbol", ""),
-        "cmc_rank": item.get("cmc_rank"),
-        "circulating_supply": item.get("circulating_supply"),
-        "total_supply": item.get("total_supply"),
-        "max_supply": item.get("max_supply"),
+        "cmc_rank": _finite_number(item.get("cmc_rank")),
+        "circulating_supply": _finite_number(item.get("circulating_supply")),
+        "total_supply": _finite_number(item.get("total_supply")),
+        "max_supply": _finite_number(item.get("max_supply")),
         **_quote_usd(item),
     }
 
@@ -114,11 +127,13 @@ async def get_global_metrics(
         "items": [
             {
                 "id": "global",
-                "active_cryptocurrencies": payload.get("active_cryptocurrencies"),
-                "btc_dominance": payload.get("btc_dominance"),
-                "eth_dominance": payload.get("eth_dominance"),
-                "total_market_cap_usd": usd.get("total_market_cap"),
-                "total_volume_24h_usd": usd.get("total_volume_24h"),
+                "active_cryptocurrencies": _finite_number(
+                    payload.get("active_cryptocurrencies")
+                ),
+                "btc_dominance": _finite_number(payload.get("btc_dominance")),
+                "eth_dominance": _finite_number(payload.get("eth_dominance")),
+                "total_market_cap_usd": _finite_number(usd.get("total_market_cap")),
+                "total_volume_24h_usd": _finite_number(usd.get("total_volume_24h")),
                 "last_updated": usd.get("last_updated"),
             }
         ],
