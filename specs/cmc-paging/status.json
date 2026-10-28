@@ -2,7 +2,7 @@
   "schema_version": 2,
   "spec_id": "CONN-BELLWETHER-MCP-CMC-PAGING",
   "owner_repo": "bellwether-mcp",
-  "delivery_state": "SPECIFIED",
+  "delivery_state": "VERIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-CMC-PAGING-R001"
   ],
@@ -10,8 +10,10 @@
     {
       "id": "CONN-BELLWETHER-MCP-CMC-PAGING-R001",
       "title": "Start listings at the first record",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "212698eda4c2"
+      ],
       "verified_by": [
         "tests/test_api_coinmarketcap.py:106"
       ]
