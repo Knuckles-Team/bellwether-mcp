@@ -14,6 +14,7 @@ would actually have seen (no look-ahead into later data revisions).
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
 import httpx
@@ -44,6 +45,30 @@ def _observation_record(series_id: str, obs: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _require_realtime_date(value: str) -> str:
+    """Refuse missing, malformed or noncanonical FRED vintage dates."""
+    if not isinstance(value, str):
+        raise ValueError("FRED realtime date must be YYYY-MM-DD")
+    try:
+        parsed = date.fromisoformat(value)
+    except ValueError as exc:
+        raise ValueError("FRED realtime date must be YYYY-MM-DD") from exc
+    if parsed.isoformat() != value:
+        raise ValueError("FRED realtime date must be YYYY-MM-DD")
+    return value
+
+
+def _realtime_params(start: str | None, end: str | None) -> dict[str, str]:
+    params = {}
+    if start is not None:
+        params["realtime_start"] = _require_realtime_date(start)
+    if end is not None:
+        params["realtime_end"] = _require_realtime_date(end)
+    if start is not None and end is not None and start > end:
+        raise ValueError("FRED realtime start must not exceed realtime end")
+    return params
+
+
 async def get_observations(
     client: httpx.AsyncClient,
     *,
@@ -68,10 +93,7 @@ async def get_observations(
         "limit": limit,
         "sort_order": "asc",
     }
-    if realtime_start:
-        params["realtime_start"] = realtime_start
-    if realtime_end:
-        params["realtime_end"] = realtime_end
+    params.update(_realtime_params(realtime_start, realtime_end))
     response = await client.get("/series/observations", params=params)
     response.raise_for_status()
     payload = response.json()
@@ -100,6 +122,7 @@ async def get_observations_asof(
     A pure convenience over :func:`get_observations` pinning both
     ``realtime_start`` and ``realtime_end`` to the same date.
     """
+    vintage_date = _require_realtime_date(vintage_date)
     return await get_observations(
         client,
         api_key=api_key,

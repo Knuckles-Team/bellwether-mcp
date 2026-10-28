@@ -18,3 +18,5 @@ Read the existing specs first. Extend the spec that owns the behavior. Create a 
 
 - [`http`](http/spec.md): Outbound HTTP pacing
 - [`CONN-BELLWETHER-MCP-CONNECTOR-CONTENT`](connector-content/spec.md) — The connector serves its packaged content.
+
+- [`CONN-BELLWETHER-MCP-FRED-VINTAGE`](fred-vintage/spec.md) — FRED point-in-time requests.
