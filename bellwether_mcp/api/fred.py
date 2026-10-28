@@ -37,15 +37,13 @@ def _finite_value(raw: Any) -> float:
     return value
 
 
-def _observation_page(payload: Any) -> list[dict[str, Any]]:
-    if not isinstance(payload, dict) or not isinstance(
-        payload.get("observations"), list
-    ):
-        raise ValueError("FRED observations page is malformed")
-    observations = payload["observations"]
-    if not all(isinstance(item, dict) for item in observations):
+def _required_page(payload: Any, field: str) -> list[Any]:
+    if not isinstance(payload, dict) or not isinstance(payload.get(field), list):
+        raise ValueError("FRED page is malformed")
+    items = payload[field]
+    if field == "observations" and not all(isinstance(item, dict) for item in items):
         raise ValueError("FRED observations page contains a non-object observation")
-    return observations
+    return items
 
 
 def _observation_fields(obs: dict[str, Any]) -> tuple[str, str]:
@@ -123,7 +121,10 @@ async def get_observations(
     response = await client.get("/series/observations", params=params)
     response.raise_for_status()
     payload = response.json()
-    items = [_observation_record(series_id, obs) for obs in _observation_page(payload)]
+    items = [
+        _observation_record(series_id, obs)
+        for obs in _required_page(payload, "observations")
+    ]
     return {
         "items": items,
         "offset": offset,
@@ -183,9 +184,13 @@ async def get_vintage_dates(
     )
     response.raise_for_status()
     payload = response.json()
-    dates = payload.get("vintage_dates", [])
+    dates = _required_page(payload, "vintage_dates")
     items = [
-        {"vintage_id": f"{series_id}:{d}", "series_id": series_id, "vintage_date": d}
+        {
+            "vintage_id": f"{series_id}:{_require_realtime_date(d)}",
+            "series_id": series_id,
+            "vintage_date": d,
+        }
         for d in dates
     ]
     return {
