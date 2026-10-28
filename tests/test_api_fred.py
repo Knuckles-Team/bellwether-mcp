@@ -215,3 +215,27 @@ async def test_empty_observation_page_is_valid():
         result = await fred.get_observations(client, api_key="k", series_id="WALCL")
     assert result["items"] == []
     assert result["total"] == 0
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R004")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "field,replacement",
+    [
+        ("date", None),
+        ("realtime_start", None),
+        ("value", None),
+        ("date", "20260101"),
+        ("realtime_start", "2026-02-30"),
+    ],
+)
+async def test_served_fred_refuses_missing_or_invalid_identity(
+    field, replacement, fixture, monkeypatch
+):
+    payload = fixture("fred_observations.json")
+    observation = payload["observations"][0]
+    if replacement is None:
+        del observation[field]
+    else:
+        observation[field] = replacement
+    await _assert_served_fred_refuses(payload, monkeypatch)
