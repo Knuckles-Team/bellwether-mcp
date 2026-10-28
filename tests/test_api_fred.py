@@ -166,14 +166,9 @@ async def test_served_asof_refuses_missing_vintage_without_upstream_call(
         assert calls == []
 
 
-@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R002")
-@pytest.mark.asyncio
-@pytest.mark.parametrize("value", ["NaN", "inf", "-inf", "1e309"])
-async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkeypatch):
+async def _assert_served_fred_refuses(payload, monkeypatch):
     from fastmcp import Client
 
-    payload = fixture("fred_observations.json")
-    payload["observations"][0]["value"] = value
     async with mock_client(
         "https://api.stlouisfed.org/fred", lambda r: json_response(payload)
     ) as http:
@@ -183,3 +178,40 @@ async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkey
                 "fred_series_observations", {"series_id": "WALCL"}, raise_on_error=False
             )
             assert result.is_error
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R002")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("value", ["NaN", "inf", "-inf", "1e309"])
+async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkeypatch):
+    payload = fixture("fred_observations.json")
+    payload["observations"][0]["value"] = value
+    await _assert_served_fred_refuses(payload, monkeypatch)
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R003")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {},
+        {"observations": None},
+        {"observations": {}},
+        {"observations": ["invalid"]},
+        [],
+    ],
+)
+async def test_served_fred_refuses_malformed_observation_pages(payload, monkeypatch):
+    await _assert_served_fred_refuses(payload, monkeypatch)
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R003")
+@pytest.mark.asyncio
+async def test_empty_observation_page_is_valid():
+    async with mock_client(
+        "https://api.stlouisfed.org/fred",
+        lambda r: json_response({"observations": [], "count": 0}),
+    ) as client:
+        result = await fred.get_observations(client, api_key="k", series_id="WALCL")
+    assert result["items"] == []
+    assert result["total"] == 0

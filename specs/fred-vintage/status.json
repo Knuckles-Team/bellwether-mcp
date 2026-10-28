@@ -5,7 +5,8 @@
   "delivery_state": "VERIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001",
-    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002"
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002",
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R003"
   ],
   "requirements": [
     {
@@ -30,7 +31,20 @@
         "456332f8f287"
       ],
       "verified_by": [
-        "tests/test_api_fred.py:169"
+        "tests/test_api_fred.py:183"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-FRED-VINTAGE-R003",
+      "title": "Observation page shape",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "bd847e470918",
+        "d74a0133b57c"
+      ],
+      "verified_by": [
+        "tests/test_api_fred.py:192",
+        "tests/test_api_fred.py:208"
       ]
     }
   ]
