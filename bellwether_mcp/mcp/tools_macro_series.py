@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from fastmcp import FastMCP
 
@@ -11,6 +11,7 @@ from bellwether_mcp.config import FRED_MACRO_SERIES
 from bellwether_mcp.credentials import resolve_fred_api_key
 from bellwether_mcp.errors import UnknownFredSeriesAliasError
 from bellwether_mcp.mcp.clients import Clients
+from bellwether_mcp.mcp.source_pages import source_page
 
 
 def _resolve_alias_or_series_id(series_id: str, alias: str) -> str:
@@ -60,6 +61,8 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
         limit: int = 1000,
         realtime_start: str = "",
         realtime_end: str = "",
+        mode: Literal["", "delta"] = "",
+        source_checkpoint: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Observations for a FRED series, by raw ``series_id`` or a named ``alias``.
 
@@ -69,7 +72,7 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
         """
         resolved = _resolve_alias_or_series_id(series_id, alias)
         client = await clients.fred.paced_client()
-        return await fred.get_observations(
+        result = await fred.get_observations(
             client,
             api_key=resolve_fred_api_key(),
             series_id=resolved,
@@ -78,6 +81,7 @@ def register_macro_series_tools(mcp: FastMCP, clients: Clients) -> None:
             realtime_start=realtime_start or None,
             realtime_end=realtime_end or None,
         )
+        return source_page(result, mode)
 
     @mcp.tool(
         tags={"macro-series"},
