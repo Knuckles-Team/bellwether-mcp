@@ -18,8 +18,8 @@
         "b3fb82de7e69"
       ],
       "verified_by": [
-        "tests/test_api_coinmarketcap.py:220",
-        "tests/test_api_coinmarketcap.py:244"
+        "tests/test_api_coinmarketcap.py:194",
+        "tests/test_api_coinmarketcap.py:218"
       ]
     },
     {
@@ -30,8 +30,8 @@
         "39d1a2e541ef"
       ],
       "verified_by": [
-        "tests/test_api_coinmarketcap.py:257",
-        "tests/test_api_coinmarketcap.py:265"
+        "tests/test_api_coinmarketcap.py:231",
+        "tests/test_api_coinmarketcap.py:239"
       ]
     },
     {
@@ -42,8 +42,8 @@
         "4a20751c1bb2"
       ],
       "verified_by": [
-        "tests/test_api_coinmarketcap.py:285",
-        "tests/test_api_coinmarketcap.py:300"
+        "tests/test_api_coinmarketcap.py:259",
+        "tests/test_api_coinmarketcap.py:274"
       ]
     },
     {

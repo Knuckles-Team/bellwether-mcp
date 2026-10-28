@@ -11,3 +11,5 @@ Governing spec: [spec.md](spec.md). Design: [plan.md](plan.md). Rows: [requireme
 - [x] Refuse observations without complete period and vintage identity (CONN-BELLWETHER-MCP-FRED-VINTAGE-R004).
 
 - [x] Refuse malformed FRED vintage-date pages (CONN-BELLWETHER-MCP-FRED-VINTAGE-R005).
+
+- [x] Exercise the declared FRED source through the SDK MCP adapter (CONN-BELLWETHER-MCP-FRED-VINTAGE-R006).
