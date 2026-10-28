@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
+
 import pytest
 
 from bellwether_mcp.api import fomc_calendar
@@ -78,3 +80,15 @@ def test_list_meetings_paginates():
 def test_record_id_is_the_decision_date():
     result = fomc_calendar.list_meetings(limit=1)
     assert result["items"][0]["id"] == result["items"][0]["decision_date"]
+
+
+def test_returned_announcement_times_match_sourced_release_dates():
+    records = fomc_calendar.list_meetings()["items"]
+    for record in records:
+        timestamp = datetime.fromisoformat(record["announcement_time_utc"])
+        assert timestamp.tzinfo == UTC
+        assert timestamp.date().isoformat() == record["decision_date"]
+    by_date = {record["decision_date"]: record for record in records}
+    assert by_date["2023-02-01"]["announcement_time_utc"] == "2023-02-01T19:00:00Z"
+    assert by_date["2023-03-22"]["announcement_time_utc"] == "2023-03-22T18:00:00Z"
+    assert by_date["2026-01-28"]["source_url"].endswith("monetary20260128a.htm")

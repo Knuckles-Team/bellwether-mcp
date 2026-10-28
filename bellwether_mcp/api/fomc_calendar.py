@@ -50,6 +50,7 @@ def _record(meeting: dict[str, Any]) -> dict[str, Any]:
         "id": meeting["decision_date"],
         "meeting_start_date": meeting["meeting_start_date"],
         "decision_date": meeting["decision_date"],
+        "announcement_time_utc": meeting["announcement_time_utc"],
         "outcome": meeting["outcome"],
         "bps_change": meeting["bps_change"],
         "target_range_low_pct": meeting["target_range_low_pct"],
