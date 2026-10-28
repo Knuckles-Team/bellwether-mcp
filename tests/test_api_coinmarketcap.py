@@ -103,16 +103,31 @@ async def test_api_key_is_not_forwarded_on_redirect(operation):
     assert seen == ["pro-api.coinmarketcap.com"]
 
 
+def _served_cmc(http, monkeypatch):
+    from types import SimpleNamespace
+
+    from fastmcp import FastMCP
+
+    from bellwether_mcp.mcp import tools_crypto_reference
+
+    class Endpoint:
+        async def paced_client(self):
+            return http
+
+    monkeypatch.setattr(tools_crypto_reference, "resolve_cmc_api_key", lambda: "k")
+    server = FastMCP("cmc-test")
+    tools_crypto_reference.register_crypto_reference_tools(
+        server, SimpleNamespace(coinmarketcap=Endpoint())
+    )
+    return server
+
+
 @pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-PAGING-R001")
 @pytest.mark.asyncio
 async def test_served_default_listings_start_at_first_provider_record(
     fixture, monkeypatch
 ):
-    from types import SimpleNamespace
-
-    from fastmcp import Client, FastMCP
-
-    from bellwether_mcp.mcp import tools_crypto_reference
+    from fastmcp import Client
 
     seen = []
     payload = fixture("cmc_listings.json")
@@ -122,16 +137,7 @@ async def test_served_default_listings_start_at_first_provider_record(
         return json_response(payload)
 
     async with mock_client("https://pro-api.coinmarketcap.com", handler) as http:
-
-        class Endpoint:
-            async def paced_client(self):
-                return http
-
-        monkeypatch.setattr(tools_crypto_reference, "resolve_cmc_api_key", lambda: "k")
-        server = FastMCP("cmc-test")
-        tools_crypto_reference.register_crypto_reference_tools(
-            server, SimpleNamespace(coinmarketcap=Endpoint())
-        )
+        server = _served_cmc(http, monkeypatch)
         async with Client(server) as client:
             first = await client.call_tool("cmc_listings", {})
             later = await client.call_tool("cmc_listings", {"start": 100})
@@ -140,3 +146,56 @@ async def test_served_default_listings_start_at_first_provider_record(
             {"start": "1", "limit": "100", "convert": "USD"},
             {"start": "101", "limit": "100", "convert": "USD"},
         ]
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-PAGING-R002")
+@pytest.mark.asyncio
+async def test_sdk_source_adapter_pages_served_cmc(fixture, monkeypatch):
+    from agent_connector_sdk.adapters.mcp_tool import McpToolSourceAdapter
+    from agent_connector_sdk.ingest.live_declaration import build_declaration
+    from agent_connector_sdk.manifest.declaration import contract_from_declaration
+    from agent_connector_sdk.ports.session import TransportEndpoint
+    from agent_connector_sdk.transports.mcp import McpTransport
+
+    from bellwether_mcp import connector_sources
+
+    base = fixture("cmc_listings.json")["data"][0]
+    seen = []
+
+    def handler(request):
+        start = int(request.url.params["start"])
+        seen.append(start)
+        count = min(100, max(0, 102 - start))
+        return json_response(
+            {"data": [{**base, "id": n} for n in range(start, start + count)]}
+        )
+
+    async with mock_client("https://pro-api.coinmarketcap.com", handler) as http:
+        server = _served_cmc(http, monkeypatch)
+        async with McpTransport().session(
+            TransportEndpoint(in_process=server)
+        ) as session:
+            tools = await session.list_tools()
+            sources = [
+                entry
+                for entry in connector_sources.SOURCES
+                if entry["connector_sources"][0]["source_id"] == "crypto_listings_cmc"
+            ]
+            declaration = build_declaration(
+                "bellwether-mcp", tools, declared={"SOURCES": sources}
+            )
+            contract = contract_from_declaration(declaration)
+            assert contract is not None
+            adapter = McpToolSourceAdapter.from_sync_spec(
+                contract.sync[0],
+                connector=contract.connector,
+                mapping_reference="connector:bellwether-mcp#mappings/Instrument",
+            )
+            await adapter.discover(session)
+            first = await adapter.extract(session, None)
+            second = await adapter.extract(session, first.checkpoint)
+            assert [record.record_id for record in first.records] == [
+                str(n) for n in range(1, 101)
+            ]
+            assert [record.record_id for record in second.records] == ["101"]
+            assert seen == [1, 101]
