@@ -115,6 +115,8 @@ async def test_declared_fomc_source_retains_announcement_through_sdk():
     assert record.payload["source_url"] == curated["source_url"]
     assert record.provenance.connector == "bellwether-mcp"
     assert record.provenance.tool == "fomc_calendar_list"
+
+
 @pytest.mark.spec("CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003")
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
