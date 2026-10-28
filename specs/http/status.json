@@ -4,7 +4,8 @@
   "owner_repo": "bellwether-mcp",
   "delivery_state": "VERIFIED",
   "requirement_ids": [
-    "CONN-BELLWETHER-MCP-HTTP-R001"
+    "CONN-BELLWETHER-MCP-HTTP-R001",
+    "CONN-BELLWETHER-MCP-HTTP-R002"
   ],
   "requirements": [
     {
@@ -16,6 +17,17 @@
       ],
       "verified_by": [
         "tests/test_sdk_rate_limiter.py:11"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-HTTP-R002",
+      "title": "CoinMarketCap keys never follow redirects",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "a1f839247e6f"
+      ],
+      "verified_by": [
+        "tests/test_api_coinmarketcap.py:78"
       ]
     }
   ]

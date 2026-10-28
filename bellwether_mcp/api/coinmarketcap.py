@@ -62,6 +62,7 @@ async def list_listings(
     response = await client.get(
         "/v1/cryptocurrency/listings/latest",
         headers={"X-CMC_PRO_API_KEY": api_key},
+        follow_redirects=False,
         params={"start": start + 1, "limit": limit, "convert": "USD"},
     )
     response.raise_for_status()
@@ -77,6 +78,7 @@ async def get_quotes(
     response = await client.get(
         "/v1/cryptocurrency/quotes/latest",
         headers={"X-CMC_PRO_API_KEY": api_key},
+        follow_redirects=False,
         params={"symbol": symbols, "convert": "USD"},
     )
     response.raise_for_status()
@@ -102,6 +104,7 @@ async def get_global_metrics(
     response = await client.get(
         "/v1/global-metrics/quotes/latest",
         headers={"X-CMC_PRO_API_KEY": api_key},
+        follow_redirects=False,
         params={"convert": "USD"},
     )
     response.raise_for_status()
