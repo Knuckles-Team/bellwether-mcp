@@ -71,6 +71,9 @@ where = ["."]
 [tool.pipelines_hooks]
 packages = ["bellwether_mcp"]
 
+[tool.pipelines.ontology]
+ttl = "market_data"
+
 [tool.pipelines_hooks.stdout_writes]
 served_paths = ["bellwether_mcp"]
 
