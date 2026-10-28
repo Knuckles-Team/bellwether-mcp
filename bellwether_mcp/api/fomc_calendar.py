@@ -16,6 +16,7 @@ No network I/O happens here; loading is a pure, cached read of packaged data.
 from __future__ import annotations
 
 import json
+from datetime import date
 from functools import lru_cache
 from importlib import resources
 from typing import Any
@@ -59,6 +60,23 @@ def _record(meeting: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _date_bound(value: str) -> date | None:
+    if value == "":
+        return None
+    if not isinstance(value, str):
+        raise ValueError("FOMC date bound must be YYYY-MM-DD")
+    parsed = date.fromisoformat(value)
+    if parsed.isoformat() != value:
+        raise ValueError("FOMC date bound must be YYYY-MM-DD")
+    return parsed
+
+
+def _validate_date_range(since: str, until: str) -> None:
+    lower, upper = _date_bound(since), _date_bound(until)
+    if lower is not None and upper is not None and lower > upper:
+        raise ValueError("FOMC date range is reversed")
+
+
 def _matches_filters(
     meeting: dict[str, Any], *, since: str, until: str, outcome: str
 ) -> bool:
@@ -89,6 +107,7 @@ def list_meetings(
         UnknownFomcOutcomeFilterError: ``outcome`` is not empty and not one of
             :data:`VALID_OUTCOMES`.
     """
+    _validate_date_range(since, until)
     if outcome and outcome not in VALID_OUTCOMES:
         raise UnknownFomcOutcomeFilterError(
             f"outcome {outcome!r} is not one of {sorted(VALID_OUTCOMES)}"
