@@ -4,7 +4,8 @@
   "owner_repo": "bellwether-mcp",
   "delivery_state": "LANDED",
   "requirement_ids": [
-    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R001"
+    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R001",
+    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002"
   ],
   "requirements": [
     {
@@ -15,6 +16,17 @@
         "643f0005b8c9"
       ],
       "verified_by": []
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002",
+      "title": "Declared SDK source",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "209c536a6559"
+      ],
+      "verified_by": [
+        "tests/test_api_fomc_calendar.py:97"
+      ]
     }
   ]
 }

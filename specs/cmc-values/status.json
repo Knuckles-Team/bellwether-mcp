@@ -54,7 +54,7 @@
         "aa19703cad51"
       ],
       "verified_by": [
-        "tests/test_api_coinmarketcap.py:308"
+        "tests/test_api_coinmarketcap.py:282"
       ]
     }
   ]
