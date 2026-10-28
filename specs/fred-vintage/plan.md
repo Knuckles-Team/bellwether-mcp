@@ -21,3 +21,9 @@ Observation identity requires a canonical period and vintage date plus an explic
 Vintage-date pages require a list of canonical calendar dates. The client accepts an empty list but does not turn a missing list into a successful empty page.
 
 A cross-package test builds the SDK source contract from the connector declaration and drives the served tool through the SDK MCP transport. Two synthetic provider pages exercise offset handoff and vintage provenance. It does not prove every finance provider.
+
+For the graph-owned liquidity panel, each FRED observation keeps the exact
+provider value text and the UTC time when the response was captured. The
+capture time is not a publication time. A later re-read may advance it, so it
+cannot prove availability before that capture. The graph mapping carries both
+fields. Synthetic response tests do not establish live data entitlements.

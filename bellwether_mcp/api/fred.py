@@ -14,7 +14,7 @@ would actually have seen (no look-ahead into later data revisions).
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import UTC, date, datetime
 from math import isfinite
 from typing import Any
 
@@ -23,11 +23,11 @@ import httpx
 __all__ = ["get_observations", "get_observations_asof", "get_vintage_dates"]
 
 
-def _parse_observation_value(raw: Any) -> float | None:
+def _parse_observation_value(raw: Any) -> tuple[float | None, str | None]:
     """FRED encodes a missing observation as the literal string ``"."``."""
     if raw is None or raw == ".":
-        return None
-    return _finite_value(raw)
+        return None, None
+    return _finite_value(raw), str(raw)
 
 
 def _finite_value(raw: Any) -> float:
@@ -54,8 +54,11 @@ def _observation_fields(obs: dict[str, Any]) -> tuple[str, str]:
     )
 
 
-def _observation_record(series_id: str, obs: dict[str, Any]) -> dict[str, Any]:
+def _observation_record(
+    series_id: str, obs: dict[str, Any], observed_at: str
+) -> dict[str, Any]:
     date, realtime_start = _observation_fields(obs)
+    value, value_text = _parse_observation_value(obs["value"])
     return {
         # Unique within one call's vintage window; a single series_id+date can
         # recur across different realtime_start vintages, so the record
@@ -63,7 +66,9 @@ def _observation_record(series_id: str, obs: dict[str, Any]) -> dict[str, Any]:
         "observation_id": f"{series_id}:{date}:{realtime_start}",
         "series_id": series_id,
         "date": date,
-        "value": _parse_observation_value(obs["value"]),
+        "value": value,
+        "value_text": value_text,
+        "observed_at": observed_at,
         "realtime_start": realtime_start,
         "realtime_end": obs.get("realtime_end", ""),
     }
@@ -121,8 +126,9 @@ async def get_observations(
     response = await client.get("/series/observations", params=params)
     response.raise_for_status()
     payload = response.json()
+    observed_at = datetime.now(UTC).isoformat()
     items = [
-        _observation_record(series_id, obs)
+        _observation_record(series_id, obs, observed_at)
         for obs in _required_page(payload, "observations")
     ]
     return {

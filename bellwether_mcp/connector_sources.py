@@ -94,26 +94,33 @@ SOURCES: tuple[Any, ...] = (
         server="bellwether-mcp",
         title_field="outcome",
     ),
-    source_meta(
-        tool="fred_series_observations",
-        source_id="macro_series_treasury_general_account",
-        record_type="macro_series_observation",
-        id_field="observation_id",
-        preset={
-            "params": {"alias": "treasury_general_account", "mode": "delta"},
-            "updated_since_param": "source_checkpoint",
-            "checkpoint_path": "checkpoint",
-            "doc_type": "macro_series_observation",
-            "ontology_class": "EconomicIndicator",
-            "page_param": "offset",
-            "page_size": 1000,
-            "page_size_param": "limit",
-            "pagination": "offset",
-            "params_style": "args",
-        },
-        records_path="items",
-        server="bellwether-mcp",
-        title_field="series_id",
+    *(
+        source_meta(
+            tool="fred_series_observations",
+            source_id=f"macro_series_{alias}",
+            record_type="macro_series_observation",
+            id_field="observation_id",
+            preset={
+                "params": {"alias": alias, "mode": "delta"},
+                "updated_since_param": "source_checkpoint",
+                "checkpoint_path": "checkpoint",
+                "doc_type": "macro_series_observation",
+                "ontology_class": "EconomicIndicator",
+                "page_param": "offset",
+                "page_size": 1000,
+                "page_size_param": "limit",
+                "pagination": "offset",
+                "params_style": "args",
+            },
+            records_path="items",
+            server="bellwether-mcp",
+            title_field="series_id",
+        )
+        for alias in (
+            "fed_balance_sheet",
+            "treasury_general_account",
+            "reverse_repo_overnight",
+        )
     ),
 )
 
@@ -162,6 +169,8 @@ SCHEMA_MAPPINGS: dict[str, Any] = {
             "value": "xsd:double",
             "realtime_start": "xsd:date",
             "realtime_end": "xsd:date",
+            "value_text": "xsd:string",
+            "observed_at": "xsd:dateTime",
         },
     },
     "MacroEvent": {
