@@ -7,11 +7,12 @@ API (the Federal Reserve does not publish one — see
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from fastmcp import FastMCP
 
 from bellwether_mcp.api import fomc_calendar
+from bellwether_mcp.mcp.source_pages import source_page
 
 
 def register_fomc_calendar_tools(mcp: FastMCP, _clients: object) -> None:
@@ -33,6 +34,8 @@ def register_fomc_calendar_tools(mcp: FastMCP, _clients: object) -> None:
         outcome: str = "",
         offset: int = 0,
         limit: int = 100,
+        mode: Literal["", "delta"] = "",
+        source_checkpoint: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """FOMC decisions as sourced records: date, hike/cut/hold, target range, source_url.
 
@@ -45,6 +48,7 @@ def register_fomc_calendar_tools(mcp: FastMCP, _clients: object) -> None:
         ``source_url`` — this package asserts nothing beyond what that source
         states.
         """
-        return fomc_calendar.list_meetings(
+        result = fomc_calendar.list_meetings(
             since=since, until=until, outcome=outcome, offset=offset, limit=limit
         )
+        return source_page(result, mode)
