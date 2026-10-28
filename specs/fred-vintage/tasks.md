@@ -7,3 +7,5 @@ Governing spec: [spec.md](spec.md). Design: [plan.md](plan.md). Rows: [requireme
 - [x] Refuse non-finite FRED observation values (CONN-BELLWETHER-MCP-FRED-VINTAGE-R002).
 
 - [x] Refuse malformed FRED observation pages (CONN-BELLWETHER-MCP-FRED-VINTAGE-R003).
+
+- [x] Refuse observations without complete period and vintage identity (CONN-BELLWETHER-MCP-FRED-VINTAGE-R004).

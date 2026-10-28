@@ -48,9 +48,16 @@ def _observation_page(payload: Any) -> list[dict[str, Any]]:
     return observations
 
 
+def _observation_fields(obs: dict[str, Any]) -> tuple[str, str]:
+    if "value" not in obs:
+        raise ValueError("FRED observation value is missing")
+    return _require_realtime_date(obs.get("date")), _require_realtime_date(
+        obs.get("realtime_start")
+    )
+
+
 def _observation_record(series_id: str, obs: dict[str, Any]) -> dict[str, Any]:
-    realtime_start = obs.get("realtime_start", "")
-    date = obs.get("date", "")
+    date, realtime_start = _observation_fields(obs)
     return {
         # Unique within one call's vintage window; a single series_id+date can
         # recur across different realtime_start vintages, so the record
@@ -58,13 +65,13 @@ def _observation_record(series_id: str, obs: dict[str, Any]) -> dict[str, Any]:
         "observation_id": f"{series_id}:{date}:{realtime_start}",
         "series_id": series_id,
         "date": date,
-        "value": _parse_observation_value(obs.get("value")),
+        "value": _parse_observation_value(obs["value"]),
         "realtime_start": realtime_start,
         "realtime_end": obs.get("realtime_end", ""),
     }
 
 
-def _require_realtime_date(value: str) -> str:
+def _require_realtime_date(value: Any) -> str:
     """Refuse missing, malformed or noncanonical FRED vintage dates."""
     if not isinstance(value, str):
         raise ValueError("FRED realtime date must be YYYY-MM-DD")

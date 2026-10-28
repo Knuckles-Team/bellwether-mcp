@@ -15,3 +15,5 @@ Source: [FRED real-time periods](https://fred.stlouisfed.org/docs/api/fred/realt
 The observation client refuses non-finite numeric values before the MCP tool returns a page. The explicit missing-value marker still maps to null.
 
 A page must carry an observations list of objects. The client accepts an empty list but does not treat a missing list as an empty result.
+
+Observation identity requires a canonical period and vintage date plus an explicit value. A missing value is distinct from the provider’s explicit missing-value marker.
