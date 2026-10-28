@@ -2,10 +2,11 @@
   "schema_version": 2,
   "spec_id": "CONN-BELLWETHER-MCP-FRED-VINTAGE",
   "owner_repo": "bellwether-mcp",
-  "delivery_state": "VERIFIED",
+  "delivery_state": "SPECIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-FRED-VINTAGE-R001",
-    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002"
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R002",
+    "CONN-BELLWETHER-MCP-FRED-VINTAGE-R003"
   ],
   "requirements": [
     {
@@ -31,6 +32,16 @@
       ],
       "verified_by": [
         "tests/test_api_fred.py:169"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-FRED-VINTAGE-R003",
+      "title": "Observation page shape",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [
+        "tests/test_api_fred.py:188",
+        "tests/test_api_fred.py:214"
       ]
     }
   ]

@@ -37,6 +37,17 @@ def _finite_value(raw: Any) -> float:
     return value
 
 
+def _observation_page(payload: Any) -> list[dict[str, Any]]:
+    if not isinstance(payload, dict) or not isinstance(
+        payload.get("observations"), list
+    ):
+        raise ValueError("FRED observations page is malformed")
+    observations = payload["observations"]
+    if not all(isinstance(item, dict) for item in observations):
+        raise ValueError("FRED observations page contains a non-object observation")
+    return observations
+
+
 def _observation_record(series_id: str, obs: dict[str, Any]) -> dict[str, Any]:
     realtime_start = obs.get("realtime_start", "")
     date = obs.get("date", "")
@@ -105,9 +116,7 @@ async def get_observations(
     response = await client.get("/series/observations", params=params)
     response.raise_for_status()
     payload = response.json()
-    items = [
-        _observation_record(series_id, obs) for obs in payload.get("observations", [])
-    ]
+    items = [_observation_record(series_id, obs) for obs in _observation_page(payload)]
     return {
         "items": items,
         "offset": offset,

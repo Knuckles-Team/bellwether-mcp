@@ -183,3 +183,41 @@ async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkey
                 "fred_series_observations", {"series_id": "WALCL"}, raise_on_error=False
             )
             assert result.is_error
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R003")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {},
+        {"observations": None},
+        {"observations": {}},
+        {"observations": ["invalid"]},
+        [],
+    ],
+)
+async def test_served_fred_refuses_malformed_observation_pages(payload, monkeypatch):
+    from fastmcp import Client
+
+    async with mock_client(
+        "https://api.stlouisfed.org/fred", lambda r: json_response(payload)
+    ) as http:
+        server = _served_fred(http, monkeypatch)
+        async with Client(server) as client:
+            result = await client.call_tool(
+                "fred_series_observations", {"series_id": "WALCL"}, raise_on_error=False
+            )
+            assert result.is_error
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R003")
+@pytest.mark.asyncio
+async def test_empty_observation_page_is_valid():
+    async with mock_client(
+        "https://api.stlouisfed.org/fred",
+        lambda r: json_response({"observations": [], "count": 0}),
+    ) as client:
+        result = await fred.get_observations(client, api_key="k", series_id="WALCL")
+    assert result["items"] == []
+    assert result["total"] == 0
