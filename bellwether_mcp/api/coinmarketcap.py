@@ -62,9 +62,16 @@ def _quote_usd(item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _cmc_id(item: dict[str, Any]) -> str:
+    value = item.get("id")
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        raise ValueError("CMC identifier must be a positive integer")
+    return str(value)
+
+
 def _listing_record(item: dict[str, Any]) -> dict[str, Any]:
     return {
-        "cmc_id": str(item["id"]),
+        "cmc_id": _cmc_id(item),
         "name": item.get("name", ""),
         "symbol": item.get("symbol", ""),
         "cmc_rank": _finite_number(item.get("cmc_rank")),

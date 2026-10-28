@@ -280,3 +280,26 @@ async def test_empty_global_snapshot_refuses_and_empty_collections_are_valid(
     ) as client:
         quotes = await coinmarketcap.get_quotes(client, api_key="k", symbols="BTC")
     assert listings["items"] == quotes["items"] == []
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R003")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("tool", ["cmc_listings", "cmc_quotes"])
+@pytest.mark.parametrize("value", [None, True, 0, -1, "1", 1.5])
+async def test_served_cmc_refuses_invalid_provider_identity(
+    value, tool, fixture, monkeypatch
+):
+    payload = fixture(
+        "cmc_listings.json" if tool == "cmc_listings" else "cmc_quotes.json"
+    )
+    item = payload["data"][0] if tool == "cmc_listings" else payload["data"]["BTC"]
+    item["id"] = value
+    await _assert_cmc_refuses(payload, tool, monkeypatch)
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-VALUES-R003")
+@pytest.mark.asyncio
+async def test_served_cmc_refuses_missing_provider_identity(fixture, monkeypatch):
+    payload = fixture("cmc_listings.json")
+    del payload["data"][0]["id"]
+    await _assert_cmc_refuses(payload, "cmc_listings", monkeypatch)

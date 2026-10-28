@@ -5,7 +5,8 @@
   "delivery_state": "VERIFIED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-CMC-VALUES-R001",
-    "CONN-BELLWETHER-MCP-CMC-VALUES-R002"
+    "CONN-BELLWETHER-MCP-CMC-VALUES-R002",
+    "CONN-BELLWETHER-MCP-CMC-VALUES-R003"
   ],
   "requirements": [
     {
@@ -30,6 +31,18 @@
       "verified_by": [
         "tests/test_api_coinmarketcap.py:257",
         "tests/test_api_coinmarketcap.py:265"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-CMC-VALUES-R003",
+      "title": "Provider identity",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "4a20751c1bb2"
+      ],
+      "verified_by": [
+        "tests/test_api_coinmarketcap.py:285",
+        "tests/test_api_coinmarketcap.py:300"
       ]
     }
   ]
