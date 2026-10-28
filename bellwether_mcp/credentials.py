@@ -21,9 +21,11 @@ __all__ = [
     "CredentialUnavailableError",
     "CMC_API_KEY_REFERENCE",
     "FRED_API_KEY_REFERENCE",
+    "COINGLASS_API_KEY_REFERENCE",
     "default_resolver",
     "resolve_cmc_api_key",
     "resolve_fred_api_key",
+    "resolve_coinglass_api_key",
 ]
 
 #: ``env://`` is the default; a deployment may repoint either to
@@ -31,6 +33,7 @@ __all__ = [
 #: variable holding an ``openbao://`` reference instead.
 CMC_API_KEY_REFERENCE = "env://BELLWETHER_CMC_API_KEY"
 FRED_API_KEY_REFERENCE = "env://BELLWETHER_FRED_API_KEY"
+COINGLASS_API_KEY_REFERENCE = "env://BELLWETHER_COINGLASS_API_KEY"
 
 
 def _with_deprecated_prefix(reference: str) -> str:
@@ -68,3 +71,8 @@ def resolve_fred_api_key(resolver: CredentialResolver | None = None) -> str:
         CredentialUnavailableError: the reference is not resolvable.
     """
     return _resolve(FRED_API_KEY_REFERENCE, resolver)
+
+
+def resolve_coinglass_api_key(resolver: CredentialResolver | None = None) -> str:
+    """Return the configured CoinGlass API key."""
+    return _resolve(COINGLASS_API_KEY_REFERENCE, resolver)
