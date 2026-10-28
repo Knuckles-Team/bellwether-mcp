@@ -314,42 +314,32 @@ async def test_coinglass_served_graph_panels(graph_socket, monkeypatch):
     )
 
     async def fetch(url, **kwargs):
-        if url.endswith("/aum"):
+        endpoint = url.rsplit("/", 1)[-1]
+        if endpoint == "aum":
             assert kwargs["params"] == {"ticker": "IBIT"}
-            return {
-                "code": "0",
-                "data": [{"time": 1704931200000, "aum_usd": 500000000}],
-            }
-        if url.endswith("fear-greed-history"):
-            return {
-                "code": "0",
-                "data": [
-                    {"data_list": [42, 55], "time_list": [1704931200, 1705017600]}
-                ],
-            }
-        if url.endswith("whale-position"):
-            return {
-                "code": "0",
-                "data": [
-                    {
-                        "user": "0x" + "ab" * 20,
-                        "symbol": "ETH",
-                        "position_size": -3.5,
-                        "entry_price": 2249.7,
-                        "mark_price": 1645.8,
-                        "update_time": 1704931200123,
-                    }
-                ],
-            }
-        return {
-            "code": "0",
-            "data": [
+        data = {
+            "aum": [{"time": 1704931200000, "aum_usd": 500000000}],
+            "fear-greed-history": [
+                {"data_list": [42, 55], "time_list": [1704931200, 1705017600]}
+            ],
+            "whale-position": [
+                {
+                    "user": "0x" + "ab" * 20,
+                    "symbol": "ETH",
+                    "position_size": -3.5,
+                    "entry_price": 2249.7,
+                    "mark_price": 1645.8,
+                    "update_time": 1704931200123,
+                }
+            ],
+            "flow-history": [
                 {
                     "timestamp": 1704931200000,
                     "etf_flows": [{"etf_ticker": "IBIT", "flow_usd": 111700000}],
                 }
             ],
         }
+        return {"code": "0", "data": data[endpoint]}
 
     monkeypatch.setattr(coinglass, "safe_get_json_async", fetch)
     components = build_server(["--transport", "stdio", "--auth-type", "none"])
