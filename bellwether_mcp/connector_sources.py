@@ -13,6 +13,24 @@ from agent_connector_sdk.ingest.live_declaration import source_meta
 CONNECTOR: str = "bellwether-mcp"
 
 SOURCES: tuple[Any, ...] = (
+    source_meta(
+        tool="coinglass_macro_snapshot",
+        source_id="coinglass_etf_fund_flows",
+        record_type="MacroPanel",
+        id_field="record_id",
+        cursor_field="",
+        preset={
+            "doc_type": "macro_etf_fund_flows",
+            "params_style": "args",
+            "params": {"mode": "delta", "dataset": "etf_fund_flows"},
+            "updated_since_param": "source_checkpoint",
+            "checkpoint_path": "checkpoint",
+        },
+        records_path="items",
+        server="bellwether-mcp",
+        text_field="dataset",
+        title_field="ticker",
+    ),
     *(
         source_meta(
             tool="coinglass_macro_snapshot",
@@ -134,7 +152,14 @@ SCHEMA_MAPPINGS: dict[str, Any] = {
             "observed_at": "xsd:dateTime",
             "license_tag": "xsd:string",
             "ticker": "xsd:string",
+            "fund_ticker": "xsd:string",
+            "flow_date": "xsd:date",
             "net_flow_usd": "xsd:double",
+            "aum_usd": "xsd:double",
+            "flow_observed_at": "xsd:dateTime",
+            "aum_observed_at": "xsd:dateTime",
+            "flow_source_uri": "xsd:string",
+            "aum_source_uri": "xsd:string",
             "value": "xsd:double",
             "wallet": "xsd:string",
             "symbol": "xsd:string",
