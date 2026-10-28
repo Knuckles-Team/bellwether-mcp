@@ -166,7 +166,9 @@ async def test_served_asof_refuses_missing_vintage_without_upstream_call(
         assert calls == []
 
 
-async def _assert_served_fred_refuses(payload, monkeypatch):
+async def _assert_served_fred_refuses(
+    payload, monkeypatch, tool="fred_series_observations"
+):
     from fastmcp import Client
 
     async with mock_client(
@@ -175,7 +177,7 @@ async def _assert_served_fred_refuses(payload, monkeypatch):
         server = _served_fred(http, monkeypatch)
         async with Client(server) as client:
             result = await client.call_tool(
-                "fred_series_observations", {"series_id": "WALCL"}, raise_on_error=False
+                tool, {"series_id": "WALCL"}, raise_on_error=False
             )
             assert result.is_error
 
@@ -239,3 +241,34 @@ async def test_served_fred_refuses_missing_or_invalid_identity(
     else:
         observation[field] = replacement
     await _assert_served_fred_refuses(payload, monkeypatch)
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R005")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {},
+        {"vintage_dates": None},
+        {"vintage_dates": {}},
+        {"vintage_dates": ["20260801"]},
+        {"vintage_dates": [None]},
+        [],
+    ],
+)
+async def test_served_vintage_dates_refuse_malformed_pages(payload, monkeypatch):
+    await _assert_served_fred_refuses(
+        payload, monkeypatch, tool="fred_series_vintage_dates"
+    )
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R005")
+@pytest.mark.asyncio
+async def test_empty_vintage_date_page_is_valid():
+    async with mock_client(
+        "https://api.stlouisfed.org/fred",
+        lambda r: json_response({"vintage_dates": [], "count": 0}),
+    ) as client:
+        result = await fred.get_vintage_dates(client, api_key="k", series_id="WALCL")
+    assert result["items"] == []
+    assert result["total"] == 0

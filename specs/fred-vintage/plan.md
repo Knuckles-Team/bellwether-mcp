@@ -17,3 +17,5 @@ The observation client refuses non-finite numeric values before the MCP tool ret
 A page must carry an observations list of objects. The client accepts an empty list but does not treat a missing list as an empty result.
 
 Observation identity requires a canonical period and vintage date plus an explicit value. A missing value is distinct from the provider’s explicit missing-value marker.
+
+Vintage-date pages require a list of canonical calendar dates. The client accepts an empty list but does not turn a missing list into a successful empty page.
