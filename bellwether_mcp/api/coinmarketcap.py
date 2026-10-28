@@ -18,6 +18,8 @@ from typing import Any
 
 import httpx
 
+from bellwether_mcp.api._pagination import validate_offset_page
+
 __all__ = ["get_global_metrics", "get_quotes", "list_listings"]
 
 
@@ -102,6 +104,7 @@ async def list_listings(
     until a page shorter than ``limit`` comes back (``total`` is always
     ``None`` here).
     """
+    validate_offset_page(start, limit)
     response = await client.get(
         "/v1/cryptocurrency/listings/latest",
         headers={"X-CMC_PRO_API_KEY": api_key},
