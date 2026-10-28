@@ -28,7 +28,6 @@ jobs:
           mode: published-wheel
           distribution: bellwether-mcp
           module: bellwether_mcp
-          extras: ""
   publish-docker:
     needs: verify-public-wheel
     uses: Knuckles-Team/pipelines/.github/workflows/container_pipeline.yml@main
