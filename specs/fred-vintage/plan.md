@@ -11,3 +11,5 @@ The MCP as-of tool calls this same client. Tests enter the served tool with an
 invalid date and observe a refusal with zero vendor requests.
 
 Source: [FRED real-time periods](https://fred.stlouisfed.org/docs/api/fred/realtime_period.html).
+
+The observation client refuses non-finite numeric values before the MCP tool returns a page. The explicit missing-value marker still maps to null.

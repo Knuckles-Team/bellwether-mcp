@@ -126,30 +126,36 @@ async def test_invalid_explicit_realtime_windows_never_request(
     assert calls == []
 
 
+def _served_fred(http, monkeypatch):
+    from types import SimpleNamespace
+
+    from fastmcp import FastMCP
+
+    from bellwether_mcp.mcp import tools_macro_series
+
+    class Endpoint:
+        async def paced_client(self):
+            return http
+
+    monkeypatch.setattr(tools_macro_series, "resolve_fred_api_key", lambda: "k")
+    server = FastMCP("fred-test")
+    tools_macro_series.register_macro_series_tools(
+        server, SimpleNamespace(fred=Endpoint())
+    )
+    return server
+
+
 @pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R001")
 @pytest.mark.asyncio
 async def test_served_asof_refuses_missing_vintage_without_upstream_call(
     monkeypatch, no_vendor_requests
 ):
-    from types import SimpleNamespace
-
-    from fastmcp import Client, FastMCP
-
-    from bellwether_mcp.mcp import tools_macro_series
+    from fastmcp import Client
 
     calls, handler = no_vendor_requests
 
     async with mock_client("https://api.stlouisfed.org/fred", handler) as http:
-
-        class Endpoint:
-            async def paced_client(self):
-                return http
-
-        monkeypatch.setattr(tools_macro_series, "resolve_fred_api_key", lambda: "k")
-        server = FastMCP("fred-test")
-        tools_macro_series.register_macro_series_tools(
-            server, SimpleNamespace(fred=Endpoint())
-        )
+        server = _served_fred(http, monkeypatch)
         async with Client(server) as client:
             result = await client.call_tool(
                 "fred_series_observations_asof",
@@ -158,3 +164,22 @@ async def test_served_asof_refuses_missing_vintage_without_upstream_call(
             )
             assert result.is_error
         assert calls == []
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R002")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("value", ["NaN", "inf", "-inf", "1e309"])
+async def test_served_fred_refuses_nonfinite_observations(value, fixture, monkeypatch):
+    from fastmcp import Client
+
+    payload = fixture("fred_observations.json")
+    payload["observations"][0]["value"] = value
+    async with mock_client(
+        "https://api.stlouisfed.org/fred", lambda r: json_response(payload)
+    ) as http:
+        server = _served_fred(http, monkeypatch)
+        async with Client(server) as client:
+            result = await client.call_tool(
+                "fred_series_observations", {"series_id": "WALCL"}, raise_on_error=False
+            )
+            assert result.is_error
