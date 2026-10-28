@@ -23,7 +23,7 @@ def register_crypto_reference_tools(mcp: FastMCP, clients: Clients) -> None:
             "openWorldHint": True,
         },
     )
-    async def cmc_listings(start: int = 1, limit: int = 100) -> dict[str, Any]:
+    async def cmc_listings(start: int = 0, limit: int = 100) -> dict[str, Any]:
         """Latest cryptocurrency listings ranked by market cap (discovery/caps).
 
         Not a venue-specific OHLCV feed — use an emerald-exchange backend for

@@ -101,3 +101,42 @@ async def test_api_key_is_not_forwarded_on_redirect(operation):
             else:
                 await coinmarketcap.get_global_metrics(client, api_key=key)
     assert seen == ["pro-api.coinmarketcap.com"]
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-PAGING-R001")
+@pytest.mark.asyncio
+async def test_served_default_listings_start_at_first_provider_record(
+    fixture, monkeypatch
+):
+    from types import SimpleNamespace
+
+    from fastmcp import Client, FastMCP
+
+    from bellwether_mcp.mcp import tools_crypto_reference
+
+    seen = []
+    payload = fixture("cmc_listings.json")
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(dict(request.url.params))
+        return json_response(payload)
+
+    async with mock_client("https://pro-api.coinmarketcap.com", handler) as http:
+
+        class Endpoint:
+            async def paced_client(self):
+                return http
+
+        monkeypatch.setattr(tools_crypto_reference, "resolve_cmc_api_key", lambda: "k")
+        server = FastMCP("cmc-test")
+        tools_crypto_reference.register_crypto_reference_tools(
+            server, SimpleNamespace(coinmarketcap=Endpoint())
+        )
+        async with Client(server) as client:
+            first = await client.call_tool("cmc_listings", {})
+            later = await client.call_tool("cmc_listings", {"start": 100})
+        assert not first.is_error and not later.is_error
+        assert seen == [
+            {"start": "1", "limit": "100", "convert": "USD"},
+            {"start": "101", "limit": "100", "convert": "USD"},
+        ]
