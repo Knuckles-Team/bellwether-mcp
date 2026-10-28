@@ -35,16 +35,21 @@ before trusting these as final.
 
 ## Tools
 
-Eight MCP tools, one FastMCP server (`bellwether-mcp` console script):
+Nine MCP tools, one FastMCP server (`bellwether-mcp` console script):
 `cmc_listings`, `cmc_quotes`, `cmc_global_metrics`, `fred_macro_series_aliases`,
 `fred_series_observations`, `fred_series_observations_asof`,
-`fred_series_vintage_dates`, `fomc_calendar_list`.
+`fred_series_vintage_dates`, `fomc_calendar_list`, `coinglass_macro_snapshot`.
 
-Every tool is keyless except `cmc_*` and `fred_*`, whose credentials are
+Every tool is keyless except `cmc_*`, `fred_*` and `coinglass_*`, whose credentials are
 resolved server-side through `agent_connector_sdk.credentials`
-(`BELLWETHER_CMC_API_KEY`, `BELLWETHER_FRED_API_KEY`) — never accepted as a
+(`BELLWETHER_CMC_API_KEY`, `BELLWETHER_FRED_API_KEY`, `BELLWETHER_COINGLASS_API_KEY`) — never accepted as a
 tool argument. `fomc_calendar_list` reads a packaged, curated, sourced dataset
 and needs no credential and no network.
+
+The CoinGlass source serves bounded Bitcoin ETF flows, fear-and-greed
+observations and Hyperliquid whale positions. Configure the API key and give
+each source an operator-owned license tag. The source does not establish
+redistribution rights or claim complete history.
 
 See [`AGENTS.md`](AGENTS.md) for architecture, the ontology-mapping
 authority, the FOMC dataset's provenance, rate limits, and commands.

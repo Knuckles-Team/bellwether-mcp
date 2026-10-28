@@ -19,6 +19,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from bellwether_mcp.mcp.clients import Clients
+from bellwether_mcp.mcp.tools_coinglass import register_coinglass_tools
 from bellwether_mcp.mcp.tools_crypto_reference import register_crypto_reference_tools
 from bellwether_mcp.mcp.tools_fomc_calendar import register_fomc_calendar_tools
 from bellwether_mcp.mcp.tools_macro_series import register_macro_series_tools
@@ -28,7 +29,7 @@ __all__ = ["build_server"]
 _INSTRUCTIONS = (
     "Crypto discovery/caps (CoinMarketCap), Fed macro and liquidity series with "
     "point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar "
-    "(hike/cut/hold, sourced). Every tool is keyless except cmc_* and fred_*, "
+    "(hike/cut/hold, sourced). Every tool is keyless except cmc_*, fred_* and coinglass_*, "
     "whose credentials are resolved server-side — never accept them as tool "
     "arguments. Not a venue-specific OHLCV feed for trading charts: pair with "
     "an emerald-exchange backend for that."
@@ -60,6 +61,7 @@ def build_server(
         ),
     )
     clients = Clients()
+    register_coinglass_tools(mcp)
     register_crypto_reference_tools(mcp, clients)
     register_macro_series_tools(mcp, clients)
     register_fomc_calendar_tools(mcp, clients)

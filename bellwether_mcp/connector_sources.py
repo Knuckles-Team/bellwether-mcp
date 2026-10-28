@@ -13,6 +13,27 @@ from agent_connector_sdk.ingest.live_declaration import source_meta
 CONNECTOR: str = "bellwether-mcp"
 
 SOURCES: tuple[Any, ...] = (
+    *(
+        source_meta(
+            tool="coinglass_macro_snapshot",
+            source_id=f"coinglass_{dataset}",
+            record_type="MacroPanel",
+            id_field="record_id",
+            cursor_field="",
+            preset={
+                "doc_type": f"macro_{dataset}",
+                "params_style": "args",
+                "params": {"mode": "delta", "dataset": dataset},
+                "updated_since_param": "source_checkpoint",
+                "checkpoint_path": "checkpoint",
+            },
+            records_path="items",
+            server="bellwether-mcp",
+            text_field="dataset",
+            title_field="dataset",
+        )
+        for dataset in ("etf", "sentiment", "onchain")
+    ),
     source_meta(
         tool="cmc_global_metrics",
         source_id="crypto_global_metrics_cmc",
@@ -97,6 +118,24 @@ SOURCES: tuple[Any, ...] = (
 )
 
 SCHEMA_MAPPINGS: dict[str, Any] = {
+    "MacroPanel": {
+        "ontology_class": "Document",
+        "fields": {
+            "dataset": "xsd:string",
+            "provider": "xsd:string",
+            "event_time": "xsd:dateTime",
+            "observed_at": "xsd:dateTime",
+            "license_tag": "xsd:string",
+            "ticker": "xsd:string",
+            "net_flow_usd": "xsd:double",
+            "value": "xsd:double",
+            "wallet": "xsd:string",
+            "symbol": "xsd:string",
+            "position_size": "xsd:double",
+            "entry_price": "xsd:double",
+            "mark_price": "xsd:double",
+        },
+    },
     "Instrument": {
         "ontology_class": "Document",
         "fields": {

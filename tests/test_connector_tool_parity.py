@@ -12,6 +12,7 @@ pytestmark = pytest.mark.spec("CONN-BELLWETHER-MCP-CONNECTOR-CONTENT-R001")
 
 PACKAGE = "bellwether_mcp"
 EXPECTED_TOOLS = {
+    "coinglass_macro_snapshot",
     "cmc_global_metrics",
     "cmc_listings",
     "cmc_quotes",
@@ -51,7 +52,7 @@ def test_canonical_server_preserves_legacy_tools_and_schemas(monkeypatch, transp
 
     assert set(legacy_tools) == EXPECTED_TOOLS
     assert set(canonical_tools) == EXPECTED_TOOLS
-    assert len(legacy_tools) == len(canonical_tools) == 8
+    assert len(legacy_tools) == len(canonical_tools) == 9
     for name in EXPECTED_TOOLS:
         assert canonical_tools[name] == legacy_tools[name]
 
