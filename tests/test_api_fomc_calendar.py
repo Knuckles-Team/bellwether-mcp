@@ -115,3 +115,35 @@ async def test_declared_fomc_source_retains_announcement_through_sdk():
     assert record.payload["source_url"] == curated["source_url"]
     assert record.provenance.connector == "bellwether-mcp"
     assert record.provenance.tool == "fomc_calendar_list"
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        {"since": "20260101"},
+        {"until": "2026-02-30"},
+        {"since": "2026-01-01T00:00:00"},
+        {"since": "2026-02-02", "until": "2026-02-01"},
+    ],
+)
+async def test_served_fomc_refuses_invalid_date_ranges(arguments):
+    from fastmcp import Client, FastMCP
+
+    from bellwether_mcp.mcp.tools_fomc_calendar import register_fomc_calendar_tools
+
+    server = FastMCP("fomc-test")
+    register_fomc_calendar_tools(server, None)
+    async with Client(server) as client:
+        result = await client.call_tool(
+            "fomc_calendar_list", arguments, raise_on_error=False
+        )
+    assert result.is_error
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003")
+def test_fomc_date_range_accepts_equal_inclusive_bounds():
+    day = fomc_calendar.load_meetings()[0]["decision_date"]
+    page = fomc_calendar.list_meetings(since=day, until=day)
+    assert [item["decision_date"] for item in page["items"]] == [day]

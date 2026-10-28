@@ -5,7 +5,8 @@
   "delivery_state": "LANDED",
   "requirement_ids": [
     "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R001",
-    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002"
+    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002",
+    "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003"
   ],
   "requirements": [
     {
@@ -26,6 +27,18 @@
       ],
       "verified_by": [
         "tests/test_api_fomc_calendar.py:97"
+      ]
+    },
+    {
+      "id": "CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003",
+      "title": "Calendar date bounds",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "eb7fb00f04e3"
+      ],
+      "verified_by": [
+        "tests/test_api_fomc_calendar.py:120",
+        "tests/test_api_fomc_calendar.py:145"
       ]
     }
   ]

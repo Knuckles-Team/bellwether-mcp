@@ -5,3 +5,4 @@
 - [ ] Run the full quality gates and record merge evidence.
 
 - [x] Exercise the declared FOMC source through the SDK MCP adapter (CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002).
+- [x] Validate FOMC calendar date bounds (CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003).
