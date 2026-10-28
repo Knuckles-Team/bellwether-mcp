@@ -74,3 +74,87 @@ async def test_get_vintage_dates_lists_every_revision(fixture):
         "2026-09-01",
     ]
     assert result["items"][0]["vintage_id"] == "WALCL:2026-07-01"
+
+
+@pytest.fixture
+def no_vendor_requests():
+    calls = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(request)
+        return json_response({"observations": [], "count": 0})
+
+    return calls, handler
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R001")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "value",
+    ["", " ", "20260801", "2026-2-01", "2026-02-30", "2026-01-01T00:00:00", None],
+)
+async def test_asof_refuses_invalid_vintage_before_request(value, no_vendor_requests):
+    calls, handler = no_vendor_requests
+
+    async with mock_client("https://api.stlouisfed.org/fred", handler) as client:
+        with pytest.raises(ValueError, match="YYYY-MM-DD"):
+            await fred.get_observations_asof(
+                client, api_key="k", series_id="WALCL", vintage_date=value
+            )
+    assert calls == []
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R001")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "start,end", [("", None), (None, ""), ("2026-08-02", "2026-08-01")]
+)
+async def test_invalid_explicit_realtime_windows_never_request(
+    start, end, no_vendor_requests
+):
+    calls, handler = no_vendor_requests
+
+    async with mock_client("https://api.stlouisfed.org/fred", handler) as client:
+        with pytest.raises(ValueError):
+            await fred.get_observations(
+                client,
+                api_key="k",
+                series_id="WALCL",
+                realtime_start=start,
+                realtime_end=end,
+            )
+    assert calls == []
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-FRED-VINTAGE-R001")
+@pytest.mark.asyncio
+async def test_served_asof_refuses_missing_vintage_without_upstream_call(
+    monkeypatch, no_vendor_requests
+):
+    from types import SimpleNamespace
+
+    from fastmcp import Client, FastMCP
+
+    from bellwether_mcp.mcp import tools_macro_series
+
+    calls, handler = no_vendor_requests
+
+    async with mock_client("https://api.stlouisfed.org/fred", handler) as http:
+
+        class Endpoint:
+            async def paced_client(self):
+                return http
+
+        monkeypatch.setattr(tools_macro_series, "resolve_fred_api_key", lambda: "k")
+        server = FastMCP("fred-test")
+        tools_macro_series.register_macro_series_tools(
+            server, SimpleNamespace(fred=Endpoint())
+        )
+        async with Client(server) as client:
+            result = await client.call_tool(
+                "fred_series_observations_asof",
+                {"series_id": "WALCL", "vintage_date": ""},
+                raise_on_error=False,
+            )
+            assert result.is_error
+        assert calls == []
