@@ -298,3 +298,40 @@ async def test_served_cmc_refuses_duplicate_asset_ids(
         if tool == "cmc_quotes":
             payload["data"]["ETH"] = items[1]
     await _assert_cmc_refuses(payload, tool, monkeypatch)
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-PAGING-R003")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("arguments", [{"start": -1}, {"limit": 0}, {"limit": -1}])
+async def test_served_cmc_rejects_invalid_page_before_vendor_call(
+    arguments, monkeypatch
+):
+    from fastmcp import Client
+
+    calls = []
+
+    def handler(request):
+        calls.append(request)
+        return json_response({"data": []})
+
+    async with mock_client("https://pro-api.coinmarketcap.com", handler) as http:
+        server = _served_cmc(http, monkeypatch)
+        async with Client(server) as client:
+            result = await client.call_tool(
+                "cmc_listings", arguments, raise_on_error=False
+            )
+    assert result.is_error
+    assert calls == []
+
+
+@pytest.mark.spec("CONN-BELLWETHER-MCP-CMC-PAGING-R003")
+@pytest.mark.asyncio
+@pytest.mark.parametrize("start,limit", [(True, 1), (0, False), (0.5, 1), (0, 1.5)])
+async def test_cmc_client_rejects_noninteger_page_bounds(start, limit):
+    async with mock_client(
+        "https://pro-api.coinmarketcap.com", lambda r: json_response({"data": []})
+    ) as client:
+        with pytest.raises(ValueError):
+            await coinmarketcap.list_listings(
+                client, api_key="k", start=start, limit=limit
+            )
