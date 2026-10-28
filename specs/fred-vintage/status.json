@@ -12,12 +12,13 @@
       "title": "Validate point-in-time windows",
       "delivery_state": "VERIFIED",
       "landed_in": [
+        "d75406fecb1a",
         "f37b6812355f"
       ],
       "verified_by": [
-        "tests/test_api_fred.py:100",
-        "tests/test_api_fred.py:124",
-        "tests/test_api_fred.py:79"
+        "tests/test_api_fred.py:107",
+        "tests/test_api_fred.py:129",
+        "tests/test_api_fred.py:90"
       ]
     }
   ]
