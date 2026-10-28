@@ -22,3 +22,5 @@ Read the existing specs first. Extend the spec that owns the behavior. Create a 
 - [`CONN-BELLWETHER-MCP-FRED-VINTAGE`](fred-vintage/spec.md) — FRED point-in-time requests.
 
 - [`CONN-BELLWETHER-MCP-CMC-PAGING`](cmc-paging/spec.md) — CoinMarketCap listing pagination.
+
+- [`CONN-BELLWETHER-MCP-CMC-VALUES`](cmc-values/spec.md) — CoinMarketCap market values.

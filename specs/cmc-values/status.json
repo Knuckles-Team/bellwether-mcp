@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "spec_id": "CONN-BELLWETHER-MCP-CMC-VALUES",
+  "owner_repo": "bellwether-mcp",
+  "delivery_state": "VERIFIED",
+  "requirement_ids": [
+    "CONN-BELLWETHER-MCP-CMC-VALUES-R001"
+  ],
+  "requirements": [
+    {
+      "id": "CONN-BELLWETHER-MCP-CMC-VALUES-R001",
+      "title": "Finite market values",
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "b3fb82de7e69"
+      ],
+      "verified_by": [
+        "tests/test_api_coinmarketcap.py:204",
+        "tests/test_api_coinmarketcap.py:240"
+      ]
+    }
+  ]
+}
