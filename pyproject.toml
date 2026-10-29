@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "scion-sdk[mcp]>=0.5.6,<1.0.0",
+    "scion-sdk[mcp]>=0.5.9,<0.6.0",
     "httpx>=0.28.1",
 ]
 
@@ -36,7 +36,7 @@ bellwether-mcp = "bellwether_mcp.mcp_server:mcp_server"
 [project.entry-points."agent_connector_sdk.prompt_providers"]
 bellwether-mcp = "bellwether_mcp.prompts"
 
-# The one declared connector identity: the fleet name (SDK-CONNECTOR-CONTROL-R071).
+# The one declared connector identity: the fleet name (SCION-CONNECTOR-CONTROL-R071).
 [project.entry-points."agent_connector_sdk.connector"]
 bellwether-mcp = "bellwether_mcp:connector"
 

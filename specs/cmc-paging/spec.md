@@ -1,6 +1,6 @@
 # CONN-BELLWETHER-MCP-CMC-PAGING — CoinMarketCap listing pagination
 
-Owner: bellwether-mcp. Cross-repo IDs: `SDK-FINANCE-SOURCES-R001`.
+Owner: bellwether-mcp. Cross-repo IDs: `SCION-FINANCE-SOURCES-R001`.
 
 ## Purpose and user stories
 

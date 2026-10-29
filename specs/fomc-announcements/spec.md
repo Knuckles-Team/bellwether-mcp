@@ -1,6 +1,6 @@
 # CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS — Sourced decision times
 
-Owner: bellwether-mcp. Cross-repo ID: SDK-FINANCE-SOURCES-R001.
+Owner: bellwether-mcp. Cross-repo ID: SCION-FINANCE-SOURCES-R001.
 
 ## Purpose and scope
 
