@@ -1,6 +1,6 @@
 # CONN-BELLWETHER-MCP-HTTP — Outbound HTTP pacing
 
-Owner: bellwether-mcp. Cross-repo IDs: `SDK-CENTRALIZED-CAPABILITIES-R005`.
+Owner: bellwether-mcp. Cross-repo IDs: `SCION-CENTRALIZED-CAPABILITIES-R005`.
 Public provenance: SDK centralization audit of 2026-10-22, which found a copied request limiter in this connector.
 
 ## Purpose and user stories
@@ -14,7 +14,7 @@ A vendor API publishes a request budget. The connector must keep each host's cal
 
 ## Why a new spec
 
-Search: `specs/` held only `_template/`. No local spec owns outbound HTTP. The limiter contract is `SDK-CENTRALIZED-CAPABILITIES-R005`. This spec owns only the connector's use of it.
+Search: `specs/` held only `_template/`. No local spec owns outbound HTTP. The limiter contract is `SCION-CENTRALIZED-CAPABILITIES-R005`. This spec owns only the connector's use of it.
 
 ## Scope and interfaces
 
