@@ -83,7 +83,7 @@ repos:
     files: ^(bellwether_mcp/.*\.py|pyproject\.toml)$
   - id: pytest
     name: pytest (full suite)
-    entry: bash -c 'uv run --frozen python -m pytest -q'
+    entry: bash -c 'uv run --frozen --extra test python -m pytest -q'
     language: system
     pass_filenames: false
     always_run: true
