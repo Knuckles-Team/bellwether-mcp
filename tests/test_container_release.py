@@ -3,8 +3,6 @@
 import tomllib
 from pathlib import Path
 
-import yaml
-
 
 def test_release_generator_uses_existing_ontology():
     root = Path(__file__).resolve().parents[1]
@@ -12,5 +10,3 @@ def test_release_generator_uses_existing_ontology():
     stem = config["tool"]["pipelines"]["ontology"]["ttl"]
     assert stem == "market_data"
     assert (root / "bellwether_mcp" / "ontology" / f"{stem}.ttl").is_file()
-
-
