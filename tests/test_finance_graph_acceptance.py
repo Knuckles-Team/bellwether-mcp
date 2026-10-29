@@ -291,6 +291,10 @@ async def test_fred_served_graph_and_liquidity(graph_socket, monkeypatch):
                     assert all(
                         row["observed_at"]
                         and row["source_provenance"]["connector"] == CONNECTOR
+                        and row["realtime_start"] == "2026-09-24"
+                        and row["realtime_end"] == "2026-09-24"
+                        and row["source_record_id"]
+                        == f"{row['series_id']}:{row['date']}:{row['realtime_start']}"
                         for row in rows
                     )
                 panel = await panel_module.read_liquidity_panel(
