@@ -1,17 +1,17 @@
 """Governed HTTP clients for this package's vendor APIs.
 
 Every outbound request in this package goes through
-``agent_connector_sdk.http.client``: bounded timeouts, TLS verification,
+``scion_sdk.http.client``: bounded timeouts, TLS verification,
 governed retry/backoff, and a redacted-URL logger. This module adds only the
 connector's user agent and endpoint defaults. Per-host pacing uses the SDK's
-``agent_connector_sdk.httpsupport.RateLimiter``.
+``scion_sdk.httpsupport.RateLimiter``.
 """
 
 from __future__ import annotations
 
 import httpx
-from agent_connector_sdk.http.client import create_async_http_client
-from agent_connector_sdk.http.options import HttpClientOptions
+from scion_sdk.http.client import create_async_http_client
+from scion_sdk.http.options import HttpClientOptions
 
 from bellwether_mcp.config import USER_AGENT, SourceEndpoint
 

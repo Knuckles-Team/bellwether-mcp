@@ -1,14 +1,14 @@
 """Credential references for the two keyed sources (CoinMarketCap, FRED).
 
-Every value is resolved through ``agent_connector_sdk.credentials`` at call
+Every value is resolved through ``scion_sdk.credentials`` at call
 time — never read directly from ``os.environ``, never logged, never cached to
 disk, never embedded in a fixture, and never accepted as an MCP tool argument.
 """
 
 from __future__ import annotations
 
-from agent_connector_sdk.credentials.references import parse_secret_reference
-from agent_connector_sdk.credentials.resolver import (
+from scion_sdk.credentials.references import parse_secret_reference
+from scion_sdk.credentials.resolver import (
     CompositeCredentialResolver,
     CredentialResolver,
     CredentialUnavailableError,

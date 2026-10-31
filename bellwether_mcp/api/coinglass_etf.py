@@ -84,7 +84,7 @@ async def read_etf_fund_flows(
     coinglass._validate_request(api_key, "etf", license_tag)
     if not isinstance(ticker, str) or not coinglass._TICKER.fullmatch(ticker):
         raise ValueError("invalid ETF ticker")
-    options = {
+    options: dict[str, Any] = {
         "headers": {"CG-API-KEY": api_key},
         "max_bytes": 2 * 1024 * 1024,
         "max_redirects": 0,

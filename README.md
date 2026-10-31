@@ -1,6 +1,6 @@
 # bellwether-mcp
 
-*Version: 1.3.7*
+*Version: 1.3.8*
 
 > **Documentation** — Installation, deployment, and tool usage are maintained in the
 > [official documentation](https://knuckles-team.github.io/bellwether-mcp/).
@@ -8,7 +8,7 @@
 Crypto discovery/rankings/market caps (CoinMarketCap), Fed macro and liquidity
 series with point-in-time vintages (FRED/ALFRED), and the FOMC decision
 calendar (hike/cut/hold, sourced) — as an MCP tool surface and, through
-`agent-connector-sdk`'s declarative `mcp_tool` source adapter, as bounded,
+`scion-sdk`'s declarative `mcp_tool` source adapter, as bounded,
 checkpointed ingestion streams intended for EG's `finance-v1` world-model
 ontology (`feat/finance-core`, not yet published — see AGENTS.md).
 
@@ -41,7 +41,7 @@ Nine MCP tools, one FastMCP server (`bellwether-mcp` console script):
 `fred_series_vintage_dates`, `fomc_calendar_list`, `coinglass_macro_snapshot`.
 
 Every tool is keyless except `cmc_*`, `fred_*` and `coinglass_*`, whose credentials are
-resolved server-side through `agent_connector_sdk.credentials`
+resolved server-side through `scion_sdk.credentials`
 (`BELLWETHER_CMC_API_KEY`, `BELLWETHER_FRED_API_KEY`, `BELLWETHER_COINGLASS_API_KEY`) — never accepted as a
 tool argument. `fomc_calendar_list` reads a packaged, curated, sourced dataset
 and needs no credential and no network.

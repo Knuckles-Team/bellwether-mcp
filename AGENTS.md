@@ -23,7 +23,7 @@ Tool-neutral rules for any AI agent or human working in this repository. This bl
   rate-limited governed HTTP clients for the two keyed sources) + `server.py`
   (composition root).
 - `bellwether_mcp/connectors/`: `mcp_source_presets.json` (10 declarative
-  `agent-connector-sdk` `mcp_tool` presets), `fomc_meetings.json` (the curated,
+  `scion-sdk` `mcp_tool` presets), `fomc_meetings.json` (the curated,
   sourced FOMC dataset), `tool_schema_fingerprints.json` (generated — see below),
   and `adapters.py` (the runtime `SourceAdapter` factory).
 - `bellwether_mcp/ontology/`: this connector's OWN admin-lifecycle ontology
@@ -35,35 +35,35 @@ Tool-neutral rules for any AI agent or human working in this repository. This bl
   from the live `tools/list` schema — run after any tool signature/docstring change.
 
 ## Tech stack
-- Python 3.12+, `agent-connector-sdk` (not `agent-utilities`, not `epistemic-graph`
-  directly — see "Why agent-connector-sdk" below), FastMCP, httpx.
+- Python 3.12+, `scion-sdk` (not `agent-utilities`, not `epistemic-graph`
+  directly — see "Why scion-sdk" below), FastMCP, httpx.
 
 ## Commands
-- `PYTHONPATH=. <agent-connector-sdk venv>/bin/python3 -m pytest -q`: run tests
+- `PYTHONPATH=. <scion-sdk venv>/bin/python3 -m pytest -q`: run tests
   (this package has no resolvable standalone `uv sync` yet — see "Known environment
-  gap" below; borrow the SDK's own venv, which already carries `agent_connector_sdk`,
+  gap" below; borrow the SDK's own venv, which already carries `scion_sdk`,
   `epistemic_graph` and `fastmcp`).
 - `... -m mypy bellwether_mcp --ignore-missing-imports --check-untyped-defs`
 - `uvx ruff@0.16.0 check bellwether_mcp tests scripts` /
   `uvx ruff@0.16.0 format bellwether_mcp tests scripts`
 - `pre-commit run kiss-staged|complexity-staged|dupehound-changed --files <paths>`
 
-## Why agent-connector-sdk, not the legacy AU client-reflection pattern
+## Why scion-sdk, not the legacy AU client-reflection pattern
 Modeled directly on `agents/world-reference-mcp` (the first package on this SDK
 architecture) per the lane's explicit direction to build "one package with pluggable
 source presets" rather than one bespoke package per API:
 
 - **Ports, not ad hoc code.** Every one of this connector's 10 streams is one
-  `agent_connector_sdk.manifest.presets.ToolPreset` entry in
+  `scion_sdk.manifest.presets.ToolPreset` entry in
   `connectors/mcp_source_presets.json`, extracted by the SDK's own generic
-  `agent_connector_sdk.adapters.mcp_tool.McpToolSourceAdapter` — RF-ADR-009 §2.2.1:
+  `scion_sdk.adapters.mcp_tool.McpToolSourceAdapter` — RF-ADR-009 §2.2.1:
   "a new API source is a preset, not code." Adding an eighth FRED macro series means
   adding a `FRED_MACRO_SERIES` alias in `config.py` plus a preset entry — never a new
   API client or MCP tool.
-- **No direct EG dependency.** This package depends on `agent-connector-sdk` only. It
+- **No direct EG dependency.** This package depends on `scion-sdk` only. It
   never builds its own EG client and never writes a `kg_ingest.py`-style
   direct-to-graph tool. Delivery to a live graph is entirely the SDK's
-  `agent_connector_sdk.runner`/`sinks` job, wired at deployment time from
+  `scion_sdk.runner`/`sinks` job, wired at deployment time from
   `connectors.adapters.build_source_adapters()`.
 
 ## Ontology mapping (read before touching `mcp_source_presets.json`)
@@ -121,7 +121,7 @@ not a live scrape.
 
 ## Credentials
 Two of eight tools need a credential, resolved server-side through
-`agent_connector_sdk.credentials` — never accepted as a tool argument:
+`scion_sdk.credentials` — never accepted as a tool argument:
 - `cmc_listings`, `cmc_quotes`, `cmc_global_metrics`: `BELLWETHER_CMC_API_KEY`
   (`env://` by default) — CoinMarketCap has **no keyless endpoint**, including its
   free "Basic" plan.
@@ -130,7 +130,7 @@ Two of eight tools need a credential, resolved server-side through
 
 Both accept an `openbao://apps/bellwether-mcp#<FIELD>` reference in the same
 environment variable instead, resolved through
-`agent_connector_sdk.credentials.resolver.CompositeCredentialResolver` at the
+`scion_sdk.credentials.resolver.CompositeCredentialResolver` at the
 deployment composition root (`bellwether_mcp.credentials.default_resolver` wires
 only the `env://` scheme; a deployment adds an OpenBao resolver).
 
@@ -139,7 +139,7 @@ only the `env://` scheme; a deployment adds an OpenBao resolver).
 ## Rate limits
 CoinMarketCap and FRED are each called through `bellwether_mcp.mcp.clients.Clients`,
 one governed `httpx.AsyncClient` (TLS, bounded timeout, retry/backoff —
-`agent_connector_sdk.http`) plus one `RateLimiter` (a cooperative minimum-interval
+`scion_sdk.http`) plus one `RateLimiter` (a cooperative minimum-interval
 sleeper) per host, sized to each API's documented budget in `config.py`'s per-source
 comments (CMC: 30 req/min on the Basic plan; FRED: 120 req/min per key).
 `USER_AGENT` identifies this connector with a contact address.
@@ -166,12 +166,12 @@ scope to perform unverified. This is a documented, deliberate gap, not a claim o
 coverage this package does not have.
 
 ## Known environment gap: `uv sync` does not resolve standalone
-Same gap as `world-reference-mcp` (see its `AGENTS.md`): `agent-connector-sdk`'s
+Same gap as `world-reference-mcp` (see its `AGENTS.md`): `scion-sdk`'s
 `pyproject.toml` currently declares `epistemic-graph>=2.27.0,<3`, but the index this
 workspace's `uv sync` consults only has `epistemic-graph<=2.23.0` — a pre-existing
 SDK-side packaging gap, not this package's to fix; not touched here. All commands
-above instead borrow `agent-connector-sdk`'s own canonical `.venv`
-(`agent-connector-sdk/.venv`, which does carry `agent_connector_sdk`, `fastmcp` and
+above instead borrow `scion-sdk`'s own canonical `.venv`
+(`scion-sdk/.venv`, which does carry `scion_sdk`, `fastmcp` and
 `httpx`) via `PYTHONPATH`.
 
 ## Not yet built (see WRAPUP.md for the full EH-412/EH-422 disposition)
@@ -179,7 +179,7 @@ above instead borrow `agent-connector-sdk`'s own canonical `.venv`
   are declared in `pyproject.toml` but the `skills/`, `prompts/`, `ontology/`
   federation registration (`REGISTERED_FEDERATED_IRIS`, `ontology.lock`) is deferred
   to the orchestrator's fleet registration pass — see `REGISTRATION.patch.md`.
-- `agent_connector_sdk.source_adapters` entry-point group / `runner` composition
+- `scion_sdk.source_adapters` entry-point group / `runner` composition
   (which sink/schedule actually drives `connectors.adapters.build_source_adapters()`
   in a live deployment) is not wired — this package provides the factory; runner
   composition is deployment-layer work, out of this lane's scope.
@@ -195,7 +195,7 @@ above instead borrow `agent-connector-sdk`'s own canonical `.venv`
   route around it.
 - `auth.py` and `agent_server.py` are deliberately not added, matching the fleet
   template's exception path this package already documented above ("Why
-  agent-connector-sdk"): there is no single backend session to authenticate
+  scion-sdk"): there is no single backend session to authenticate
   against (`credentials.py` already resolves both keyed sources), and an
   `agent_server.py` will require an `agent_utilities` import this package's
   architecture explicitly rules out. `world-reference-mcp` — the other package on

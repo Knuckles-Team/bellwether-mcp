@@ -1,7 +1,7 @@
 # Usage — MCP tools and source adapters
 
 `bellwether-mcp` exposes its data two ways: as **MCP tools** an agent calls
-directly, and as **declarative `agent-connector-sdk` source adapters** a
+directly, and as **declarative `scion-sdk` source adapters** a
 deployment's runner drives on a schedule for continuous knowledge-graph
 ingestion. The architecture is covered in [Overview](overview.md).
 
@@ -47,7 +47,7 @@ Adding a new FRED macro series means adding an alias to
 `config.FRED_MACRO_SERIES` plus one preset entry — never a new API client or
 MCP tool (RF-ADR-009 §2.2.1: "a new API source is a preset, not code").
 Wiring these adapters to a live sink/schedule is a deployment-layer concern
-(`agent_connector_sdk.runner`), not something this package does itself.
+(`scion_sdk.runner`), not something this package does itself.
 
 ## As a Python API
 

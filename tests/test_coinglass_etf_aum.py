@@ -83,14 +83,14 @@ async def test_missing_conflicting_or_invalid_aum_refuses(monkeypatch, payload):
 async def test_declared_fund_source_runs_through_sdk_adapter(monkeypatch):
     from datetime import datetime
 
-    from agent_connector_sdk.adapters.mcp_tool import McpToolSourceAdapter
-    from agent_connector_sdk.finance.etf_flows import etf_fund_flows_from_source
-    from agent_connector_sdk.ingest.live_declaration import build_declaration
-    from agent_connector_sdk.manifest.declaration import contract_from_declaration
-    from agent_connector_sdk.ports.session import TransportEndpoint
-    from agent_connector_sdk.runner import syncing
-    from agent_connector_sdk.testing.sinks import InMemorySink
-    from agent_connector_sdk.transports.mcp import McpTransport
+    from scion_sdk.adapters.mcp_tool import McpToolSourceAdapter
+    from scion_sdk.finance.etf_flows import etf_fund_flows_from_source
+    from scion_sdk.ingest.live_declaration import build_declaration
+    from scion_sdk.manifest.declaration import contract_from_declaration
+    from scion_sdk.ports.session import TransportEndpoint
+    from scion_sdk.runner import syncing
+    from scion_sdk.testing.sinks import InMemorySink
+    from scion_sdk.transports.mcp import McpTransport
 
     from bellwether_mcp import connector_sources
 

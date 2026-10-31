@@ -1,13 +1,13 @@
 """The served finance sources commit delta pages through the SDK sink."""
 
 import pytest
-from agent_connector_sdk.adapters.mcp_tool import McpToolSourceAdapter
-from agent_connector_sdk.ingest.live_declaration import build_declaration
-from agent_connector_sdk.manifest.declaration import contract_from_declaration
-from agent_connector_sdk.ports.session import TransportEndpoint
-from agent_connector_sdk.runner.syncing import SyncTarget, sync_stream
-from agent_connector_sdk.testing.sinks import InMemorySink
-from agent_connector_sdk.transports.mcp import McpTransport
+from scion_sdk.adapters.mcp_tool import McpToolSourceAdapter
+from scion_sdk.ingest.live_declaration import build_declaration
+from scion_sdk.manifest.declaration import contract_from_declaration
+from scion_sdk.ports.session import TransportEndpoint
+from scion_sdk.runner.syncing import SyncTarget, sync_stream
+from scion_sdk.testing.sinks import InMemorySink
+from scion_sdk.transports.mcp import McpTransport
 
 from bellwether_mcp import connector_sources
 from bellwether_mcp.mcp import tools_crypto_reference, tools_macro_series

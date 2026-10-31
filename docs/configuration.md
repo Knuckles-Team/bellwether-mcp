@@ -11,7 +11,7 @@ belong in source, packaged skill content, traces, or generated reports.
 The current capability surface is defined by:
 
 - the eight MCP tools described in the README and `docs/usage.md`;
-- the ten declarative `agent_connector_sdk.manifest.presets.ToolPreset` entries
+- the ten declarative `scion_sdk.manifest.presets.ToolPreset` entries
   in `connectors/mcp_source_presets.json`;
 - `connector_manifest.yml` and its ontology, mappings, shapes, fixtures,
   migrations, tool-schema fingerprints, and certification metadata.
@@ -38,7 +38,7 @@ default.
 ## TLS trust
 
 Certificate verification is required for every outbound HTTP call — both
-vendor clients go through `agent_connector_sdk.http.client`'s governed
+vendor clients go through `scion_sdk.http.client`'s governed
 transport, which checks TLS by default. Do not disable verification to work
 around an incomplete server chain.
 
@@ -53,7 +53,7 @@ hostname or personal identifier.
 When the declarative source adapters are wired to a live sink (deployment
 layer, outside this package — see `AGENTS.md`), each change must carry
 tenant, ACL, classification, retention, provenance, and checkpoint/delta
-metadata per `agent_connector_sdk`'s `SourceIngestionRequest` contract. Reject
+metadata per `scion_sdk`'s `SourceIngestionRequest` contract. Reject
 or quarantine records that cannot satisfy that contract; never silently widen
 a tenant scope.
 

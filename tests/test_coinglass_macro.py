@@ -131,7 +131,7 @@ async def test_malformed_provider_data_refuses_without_private_values(
 
 @pytest.mark.asyncio
 async def test_guarded_http_uses_header_and_fixed_destination(monkeypatch):
-    from agent_connector_sdk.source_connectors.http_safety import safe_get_json_async
+    from scion_sdk.source_connectors.http_safety import safe_get_json_async
 
     requests = []
 
@@ -156,13 +156,13 @@ async def test_guarded_http_uses_header_and_fixed_destination(monkeypatch):
 @pytest.mark.asyncio
 @pytest.mark.parametrize("kind", ["etf", "sentiment", "onchain"])
 async def test_declared_source_replays_into_sdk_sink(kind, monkeypatch):
-    import agent_connector_sdk.adapters.mcp_tool as adapter_module
-    import agent_connector_sdk.ingest.live_declaration as declaration_module
-    import agent_connector_sdk.manifest.declaration as contract_module
-    import agent_connector_sdk.ports.session as session_module
-    import agent_connector_sdk.runner.syncing as sync_module
-    import agent_connector_sdk.testing.sinks as sink_module
-    import agent_connector_sdk.transports.mcp as transport_module
+    import scion_sdk.adapters.mcp_tool as adapter_module
+    import scion_sdk.ingest.live_declaration as declaration_module
+    import scion_sdk.manifest.declaration as contract_module
+    import scion_sdk.ports.session as session_module
+    import scion_sdk.runner.syncing as sync_module
+    import scion_sdk.testing.sinks as sink_module
+    import scion_sdk.transports.mcp as transport_module
 
     from bellwether_mcp import connector_sources
 
