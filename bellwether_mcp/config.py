@@ -1,7 +1,7 @@
 """Base URLs, contact info and rate-limit knobs for the market-data APIs.
 
 Every value has a documented-limit-respecting default and is overridable
-through :func:`agent_connector_sdk.config.setting` so a deployment can point
+through :func:`scion_sdk.config.setting` so a deployment can point
 at a mirror or tune throughput without a code change. Nothing here performs
 I/O.
 """
@@ -13,7 +13,7 @@ import warnings
 from dataclasses import dataclass
 from typing import Any
 
-from agent_connector_sdk.config import setting
+from scion_sdk.config import setting
 
 #: Settings prefix. ``MARKET_DATA_`` (the name before the bellwether-mcp rename)
 #: is still read, with a DeprecationWarning, for one release.

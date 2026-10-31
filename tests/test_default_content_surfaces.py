@@ -77,12 +77,12 @@ def test_sdk_floor_supports_content_identity_and_current_pack_protocol() -> None
     sdk = [Requirement(value) for value in declared if value.startswith("scion-sdk")]
     assert sdk
     for requirement in sdk:
-        assert requirement.specifier.contains("0.5.9")
-        assert not requirement.specifier.contains("0.5.5")
+        assert requirement.specifier.contains("0.6.4")
+        assert not requirement.specifier.contains("0.5.9")
 
 
 def test_sdk_loads_every_preserved_source_mapping_and_resource():
-    from agent_connector_sdk.ingest.live_declaration import load_declaration
+    from scion_sdk.ingest.live_declaration import load_declaration
 
     declared = load_declaration(PACKAGE)
     assert declared.connector == "bellwether-mcp"
@@ -101,10 +101,10 @@ def test_production_content_pack_binds_packaged_ontology_and_shapes():
     import hashlib
     from importlib.metadata import version
 
-    from agent_connector_sdk.artifacts.pack import build_content_pack
-    from agent_connector_sdk.artifacts.resources import ResourceArtifactKind
-    from agent_connector_sdk.ports.session import TransportEndpoint
-    from agent_connector_sdk.transports.mcp import McpTransport
+    from scion_sdk.artifacts.pack import build_content_pack
+    from scion_sdk.artifacts.resources import ResourceArtifactKind
+    from scion_sdk.ports.session import TransportEndpoint
+    from scion_sdk.transports.mcp import McpTransport
 
     async def capture():
         async with McpTransport().session(

@@ -15,7 +15,7 @@
 pip install bellwether-mcp
 ```
 
-The install already includes the MCP-server runtime (`agent-connector-sdk` +
+The install already includes the MCP-server runtime (`scion-sdk` +
 `httpx`), so the `bellwether-mcp` console script is ready immediately — there
 is no separate "agent" extra to install (this package ships no A2A agent; see
 [Overview](overview.md)).
@@ -24,7 +24,7 @@ is no separate "agent" extra to install (this package ships no A2A agent; see
 
 | Extra | Install | Pulls in |
 |---|---|---|
-| _(base)_ | `pip install bellwether-mcp` | `agent-connector-sdk`, `httpx` |
+| _(base)_ | `pip install bellwether-mcp` | `scion-sdk`, `httpx` |
 | `test` | `pip install "bellwether-mcp[test]"` | `pytest`, `pytest-asyncio`, `pytest-cov`, `pytest-xdist` |
 
 ## From source

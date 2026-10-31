@@ -15,24 +15,11 @@ from pathlib import Path
 import httpx
 import pytest
 
-pytest.importorskip("epistemic_graph")
-pytest.importorskip("agent_connector_sdk.finance.market_source")
+pytestmark = pytest.mark.integration
 
-from agent_connector_sdk.adapters.mcp_tool import McpToolSourceAdapter
-from agent_connector_sdk.artifacts.pack import build_content_pack
-from agent_connector_sdk.artifacts.resources import ResourceArtifactKind
-from agent_connector_sdk.artifacts.tools import ToolArtifactKind
-from agent_connector_sdk.finance.etf_flows import etf_fund_flows_from_source
-from agent_connector_sdk.finance.market_source import (
-    MarketSourceAdapter,
-    MarketSourceKind,
-)
-from agent_connector_sdk.ingest.live_declaration import build_declaration
-from agent_connector_sdk.manifest.declaration import contract_from_declaration
-from agent_connector_sdk.ports.session import TransportEndpoint
-from agent_connector_sdk.runner.syncing import SyncTarget, sync_stream
-from agent_connector_sdk.sinks.epistemic_graph import EpistemicGraphSink
-from agent_connector_sdk.transports.mcp import McpTransport
+pytest.importorskip("epistemic_graph")
+pytest.importorskip("scion_sdk.finance.market_source")
+
 from epistemic_graph import EpistemicGraphClient
 from epistemic_graph.client import SyncEpistemicGraphClient
 from epistemic_graph.connector_pack import ConnectorPackClient
@@ -45,6 +32,21 @@ from epistemic_graph.server_binary import (
     ServerBinaryNotFoundError,
     resolve_server_binary,
 )
+from scion_sdk.adapters.mcp_tool import McpToolSourceAdapter
+from scion_sdk.artifacts.pack import build_content_pack
+from scion_sdk.artifacts.resources import ResourceArtifactKind
+from scion_sdk.artifacts.tools import ToolArtifactKind
+from scion_sdk.finance.etf_flows import etf_fund_flows_from_source
+from scion_sdk.finance.market_source import (
+    MarketSourceAdapter,
+    MarketSourceKind,
+)
+from scion_sdk.ingest.live_declaration import build_declaration
+from scion_sdk.manifest.declaration import contract_from_declaration
+from scion_sdk.ports.session import TransportEndpoint
+from scion_sdk.runner.syncing import SyncTarget, sync_stream
+from scion_sdk.sinks.epistemic_graph import EpistemicGraphSink
+from scion_sdk.transports.mcp import McpTransport
 
 from bellwether_mcp import connector_sources
 from bellwether_mcp.api import coinglass
@@ -255,7 +257,7 @@ async def _sync(session, client, context, contract, stream, kind, mapping, param
 
 
 async def test_fred_served_graph_and_liquidity(graph_socket, monkeypatch):
-    panel_module = pytest.importorskip("agent_connector_sdk.finance.liquidity_panel")
+    panel_module = pytest.importorskip("scion_sdk.finance.liquidity_panel")
     monkeypatch.setenv("MCP_FLEET_REGISTRATION", "false")
     monkeypatch.setattr(tools_macro_series, "resolve_fred_api_key", lambda: "test-key")
     payload = json.loads(

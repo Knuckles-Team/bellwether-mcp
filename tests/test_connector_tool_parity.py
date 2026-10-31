@@ -6,7 +6,7 @@ import asyncio
 import importlib
 
 import pytest
-from agent_connector_sdk.connector import build_server
+from scion_sdk.connector import build_server
 
 pytestmark = pytest.mark.spec("CONN-BELLWETHER-MCP-CONNECTOR-CONTENT-R001")
 

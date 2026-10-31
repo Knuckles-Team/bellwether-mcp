@@ -34,8 +34,8 @@ redeclare the finance-v1 domain classes above.
 
 ## Cross-project references
 
-This project is built on `agent-connector-sdk`, not `agent-utilities` — see
-[Overview](overview.md) "Why agent-connector-sdk". It therefore inherits no
+This project is built on `scion-sdk`, not `agent-utilities` — see
+[Overview](overview.md) "Why scion-sdk". It therefore inherits no
 `agent-utilities` 5-Pillar concepts and registers none of its own; when
 `feat/finance-core` publishes real class/property names, this page and
 `ontology/mappings/source.yaml` need a rename pass, not a redesign.

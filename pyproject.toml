@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bellwether-mcp"
-version = "1.3.7"
-description = "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP server and agent-connector-sdk source adapters"
+version = "1.3.8"
+description = "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP server and scion-sdk source adapters"
 readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "scion-sdk[mcp]>=0.5.9,<0.6.0",
+    "scion-sdk[mcp]>=0.6.4,<0.7.0",
     "httpx>=0.28.1",
 ]
 
@@ -33,11 +33,11 @@ test = ["pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest
 [project.scripts]
 bellwether-mcp = "bellwether_mcp.mcp_server:mcp_server"
 
-[project.entry-points."agent_connector_sdk.prompt_providers"]
+[project.entry-points."scion_sdk.prompt_providers"]
 bellwether-mcp = "bellwether_mcp.prompts"
 
 # The one declared connector identity: the fleet name (SCION-CONNECTOR-CONTROL-R071).
-[project.entry-points."agent_connector_sdk.connector"]
+[project.entry-points."scion_sdk.connector"]
 bellwether-mcp = "bellwether_mcp:connector"
 
 [tool.uv.workspace]

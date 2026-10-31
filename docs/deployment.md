@@ -6,7 +6,7 @@
 `bellwether-mcp` supports local stdio, a loopback-only development listener,
 a least-privilege stdio container, and a remote authenticated HTTPS boundary.
 Credential and trust material are supplied at runtime through the environment
-(`agent_connector_sdk.credentials`); none is stored in this repository.
+(`scion_sdk.credentials`); none is stored in this repository.
 
 ### Installed stdio process
 

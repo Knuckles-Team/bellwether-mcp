@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import pytest
-from agent_connector_sdk.httpsupport import RateLimiter
+from scion_sdk.httpsupport import RateLimiter
 
 from bellwether_mcp import http_clients
 from bellwether_mcp.mcp.clients import Clients

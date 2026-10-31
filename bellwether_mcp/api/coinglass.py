@@ -9,7 +9,7 @@ import re
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from agent_connector_sdk.source_connectors.http_safety import safe_get_json_async
+from scion_sdk.source_connectors.http_safety import safe_get_json_async
 
 _BASE = "https://open-api-v4.coinglass.com"
 _PATHS = {

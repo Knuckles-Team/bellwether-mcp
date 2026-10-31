@@ -3,7 +3,7 @@
 Crypto discovery/caps (**CoinMarketCap**), Fed macro and liquidity series with
 point-in-time vintages (**FRED/ALFRED**), and the FOMC decision calendar
 (hike/cut/hold, sourced) as an **MCP Server** for the agent-utilities
-ecosystem — a typed, deterministic tool surface plus `agent-connector-sdk`
+ecosystem — a typed, deterministic tool surface plus `scion-sdk`
 declarative source-adapter presets.
 
 !!! info "Official documentation"
@@ -33,7 +33,7 @@ consolidated MCP tools:
 Every tool other than `fomc_calendar_list` requires a server-side-resolved
 credential (`BELLWETHER_CMC_API_KEY` / `BELLWETHER_FRED_API_KEY`) — never
 accepted as a tool argument. This package ships **no A2A agent**: unlike most
-fleet packages it is built directly on `agent-connector-sdk` (not
+fleet packages it is built directly on `scion-sdk` (not
 `agent-utilities`) — see [Overview](overview.md) for why.
 
 ## Explore the documentation
@@ -43,7 +43,7 @@ fleet packages it is built directly on `agent-connector-sdk` (not
 - :material-rocket-start: **[Installation](installation.md)** — pip, source, and the prebuilt Docker image.
 - :material-server-network: **[Deployment](deployment.md)** — run the MCP server, Docker Compose, Caddy + Technitium.
 - :material-console: **[Usage](usage.md)** — the eight MCP tools and the declarative source adapters.
-- :material-sitemap: **[Architecture](overview.md)** — the agent-connector-sdk pattern and MCP configuration.
+- :material-sitemap: **[Architecture](overview.md)** — the scion-sdk pattern and MCP configuration.
 - :material-tag-multiple: **[Concepts](concepts.md)** — the design-doc ontology mapping this connector targets.
 
 </div>

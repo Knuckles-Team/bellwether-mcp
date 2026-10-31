@@ -2,7 +2,7 @@
 
 Composition root: one shared :class:`~bellwether_mcp.mcp.clients.Clients`
 wired into all three tool-registration modules on top of
-``agent_connector_sdk.mcp.server.create_mcp_server`` (secure server
+``scion_sdk.mcp.server.create_mcp_server`` (secure server
 construction, auth, network-exposure checks, fleet registration lease).
 """
 
@@ -11,10 +11,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, NamedTuple
 
-from agent_connector_sdk.connector_identity import connector_version
-from agent_connector_sdk.mcp.content import ConnectorContent
-from agent_connector_sdk.mcp.server import create_mcp_server
 from fastmcp import FastMCP
+from scion_sdk.connector_identity import connector_version
+from scion_sdk.mcp.content import ConnectorContent
+from scion_sdk.mcp.server import create_mcp_server
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
