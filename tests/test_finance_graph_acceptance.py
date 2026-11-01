@@ -17,18 +17,18 @@ import pytest
 
 pytestmark = pytest.mark.integration
 
-pytest.importorskip("epistemic_graph")
+pytest.importorskip("medulla")
 pytest.importorskip("scion_sdk.finance.market_source")
 
-from epistemic_graph import EpistemicGraphClient
-from epistemic_graph.client import SyncEpistemicGraphClient
-from epistemic_graph.connector_pack import ConnectorPackClient
-from epistemic_graph.generated.connector_pack import (
+from medulla import MedullaClient
+from medulla.client import SyncMedullaClient
+from medulla.connector_pack import ConnectorPackClient
+from medulla.generated.connector_pack import (
     AgentLibraryMutationContext,
     McpCatalogSnapshotBinding,
     PackProducer,
 )
-from epistemic_graph.server_binary import (
+from medulla.server_binary import (
     ServerBinaryNotFoundError,
     resolve_server_binary,
 )
@@ -121,7 +121,7 @@ def graph_socket(tmp_path_factory):
                 if proc.poll() is not None or time.monotonic() >= deadline:
                     raise RuntimeError("test graph did not start")
                 time.sleep(0.05)
-            client = SyncEpistemicGraphClient.connect(
+            client = SyncMedullaClient.connect(
                 socket_path=str(socket),
                 auth_secret=HMAC,
                 verified_context=_context(["security:bootstrap"]),
@@ -132,7 +132,7 @@ def graph_socket(tmp_path_factory):
                 )
             finally:
                 client.close()
-            client = SyncEpistemicGraphClient.connect(
+            client = SyncMedullaClient.connect(
                 socket_path=str(socket),
                 auth_secret=HMAC,
                 verified_context=_context(["*"]),
@@ -177,7 +177,7 @@ def _mutation_context():
 
 
 async def _setup(session, socket):
-    client = await EpistemicGraphClient.connect(
+    client = await MedullaClient.connect(
         socket_path=str(socket),
         auth_secret=HMAC,
         graph_name=GRAPH,
