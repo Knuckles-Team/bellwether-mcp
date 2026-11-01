@@ -79,7 +79,7 @@ def _context(scopes):
 def graph_socket(tmp_path_factory):
     try:
         binary = (
-            os.environ.get("EPISTEMIC_GRAPH_TEST_BINARY") or resolve_server_binary()
+            os.environ.get("MEDULLA_TEST_BINARY") or resolve_server_binary()
         )
     except ServerBinaryNotFoundError:
         pytest.skip("epistemic-graph server is not installed")
@@ -90,15 +90,15 @@ def graph_socket(tmp_path_factory):
     env = {
         **os.environ,
         "GRAPH_SERVICE_AUTH_SECRET": HMAC,
-        "EPISTEMIC_GRAPH_AUDIENCE": "epistemic-graph",
-        "EPISTEMIC_GRAPH_TENANT": TENANT,
-        "EPISTEMIC_GRAPH_POLICY_VERSION": "policy:current",
-        "EPISTEMIC_GRAPH_REQUIRE_OIDC": "false",
-        "EPISTEMIC_GRAPH_SECURITY_STATE_DIR": str(security),
-        "EPISTEMIC_GRAPH_SIGNER_KEYS_JSON": json.dumps(
+        "MEDULLA_AUDIENCE": "epistemic-graph",
+        "MEDULLA_TENANT": TENANT,
+        "MEDULLA_POLICY_VERSION": "policy:current",
+        "MEDULLA_REQUIRE_OIDC": "false",
+        "MEDULLA_SECURITY_STATE_DIR": str(security),
+        "MEDULLA_SIGNER_KEYS_JSON": json.dumps(
             {PRINCIPAL: {"key": SIGNER, "allowed_roles": [], "may_grant_system": True}}
         ),
-        "EPISTEMIC_GRAPH_ENCRYPTION_KEY": DATA_KEY,
+        "MEDULLA_ENCRYPTION_KEY": DATA_KEY,
     }
     with (tmp_path / "graph.log").open("wb") as log:
         proc = subprocess.Popen(
