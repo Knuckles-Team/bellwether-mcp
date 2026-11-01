@@ -2,5 +2,7 @@
 
 Governing spec: [spec.md](spec.md). Design: [plan.md](plan.md). Rows: [requirements.md](requirements.md).
 
-- [x] Replace the local limiter with the SDK `RateLimiter` and delete the copy (CONN-BELLWETHER-MCP-HTTP-R001).
-- [x] Refuse redirects on keyed CoinMarketCap calls (CONN-BELLWETHER-MCP-HTTP-R002).
+Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is producer first.
+
+- [x] T001 [US1] CONN-BELLWETHER-MCP-HTTP-R001 SDK request pacing.
+- [x] T002 [US1] CONN-BELLWETHER-MCP-HTTP-R002 CoinMarketCap keys never follow redirects.
