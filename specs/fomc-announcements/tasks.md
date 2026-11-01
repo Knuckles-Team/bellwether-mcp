@@ -1,8 +1,9 @@
-# CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS — Tasks
+# CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS — Implementation tasks
 
-- [x] Check the original release time for every curated record.
-- [x] Return the sourced UTC time through the calendar reader.
-- [ ] Run the full quality gates and record merge evidence.
+Governing spec: [spec.md](spec.md). Design: [plan.md](plan.md). Rows: [requirements.md](requirements.md).
 
-- [x] Exercise the declared FOMC source through the SDK MCP adapter (CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002).
-- [x] Validate FOMC calendar date bounds (CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003).
+Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is producer first.
+
+- [ ] T001 [US1] CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R001 Historical release time.
+- [x] T002 [US1] CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R002 Declared SDK source.
+- [x] T003 [US1] CONN-BELLWETHER-MCP-FOMC-ANNOUNCEMENTS-R003 Calendar date bounds.

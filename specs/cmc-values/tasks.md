@@ -2,10 +2,9 @@
 
 Governing spec: [spec.md](spec.md). Design: [plan.md](plan.md). Rows: [requirements.md](requirements.md).
 
-- [x] Validate CMC market values before serving records (CONN-BELLWETHER-MCP-CMC-VALUES-R001).
+Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is producer first.
 
-- [x] Refuse malformed CMC response data (CONN-BELLWETHER-MCP-CMC-VALUES-R002).
-
-- [x] Require valid CMC asset IDs (CONN-BELLWETHER-MCP-CMC-VALUES-R003).
-
-- [x] Refuse repeated CMC asset IDs within a page (CONN-BELLWETHER-MCP-CMC-VALUES-R004).
+- [x] T001 [US1] CONN-BELLWETHER-MCP-CMC-VALUES-R001 Finite market values.
+- [x] T002 [US1] CONN-BELLWETHER-MCP-CMC-VALUES-R002 Response data shape.
+- [x] T003 [US1] CONN-BELLWETHER-MCP-CMC-VALUES-R003 Provider identity.
+- [x] T004 [US1] CONN-BELLWETHER-MCP-CMC-VALUES-R004 Unique page identities.
