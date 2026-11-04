@@ -35,14 +35,14 @@ Tool-neutral rules for any AI agent or human working in this repository. This bl
   from the live `tools/list` schema — run after any tool signature/docstring change.
 
 ## Tech stack
-- Python 3.12+, `scion-sdk` (not `agent-utilities`, not `epistemic-graph`
+- Python 3.12+, `scion-sdk` (not `agent-utilities`, not `medulla`
   directly — see "Why scion-sdk" below), FastMCP, httpx.
 
 ## Commands
 - `PYTHONPATH=. <scion-sdk venv>/bin/python3 -m pytest -q`: run tests
   (this package has no resolvable standalone `uv sync` yet — see "Known environment
   gap" below; borrow the SDK's own venv, which already carries `scion_sdk`,
-  `epistemic_graph` and `fastmcp`).
+  `medulla` and `fastmcp`).
 - `... -m mypy bellwether_mcp --ignore-missing-imports --check-untyped-defs`
 - `uvx ruff@0.16.0 check bellwether_mcp tests scripts` /
   `uvx ruff@0.16.0 format bellwether_mcp tests scripts`
@@ -73,7 +73,7 @@ EG's `finance-v1` ontology is being built in parallel on branch `feat/finance-co
 `Instrument`, `Listing`, `Venue`, `BarSeries`, `IndicatorSpec`, `SignalState`,
 `TrendFlip`, `MacroEvent`). As of this package's build (2026-09-24), that branch has
 published nothing this lane can read against — `/var/tmp/l9/finish/finance-core/`
-is empty and the EG worktree `epistemic-graph/eg-finance` is stale at the train-3
+is empty and the EG worktree `medulla/eg-finance` is stale at the train-3
 tip (it carries the pre-existing `FinanceEwma`/`FinanceMomentum` stateless kernels,
 not a new TBox). This package therefore maps its streams onto the design doc's own
 proposed names as the best available authority (`Instrument`, `MacroEvent`; plus
@@ -167,8 +167,8 @@ coverage this package does not have.
 
 ## Known environment gap: `uv sync` does not resolve standalone
 Same gap as `world-reference-mcp` (see its `AGENTS.md`): `scion-sdk`'s
-`pyproject.toml` currently declares `epistemic-graph>=2.27.0,<3`, but the index this
-workspace's `uv sync` consults only has `epistemic-graph<=2.23.0` — a pre-existing
+`pyproject.toml` currently declares `medulla>=2.27.0,<3`, but the index this
+workspace's `uv sync` consults only has `medulla<=2.23.0` — a pre-existing
 SDK-side packaging gap, not this package's to fix; not touched here. All commands
 above instead borrow `scion-sdk`'s own canonical `.venv`
 (`scion-sdk/.venv`, which does carry `scion_sdk`, `fastmcp` and

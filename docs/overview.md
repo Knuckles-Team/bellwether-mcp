@@ -22,7 +22,7 @@ preset, not code"):
   `scion_sdk.manifest.presets.ToolPreset` entry in
   `connectors/mcp_source_presets.json`, extracted by the SDK's generic
   `scion_sdk.adapters.mcp_tool.McpToolSourceAdapter`.
-- **No direct epistemic-graph dependency, and no `agent-utilities`.** This
+- **No direct medulla dependency, and no `agent-utilities`.** This
   package never builds its own knowledge-graph client and ships no
   `kg_ingest.py`-style direct-to-graph tool. Delivery to a live graph is
   entirely `scion_sdk.runner`/`sinks`' job, wired at deployment time

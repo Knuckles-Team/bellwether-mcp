@@ -45,7 +45,7 @@ from scion_sdk.ingest.live_declaration import build_declaration
 from scion_sdk.manifest.declaration import contract_from_declaration
 from scion_sdk.ports.session import TransportEndpoint
 from scion_sdk.runner.syncing import SyncTarget, sync_stream
-from scion_sdk.sinks.epistemic_graph import EpistemicGraphSink
+from scion_sdk.sinks.medulla import MedullaSink
 from scion_sdk.transports.mcp import McpTransport
 
 from bellwether_mcp import connector_sources
@@ -66,7 +66,7 @@ def _context(scopes):
     return {
         "principal": PRINCIPAL,
         "tenant": TENANT,
-        "audience": "epistemic-graph",
+        "audience": "medulla",
         "agent_id": PRINCIPAL,
         "roles": [],
         "scopes": scopes,
@@ -78,11 +78,9 @@ def _context(scopes):
 @pytest.fixture
 def graph_socket(tmp_path_factory):
     try:
-        binary = (
-            os.environ.get("MEDULLA_TEST_BINARY") or resolve_server_binary()
-        )
+        binary = os.environ.get("MEDULLA_TEST_BINARY") or resolve_server_binary()
     except ServerBinaryNotFoundError:
-        pytest.skip("epistemic-graph server is not installed")
+        pytest.skip("medulla server is not installed")
     tmp_path = tmp_path_factory.mktemp("eg")
     socket = tmp_path / "eg.sock"
     security = tmp_path / "security"
@@ -90,7 +88,7 @@ def graph_socket(tmp_path_factory):
     env = {
         **os.environ,
         "GRAPH_SERVICE_AUTH_SECRET": HMAC,
-        "MEDULLA_AUDIENCE": "epistemic-graph",
+        "MEDULLA_AUDIENCE": "medulla",
         "MEDULLA_TENANT": TENANT,
         "MEDULLA_POLICY_VERSION": "policy:current",
         "MEDULLA_REQUIRE_OIDC": "false",
@@ -243,7 +241,7 @@ async def _sync(session, client, context, contract, stream, kind, mapping, param
     async def authority(_):
         return _catalog(), context
 
-    target = SyncTarget(CONNECTOR, EpistemicGraphSink(client, authority), max_pages=3)
+    target = SyncTarget(CONNECTOR, MedullaSink(client, authority), max_pages=3)
     first = await sync_stream(session, adapter, target)
     await asyncio.sleep(0.6)
     second = await sync_stream(session, adapter, target)
