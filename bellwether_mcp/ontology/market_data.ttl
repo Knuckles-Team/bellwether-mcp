@@ -35,6 +35,6 @@
     rdfs:label "Market Data Connector Ontology" ;
     rdfs:comment """bellwether-mcp's own sync-lifecycle bookkeeping,
     federated into the agent-utilities knowledge-graph hub. The finance-v1
-    domain classes each stream lands on are epistemic-graph-owned (once
+    domain classes each stream lands on are medulla-owned (once
     feat/finance-core publishes them); this ontology models only this
     connector's own admin state, not a second copy of that domain.""" .

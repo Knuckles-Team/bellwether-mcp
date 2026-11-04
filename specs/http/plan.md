@@ -4,7 +4,7 @@ Governing spec: [spec.md](spec.md). Rows: [requirements.md](requirements.md).
 
 ## Summary
 
-The package carried a copy of the minimum-interval limiter in `bellwether_mcp/http_clients.py`. The SDK now ships the same class as `agent_connector_sdk.httpsupport.RateLimiter` (SDK 0.3.13). The copy is deleted. Each `_Endpoint` in `bellwether_mcp/mcp/clients.py` holds one governed client and one SDK limiter. The process shares one `Clients` instance, so the limiter paces all traffic to a host.
+The package carried a copy of the minimum-interval limiter in `bellwether_mcp/http_clients.py`. The SDK now ships the same class as `scion_sdk.httpsupport.RateLimiter` (SDK 0.3.13). The copy is deleted. Each `_Endpoint` in `bellwether_mcp/mcp/clients.py` holds one governed client and one SDK limiter. The process shares one `Clients` instance, so the limiter paces all traffic to a host.
 
 ## Technical Context
 

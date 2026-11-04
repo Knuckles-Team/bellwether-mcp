@@ -10,7 +10,7 @@ world-model ontology once EG's parallel ``feat/finance-core`` publishes its
 class/property names (see ``bellwether_mcp/ontology/mappings/source.yaml``
 for the current, provisional mapping and how to update it).
 
-This package never calls epistemic-graph directly: extraction rides an
+This package never calls medulla directly: extraction rides an
 in-process MCP session over its own tool surface, and delivery to a live
 graph is owned by ``scion_sdk.runner``/``sinks``.
 """

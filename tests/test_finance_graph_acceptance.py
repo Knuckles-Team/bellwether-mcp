@@ -17,18 +17,18 @@ import pytest
 
 pytestmark = pytest.mark.integration
 
-pytest.importorskip("epistemic_graph")
+pytest.importorskip("medulla")
 pytest.importorskip("scion_sdk.finance.market_source")
 
-from epistemic_graph import EpistemicGraphClient
-from epistemic_graph.client import SyncEpistemicGraphClient
-from epistemic_graph.connector_pack import ConnectorPackClient
-from epistemic_graph.generated.connector_pack import (
+from medulla import MedullaClient
+from medulla.client import SyncMedullaClient
+from medulla.connector_pack import ConnectorPackClient
+from medulla.generated.connector_pack import (
     AgentLibraryMutationContext,
     McpCatalogSnapshotBinding,
     PackProducer,
 )
-from epistemic_graph.server_binary import (
+from medulla.server_binary import (
     ServerBinaryNotFoundError,
     resolve_server_binary,
 )
@@ -45,7 +45,7 @@ from scion_sdk.ingest.live_declaration import build_declaration
 from scion_sdk.manifest.declaration import contract_from_declaration
 from scion_sdk.ports.session import TransportEndpoint
 from scion_sdk.runner.syncing import SyncTarget, sync_stream
-from scion_sdk.sinks.epistemic_graph import EpistemicGraphSink
+from scion_sdk.sinks.medulla import MedullaSink
 from scion_sdk.transports.mcp import McpTransport
 
 from bellwether_mcp import connector_sources
@@ -66,7 +66,7 @@ def _context(scopes):
     return {
         "principal": PRINCIPAL,
         "tenant": TENANT,
-        "audience": "epistemic-graph",
+        "audience": "medulla",
         "agent_id": PRINCIPAL,
         "roles": [],
         "scopes": scopes,
@@ -78,11 +78,9 @@ def _context(scopes):
 @pytest.fixture
 def graph_socket(tmp_path_factory):
     try:
-        binary = (
-            os.environ.get("EPISTEMIC_GRAPH_TEST_BINARY") or resolve_server_binary()
-        )
+        binary = os.environ.get("MEDULLA_TEST_BINARY") or resolve_server_binary()
     except ServerBinaryNotFoundError:
-        pytest.skip("epistemic-graph server is not installed")
+        pytest.skip("medulla server is not installed")
     tmp_path = tmp_path_factory.mktemp("eg")
     socket = tmp_path / "eg.sock"
     security = tmp_path / "security"
@@ -90,15 +88,15 @@ def graph_socket(tmp_path_factory):
     env = {
         **os.environ,
         "GRAPH_SERVICE_AUTH_SECRET": HMAC,
-        "EPISTEMIC_GRAPH_AUDIENCE": "epistemic-graph",
-        "EPISTEMIC_GRAPH_TENANT": TENANT,
-        "EPISTEMIC_GRAPH_POLICY_VERSION": "policy:current",
-        "EPISTEMIC_GRAPH_REQUIRE_OIDC": "false",
-        "EPISTEMIC_GRAPH_SECURITY_STATE_DIR": str(security),
-        "EPISTEMIC_GRAPH_SIGNER_KEYS_JSON": json.dumps(
+        "MEDULLA_AUDIENCE": "medulla",
+        "MEDULLA_TENANT": TENANT,
+        "MEDULLA_POLICY_VERSION": "policy:current",
+        "MEDULLA_REQUIRE_OIDC": "false",
+        "MEDULLA_SECURITY_STATE_DIR": str(security),
+        "MEDULLA_SIGNER_KEYS_JSON": json.dumps(
             {PRINCIPAL: {"key": SIGNER, "allowed_roles": [], "may_grant_system": True}}
         ),
-        "EPISTEMIC_GRAPH_ENCRYPTION_KEY": DATA_KEY,
+        "MEDULLA_ENCRYPTION_KEY": DATA_KEY,
     }
     with (tmp_path / "graph.log").open("wb") as log:
         proc = subprocess.Popen(
@@ -121,7 +119,7 @@ def graph_socket(tmp_path_factory):
                 if proc.poll() is not None or time.monotonic() >= deadline:
                     raise RuntimeError("test graph did not start")
                 time.sleep(0.05)
-            client = SyncEpistemicGraphClient.connect(
+            client = SyncMedullaClient.connect(
                 socket_path=str(socket),
                 auth_secret=HMAC,
                 verified_context=_context(["security:bootstrap"]),
@@ -132,7 +130,7 @@ def graph_socket(tmp_path_factory):
                 )
             finally:
                 client.close()
-            client = SyncEpistemicGraphClient.connect(
+            client = SyncMedullaClient.connect(
                 socket_path=str(socket),
                 auth_secret=HMAC,
                 verified_context=_context(["*"]),
@@ -177,7 +175,7 @@ def _mutation_context():
 
 
 async def _setup(session, socket):
-    client = await EpistemicGraphClient.connect(
+    client = await MedullaClient.connect(
         socket_path=str(socket),
         auth_secret=HMAC,
         graph_name=GRAPH,
@@ -243,7 +241,7 @@ async def _sync(session, client, context, contract, stream, kind, mapping, param
     async def authority(_):
         return _catalog(), context
 
-    target = SyncTarget(CONNECTOR, EpistemicGraphSink(client, authority), max_pages=3)
+    target = SyncTarget(CONNECTOR, MedullaSink(client, authority), max_pages=3)
     first = await sync_stream(session, adapter, target)
     await asyncio.sleep(0.6)
     second = await sync_stream(session, adapter, target)
