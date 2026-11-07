@@ -16,3 +16,9 @@ The SDK tests cover zero and negative intervals and concurrent callers.
 ## Quality and release proof
 
 Run `uv run pytest tests/test_sdk_rate_limiter.py`.
+
+## Adoption of scion-sdk 0.10.0 (`CONN-BELLWETHER-MCP-HTTP-R003`)
+
+| Requirement | Test | Observation |
+|---|---|---|
+| `CONN-BELLWETHER-MCP-HTTP-R003` | `tests/test_scion_sdk_0_10_imports.py::test_every_scion_sdk_import_resolves_on_the_pinned_release` | Every `scion_sdk` import resolves on the pinned release; a removed path fails the test. |
