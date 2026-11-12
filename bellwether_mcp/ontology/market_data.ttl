@@ -1,7 +1,8 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix dc: <http://purl.org/dc/terms/> .
-@prefix : <http://knuckles.team/kg#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/bellwether#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -20,7 +21,7 @@
 # --- classes (owl:Class) ---
 
 :MarketDataSyncRun a owl:Class ;
-    rdfs:subClassOf :Event ;
+    rdfs:subClassOf core:Event ;
     rdfs:label "Market Data Sync Run" ;
     rdfs:comment "One bounded sweep of one bellwether-mcp stream (CoinMarketCap listings/quotes/global-metrics, a FRED macro series, or the FOMC calendar): a durable record of the ask and its checkpoint, not the ingested data itself." .
 
@@ -32,7 +33,7 @@
     rdfs:domain :MarketDataSyncRun ;
     rdfs:range xsd:string .
 
-<http://knuckles.team/kg/bellwether-mcp> a owl:Ontology ;
+<https://knuckles-team.github.io/ontology/connector/bellwether> a owl:Ontology ;
     rdfs:label "Market Data Connector Ontology" ;
     rdfs:comment """bellwether-mcp's own sync-lifecycle bookkeeping,
     federated into the meristem knowledge-graph hub. The finance-v1
