@@ -20,6 +20,7 @@
 # --- classes (owl:Class) ---
 
 :MarketDataSyncRun a owl:Class ;
+    rdfs:subClassOf :Event ;
     rdfs:label "Market Data Sync Run" ;
     rdfs:comment "One bounded sweep of one bellwether-mcp stream (CoinMarketCap listings/quotes/global-metrics, a FRED macro series, or the FOMC calendar): a durable record of the ask and its checkpoint, not the ingested data itself." .
 
