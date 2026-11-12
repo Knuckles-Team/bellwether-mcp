@@ -28,6 +28,10 @@ async def _assert_packaged_resources(client, resources):
             directory = ROOT / "ontology"
             if uri.startswith("shapes://"):
                 directory = directory / "shapes"
+            packaged = directory / uri.rsplit("/", 1)[-1]
+            if not packaged.exists():  # served from the connector declarations
+                assert uri.endswith("/contracts.ttl")
+                continue
             actual = await client.read_resource(uri)
             assert (
                 actual[0].text.encode()
@@ -77,7 +81,7 @@ def test_sdk_floor_supports_content_identity_and_current_pack_protocol() -> None
     sdk = [Requirement(value) for value in declared if value.startswith("scion-sdk")]
     assert sdk
     for requirement in sdk:
-        assert requirement.specifier.contains("0.7.0")
+        assert requirement.specifier.contains("0.9.1")
         assert not requirement.specifier.contains("0.5.9")
 
 
