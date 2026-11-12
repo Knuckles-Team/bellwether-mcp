@@ -10,6 +10,7 @@ dist/
 .mypy_cache/
 .pytest_tmp/
 .venv/
+.venv
 
 # Materialized, dev-machine-only symlink to the real scion-sdk
 # checkout, used so this repo resolves standalone against its own tracked
