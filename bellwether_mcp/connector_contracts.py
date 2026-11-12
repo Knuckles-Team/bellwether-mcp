@@ -9,7 +9,6 @@ from scion_sdk.surface_contracts import (
     ToolUseContract,
 )
 
-
 CONTRACTS = (
     ToolUseContract(
         "rank-crypto-assets",
