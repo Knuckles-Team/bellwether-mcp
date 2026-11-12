@@ -10,7 +10,7 @@ connector's user agent and endpoint defaults. Per-host pacing uses the SDK's
 from __future__ import annotations
 
 import httpx
-from scion_sdk.http.client import create_async_http_client
+from scion_sdk.http.client import build_http_client
 from scion_sdk.http.options import HttpClientOptions
 
 from bellwether_mcp.config import USER_AGENT, SourceEndpoint
@@ -25,4 +25,4 @@ def build_async_client(
     headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
     headers.update(extra_headers or {})
     options = HttpClientOptions(base_url=endpoint.base_url, headers=headers)
-    return create_async_http_client(options)
+    return build_http_client(options, async_=True)
