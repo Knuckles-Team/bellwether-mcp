@@ -35,7 +35,7 @@ Tool-neutral rules for any AI agent or human working in this repository. This bl
   from the live `tools/list` schema — run after any tool signature/docstring change.
 
 ## Tech stack
-- Python 3.12+, `scion-sdk` (not `agent-utilities`, not `medulla`
+- Python 3.12+, `scion-sdk` (not `meristem`, not `medulla`
   directly — see "Why scion-sdk" below), FastMCP, httpx.
 
 ## Commands
@@ -175,7 +175,7 @@ above instead borrow `scion-sdk`'s own canonical `.venv`
 `httpx`) via `PYTHONPATH`.
 
 ## Not yet built (see WRAPUP.md for the full EH-412/EH-422 disposition)
-- `agent_utilities.*` skill/ontology/prompt/source_connector_providers entry points
+- `meristem.*` skill/ontology/prompt/source_connector_providers entry points
   are declared in `pyproject.toml` but the `skills/`, `prompts/`, `ontology/`
   federation registration (`REGISTERED_FEDERATED_IRIS`, `ontology.lock`) is deferred
   to the orchestrator's fleet registration pass — see `REGISTRATION.patch.md`.
@@ -197,7 +197,7 @@ above instead borrow `scion-sdk`'s own canonical `.venv`
   template's exception path this package already documented above ("Why
   scion-sdk"): there is no single backend session to authenticate
   against (`credentials.py` already resolves both keyed sources), and an
-  `agent_server.py` will require an `agent_utilities` import this package's
+  `agent_server.py` will require an `meristem` import this package's
   architecture explicitly rules out. `world-reference-mcp` — the other package on
   this architecture — reached the identical conclusion.
 

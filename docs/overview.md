@@ -2,7 +2,7 @@
 
 > **Category**: Finance | **Ecosystem Role**: MCP Server + `scion-sdk` source adapters
 > Built directly on [`scion-sdk`](https://github.com/Knuckles-Team/scion-sdk) — **not**
-> `agent-utilities` (see "Why scion-sdk" below).
+> `meristem` (see "Why scion-sdk" below).
 
 ## Description
 
@@ -10,9 +10,9 @@ Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vinta
 (FRED/ALFRED), and the FOMC decision calendar as an MCP server and
 `scion-sdk` source adapters.
 
-## Why `scion-sdk`, not `agent-utilities`
+## Why `scion-sdk`, not `meristem`
 
-Most fleet packages depend on `agent-utilities` directly and ship an
+Most fleet packages depend on `meristem` directly and ship an
 `agent_server.py` A2A agent alongside their MCP server. `bellwether-mcp` is
 modeled on `agents/world-reference-mcp` — the first package built on this
 newer, lighter architecture per RF-ADR-009 §2.2.1 ("a new API source is a
@@ -22,7 +22,7 @@ preset, not code"):
   `scion_sdk.manifest.presets.ToolPreset` entry in
   `connectors/mcp_source_presets.json`, extracted by the SDK's generic
   `scion_sdk.adapters.mcp_tool.McpToolSourceAdapter`.
-- **No direct medulla dependency, and no `agent-utilities`.** This
+- **No direct medulla dependency, and no `meristem`.** This
   package never builds its own knowledge-graph client and ships no
   `kg_ingest.py`-style direct-to-graph tool. Delivery to a live graph is
   entirely `scion_sdk.runner`/`sinks`' job, wired at deployment time

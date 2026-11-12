@@ -29,13 +29,13 @@ others are finance-v1 proposals, not yet landed.
 
 `bellwether_mcp/ontology/market_data.ttl` declares exactly one class,
 `MarketDataSyncRun` — this connector's own sync-lifecycle bookkeeping record
-(federated into the agent-utilities knowledge-graph hub). It does **not**
+(federated into the meristem knowledge-graph hub). It does **not**
 redeclare the finance-v1 domain classes above.
 
 ## Cross-project references
 
-This project is built on `scion-sdk`, not `agent-utilities` — see
+This project is built on `scion-sdk`, not `meristem` — see
 [Overview](overview.md) "Why scion-sdk". It therefore inherits no
-`agent-utilities` 5-Pillar concepts and registers none of its own; when
+`meristem` 5-Pillar concepts and registers none of its own; when
 `feat/finance-core` publishes real class/property names, this page and
 `ontology/mappings/source.yaml` need a rename pass, not a redesign.

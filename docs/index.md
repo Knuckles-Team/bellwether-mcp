@@ -2,7 +2,7 @@
 
 Crypto discovery/caps (**CoinMarketCap**), Fed macro and liquidity series with
 point-in-time vintages (**FRED/ALFRED**), and the FOMC decision calendar
-(hike/cut/hold, sourced) as an **MCP Server** for the agent-utilities
+(hike/cut/hold, sourced) as an **MCP Server** for the meristem
 ecosystem — a typed, deterministic tool surface plus `scion-sdk`
 declarative source-adapter presets.
 
@@ -34,7 +34,7 @@ Every tool other than `fomc_calendar_list` requires a server-side-resolved
 credential (`BELLWETHER_CMC_API_KEY` / `BELLWETHER_FRED_API_KEY`) — never
 accepted as a tool argument. This package ships **no A2A agent**: unlike most
 fleet packages it is built directly on `scion-sdk` (not
-`agent-utilities`) — see [Overview](overview.md) for why.
+`meristem`) — see [Overview](overview.md) for why.
 
 ## Explore the documentation
 
