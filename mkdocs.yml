@@ -1,5 +1,5 @@
 site_name: "bellwether-mcp"
-site_description: "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP Server for the meristem ecosystem — a typed, deterministic tool surface plus scion-sdk>=0.11.0,<0.12 source adapters."
+site_description: "Crypto discovery/caps (CoinMarketCap), Fed macro series with point-in-time vintages (FRED/ALFRED), and the FOMC decision calendar as an MCP Server for the meristem ecosystem — a typed, deterministic tool surface plus scion-sdk source adapters."
 site_url: "https://knuckles-team.github.io/bellwether-mcp/"
 repo_name: "Knuckles-Team/bellwether-mcp"
 repo_url: "https://github.com/Knuckles-Team/bellwether-mcp"
