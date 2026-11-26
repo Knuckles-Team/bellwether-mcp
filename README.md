@@ -1,9 +1,32 @@
-# bellwether-mcp
+# Bellwether Mcp
+## MCP
 
-*Version: 1.3.8*
+![PyPI - Version](https://img.shields.io/pypi/v/bellwether-mcp)
+![MCP Server](https://badge.mcpx.dev?type=server 'MCP Server')
+![PyPI - Downloads](https://img.shields.io/pypi/dd/bellwether-mcp)
+![GitHub Repo stars](https://img.shields.io/github/stars/Knuckles-Team/bellwether-mcp)
+![GitHub forks](https://img.shields.io/github/forks/Knuckles-Team/bellwether-mcp)
+![GitHub contributors](https://img.shields.io/github/contributors/Knuckles-Team/bellwether-mcp)
+![PyPI - License](https://img.shields.io/pypi/l/bellwether-mcp)
+![GitHub](https://img.shields.io/github/license/Knuckles-Team/bellwether-mcp)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Knuckles-Team/bellwether-mcp)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Knuckles-Team/bellwether-mcp)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Knuckles-Team/bellwether-mcp)
+![GitHub issues](https://img.shields.io/github/issues/Knuckles-Team/bellwether-mcp)
+![GitHub top language](https://img.shields.io/github/languages/top/Knuckles-Team/bellwether-mcp)
+![GitHub language count](https://img.shields.io/github/languages/count/Knuckles-Team/bellwether-mcp)
+![GitHub repo size](https://img.shields.io/github/repo-size/Knuckles-Team/bellwether-mcp)
+![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Knuckles-Team/bellwether-mcp)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/bellwether-mcp)
+![PyPI - Implementation](https://img.shields.io/pypi/implementation/bellwether-mcp)
 
-> **Documentation** — Installation, deployment, and tool usage are maintained in the
+> **Documentation** — Installation, deployment, and usage across the API, CLI, MCP,
+> and A2A agent interfaces are maintained in the
 > [official documentation](https://knuckles-team.github.io/bellwether-mcp/).
+
+---
+
+## Overview
 
 Crypto discovery/rankings/market caps (CoinMarketCap), Fed macro and liquidity
 series with point-in-time vintages (FRED/ALFRED), and the FOMC decision
@@ -16,6 +39,8 @@ ontology (`feat/finance-core`, not yet published — see AGENTS.md).
 endpoint documents hourly/daily coverage only, not minute-level exchange
 candles — pair this package with an `emerald-exchange` backend for tradable
 bars and charts.
+
+---
 
 ## Sources
 
@@ -32,6 +57,8 @@ proposed finance-v1 class names
 EG's `feat/finance-core` branch, which owns finance-v1, has not published
 anything yet as of this package's build — see AGENTS.md "Ontology mapping"
 before trusting these as final.
+
+---
 
 ## Tools
 
@@ -60,3 +87,38 @@ Each record retains the capture time of each provider response.
 
 See [`AGENTS.md`](AGENTS.md) for architecture, the ontology-mapping
 authority, the FOMC dataset's provenance, rate limits, and commands.
+
+---
+
+## Installation
+
+```bash
+uv pip install bellwether-mcp
+```
+
+---
+
+## Documentation
+
+The complete documentation is published as the
+[official documentation site](https://knuckles-team.github.io/bellwether-mcp/) and is
+the recommended reference for installation, deployment, and day-to-day operation.
+
+---
+
+## Repository Owners
+
+<img width="100%" height="180em" src="https://github-readme-stats.vercel.app/api?username=example&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true" />
+
+![GitHub followers](https://img.shields.io/github/followers/example)
+![GitHub User's stars](https://img.shields.io/github/stars/example)
+
+---
+
+## Contribute
+
+Contributions are welcome! Please ensure code quality by running local checks before submitting pull requests:
+- Format code using `ruff format .`
+- Lint code using `ruff check .`
+- Validate type-safety with `mypy .`
+- Run test suites using `pytest`
