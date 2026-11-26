@@ -38,6 +38,20 @@ owning spec row in the commit trailer.
 - One logical change per commit, with `Spec: <ID>` and the assisting agent
   trailer adjacent in the final paragraph.
 
+## Steps
+1. Find the owning requirement with `git grep -n "<term>" -- specs`. Verify a spec row id is returned.
+2. Edit only the connector files that slice touches. Verify with `git diff --stat` that no unrelated file changed.
+3. Run the focused mocked test with `uv run --all-extras pytest tests/test_api_coinmarketcap.py -q`. Verify it passes.
+4. Run the gate with `uvx pre-commit run --all-files`. Verify every hook reports Passed.
+5. Stage reviewed paths with `git add -- <path>` and commit with a `Spec:` trailer. Verify `git diff --cached --name-status` lists only intended files.
+
+## Failure recovery
+| Failure | Cause | Recovery |
+|---------|-------|----------|
+| No spec row found | The change has no owning requirement | Extend the nearest row under `specs/` before editing code |
+| A pre-commit hook fails | A shared gate rule was violated | Read the hook output, fix the named file at its source, and commit again with hooks active |
+| A test needs live credentials | A provider call was not mocked | Mock the CoinMarketCap or FRED call and rerun `uv run --all-extras pytest` on that file |
+
 ## Setup and gates
 
 Use the pinned environment from `uv sync --locked`. Run the repository
